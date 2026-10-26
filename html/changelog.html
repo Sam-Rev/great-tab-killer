@@ -1,0 +1,319 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<link type="text/css" href="../styles/fontello.css" rel="stylesheet">
+	<link type="text/css" href="../styles/style.css" rel="stylesheet">
+	<script type="module" src="../js/changelog.js"></script>
+	<title>The Great Tab Killer — What's New</title>
+	<style>
+		.cl-entry {
+			margin-bottom: 45px;
+		}
+
+		.cl-date {
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: #999;
+			margin-bottom: 6px;
+		}
+
+		.cl-entry h3 {
+			font-size: 16px;
+			font-weight: bold;
+			margin: 0 0 14px;
+			color: #222;
+		}
+
+		.cl-entry ul {
+			margin: 0;
+			padding-left: 18px;
+			line-height: 1.8;
+		}
+
+		.cl-entry li {
+			margin-bottom: 2px;
+		}
+
+		.cl-langs {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 5px;
+			margin-top: 10px;
+		}
+
+		.cl-lang {
+			background: #f0f4ff;
+			border: 1px solid #d0d9f0;
+			border-radius: 3px;
+			font-size: 12px;
+			padding: 2px 7px;
+			color: #444;
+			white-space: nowrap;
+		}
+
+		.cl-divider {
+			border: none;
+			border-top: 1px solid #e8e8e8;
+			margin: 40px 0;
+		}
+
+		.cl-rating-widget {
+			margin-top: 30px;
+			padding: 20px;
+			background: #f8fafc;
+			border: 1px solid #e2e8f0;
+			border-radius: 8px;
+			text-align: center;
+		}
+
+		.cl-rating-widget h4 {
+			margin: 0 0 10px 0;
+			font-size: 15px;
+			color: #334155;
+		}
+
+		.cl-stars {
+			font-size: 32px;
+			color: #cbd5e1;
+			cursor: pointer;
+			display: inline-flex;
+			user-select: none;
+		}
+
+		.cl-stars span {
+			transition: color 0.2s, transform 0.1s;
+			padding: 0 4px;
+		}
+
+		.cl-stars span:hover {
+			transform: scale(1.1);
+		}
+
+		.cl-stars span.active {
+			color: #fbbf24;
+		}
+
+		.cl-rating-message {
+			margin-top: 15px;
+			font-size: 14px;
+			color: #475569;
+			animation: fadeIn 0.3s ease-in;
+		}
+
+		.cl-rating-message a {
+			color: #2563eb;
+			text-decoration: none;
+			font-weight: 600;
+		}
+
+		.cl-rating-message a:hover {
+			text-decoration: underline;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(-5px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+	</style>
+</head>
+
+<body hidden>
+
+	<div class="mainContent">
+
+		<div class="pageHeader">
+			<h1 data-i18n="__MSG_ext_extension_name__"></h1>
+		</div>
+
+		<div class="contentNav">
+			<ul>
+				<li>
+					<a href='./options.html' data-i18n="__MSG_html_sidebar_general_settings__"></a>
+				</li>
+				<li class="noIncognito">
+					<a href="./history.html" data-i18n="__MSG_html_sidebar_session_management__"></a>
+				</li>
+				<!-- <li>
+					<a href="./monitor.html" data-i18n="__MSG_html_sidebar_monitor__"></a>
+				</li> -->
+				<li class="noIncognito">
+					<a href='./shortcuts.html' data-i18n="__MSG_html_sidebar_shortcuts__"></a>
+				</li>
+				<li>
+					<a href="./about.html" data-i18n="__MSG_html_sidebar_support__"></a>
+				</li>
+				<li>
+					<a class="active" href="./changelog.html" data-i18n="__MSG_html_sidebar_changelog__"></a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+
+			<!-- ── April 30, 2026 — VERSION 2 ────────────────────── -->
+			<div class="cl-entry">
+				<div class="cl-date">April 30, 2026</div>
+				<h3>🚀 Version 2.0.0 — Don't Lose Your Tabs Anymore!</h3>
+				<ul>
+					<li>Fixed critical bugs with disappearing favicons and loss of access to tabs after browser
+						restart.</li>
+					<li>Fixed empty popup window that sometimes appeared instead of the extension menu.</li>
+					<li>Fixed "Could not establish connection" errors during browser startup — suspended tabs now
+						initialize correctly.</li>
+					<li>Fixed multiple runtime errors improving background stability.</li>
+					<li>Improved localization and added a language selector to Settings.</li>
+					<li>Added automatic tab backups — once a week by default. Can be disabled or adjusted in Settings.
+					</li>
+					<li>Added <b>Discard Only</b> mode — URLs are never replaced, but with less control: tabs always
+						unsuspend on switch (Chrome API limitation), favicons don't change, screenshots are not
+						available, etc. For those who prefer to see the original URLs — tab loss due to extension
+						removal or the extension itself is impossible in this mode.</li>
+					<li>Automatic migration of tabs from other suspenders (The Great Tab Killer, Marvellous Suspender,
+						etc.) on first install — your tabs won't be lost when switching.</li>
+					<li>Improved recovery page styling and localization.</li>
+					<li>Focused on the main complaints and, it seems, fixed most of them — added different solutions for
+						different needs.</li>
+				</ul>
+
+				<div class="cl-rating-widget">
+					<h4 data-i18n="__MSG_html_changelog_rating_title__">How do you like this update?</h4>
+					<div class="cl-stars" id="cl-rating-stars">
+						<span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span
+							data-val="4">★</span><span data-val="5">★</span>
+					</div>
+					<div id="cl-rating-message" class="cl-rating-message" style="display: none;"></div>
+				</div>
+			</div>
+
+			<hr class="cl-divider" />
+
+			<!-- ── April 9, 2026 ─────────────────────────────────── -->
+			<div class="cl-entry">
+				<div class="cl-date">April 9, 2026</div>
+				<h3>Full localization — 55 languages</h3>
+				<ul>
+					<li>Complete UI localization: all menus, settings, suspended-tab page, popups, keyboard shortcuts,
+						and session management are now translated.</li>
+					<li>Language switcher added to Settings → Other: choose any supported language independently of the
+						browser's system language.</li>
+					<li>Date and time formatting now follows the selected locale.</li>
+					<li>Keyboard shortcut descriptions on the Shortcuts page now display in the selected language.</li>
+				</ul>
+				<div class="cl-langs">
+					<span class="cl-lang">አማርኛ</span>
+					<span class="cl-lang">العربية</span>
+					<span class="cl-lang">Български</span>
+					<span class="cl-lang">বাংলা</span>
+					<span class="cl-lang">Català</span>
+					<span class="cl-lang">Čeština</span>
+					<span class="cl-lang">Dansk</span>
+					<span class="cl-lang">Deutsch</span>
+					<span class="cl-lang">Ελληνικά</span>
+					<span class="cl-lang">English</span>
+					<span class="cl-lang">English (Australia)</span>
+					<span class="cl-lang">English (United Kingdom)</span>
+					<span class="cl-lang">English (United States)</span>
+					<span class="cl-lang">Español</span>
+					<span class="cl-lang">Español (Latinoamérica)</span>
+					<span class="cl-lang">Eesti</span>
+					<span class="cl-lang">فارسی</span>
+					<span class="cl-lang">Suomi</span>
+					<span class="cl-lang">Filipino</span>
+					<span class="cl-lang">Français</span>
+					<span class="cl-lang">ગુજરાતી</span>
+					<span class="cl-lang">עברית</span>
+					<span class="cl-lang">हिन्दी</span>
+					<span class="cl-lang">Hrvatski</span>
+					<span class="cl-lang">Magyar</span>
+					<span class="cl-lang">Bahasa Indonesia</span>
+					<span class="cl-lang">Italiano</span>
+					<span class="cl-lang">日本語</span>
+					<span class="cl-lang">ಕನ್ನಡ</span>
+					<span class="cl-lang">한국어</span>
+					<span class="cl-lang">Lietuvių</span>
+					<span class="cl-lang">Latviešu</span>
+					<span class="cl-lang">മലയാളം</span>
+					<span class="cl-lang">मराठी</span>
+					<span class="cl-lang">Bahasa Melayu</span>
+					<span class="cl-lang">Nederlands</span>
+					<span class="cl-lang">Norsk</span>
+					<span class="cl-lang">Polski</span>
+					<span class="cl-lang">Português (Brasil)</span>
+					<span class="cl-lang">Português (Portugal)</span>
+					<span class="cl-lang">Română</span>
+					<span class="cl-lang">Русский</span>
+					<span class="cl-lang">Slovenčina</span>
+					<span class="cl-lang">Slovenščina</span>
+					<span class="cl-lang">Српски</span>
+					<span class="cl-lang">Svenska</span>
+					<span class="cl-lang">Kiswahili</span>
+					<span class="cl-lang">தமிழ்</span>
+					<span class="cl-lang">తెలుగు</span>
+					<span class="cl-lang">ภาษาไทย</span>
+					<span class="cl-lang">Türkçe</span>
+					<span class="cl-lang">Українська</span>
+					<span class="cl-lang">Tiếng Việt</span>
+					<span class="cl-lang">中文（简体）</span>
+					<span class="cl-lang">中文（繁體）</span>
+				</div>
+			</div>
+
+			<hr class="cl-divider" />
+
+			<!-- ── June 9, 2025 ──────────────────────────────────── -->
+			<div class="cl-entry">
+				<div class="cl-date">June 9, 2025</div>
+				<h3>🎂 The Great Tab Killer for Manifest V3</h3>
+				<ul>
+					<li>Rebuilt from the ground up for Chrome Manifest V3 — the current and future extension standard.
+					</li>
+					<li>Automatic tab suspension after a configurable delay: 1 minute, 5 minutes, up to 2 weeks, or
+						never.</li>
+					<li>Smart exceptions — never suspend:
+						<ul>
+							<li>Pinned tabs</li>
+							<li>Tabs playing audio</li>
+							<li>Tabs with unsaved form input</li>
+							<li>The currently active tab in each window</li>
+						</ul>
+					</li>
+					<li>Connectivity awareness: skip suspension when offline.</li>
+					<li>Battery awareness: skip suspension while charging.</li>
+					<li>Whitelist with support for domains, URL substrings, and full regex patterns.</li>
+					<li>Auto-unsuspend when switching back to a suspended tab.</li>
+					<li>Discard mode: use Chrome's built-in memory saving instead of the suspended page — up to 5× more
+						memory freed.</li>
+					<li>Dark and light themes for suspended tab pages.</li>
+					<li>Screenshot preview of the tab before suspension — screen-only or full-page capture.</li>
+					<li>High-quality screen capture mode.</li>
+					<li>Full keyboard shortcut support — 10 configurable shortcuts.</li>
+					<li>Right-click context menu for quick tab suspension, whitelisting, and bulk actions.</li>
+					<li>Session management — save, restore, and export/import sessions with all tab history.</li>
+					<li>Settings sync across devices via Chrome profile sync.</li>
+					<li>Low-memory mode — automatically suspend tabs when system memory is critically low, overriding
+						Chrome's built-in tab discarding.</li>
+					<li>"Open link in new suspended tab" right-click option.</li>
+					<li>Tab recovery page for crash and restart scenarios.</li>
+					<li>Incognito mode support.</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

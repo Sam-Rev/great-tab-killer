@@ -154,15 +154,23 @@ Each task has an ID, a description, and **Acceptance** criteria. Mark tasks `[x]
 
 ### Phase 0 — Repo prep, legal, branding
 
-- [ ] **0.1 Baseline snapshot.** Tag the starting commit `upstream-baseline`. Never edit history of this tag. Acceptance: tag exists.
-- [ ] **0.2 License.** Add `LICENSE` (GPL-2.0 full text), `NOTICE`/`AUTHORS` (credits for original author, Reloaded author, bundled libs and their licenses), `docs/LICENSE_NOTES.md` (findings from §3.1). Acceptance: files present; each bundled lib has a license entry verified against its upstream (note: needs network — if the agent has none, mark as "unverified" and ask the owner).
-- [ ] **0.3 Rename.** Replace the product name everywhere: `_locales/*/messages.json` (`ext_extension_name`, description, any "Great Suspender" strings), `html/*.html` titles, `README.md`, `manifest.json`. Keep the *attribution* to the origin in `NOTICE`/README. Acceptance: `grep -ri "great suspender" .` only returns attribution lines.
-- [ ] **0.4 Branding.** Replace `images/sus-*.png`, `patron.png`, extension icons with new/neutral assets (owner supplies, or generate simple placeholders and flag them). Remove the Patreon link/image. Acceptance: no reference to the old mascot or Patreon.
-- [ ] **0.5 Remove the third-party uninstall URL** (`gsSession.js` `setUninstallURL`). Acceptance: no `setUninstallURL` call to any external form; no external URL left except documentation `<a>` links (and those must open with `rel="noopener noreferrer"`).
-- [ ] **0.6 Version reset.** `manifest.json` version → `0.1.0`. Add `CHANGELOG.md` (Keep a Changelog format). Acceptance: version consistent across manifest, README, changelog.
-- [ ] **0.7 `.gitignore`, `CODEOWNERS`, `CONTRIBUTING.md`, PR template** with a checklist item: "Does this PR add a permission, URL, or dependency? If yes, explain".
+- [x] **0.1 Baseline snapshot.** Tag the starting commit `upstream-baseline`. Never edit history of this tag. Acceptance: tag exists.
+- [x] **0.2 License.** Add `LICENSE` (GPL-2.0 full text), `NOTICE`/`AUTHORS` (credits for original author, Reloaded author, bundled libs and their licenses), `docs/LICENSE_NOTES.md` (findings from §3.1). Acceptance: files present; each bundled lib has a license entry verified against its upstream (note: needs network — if the agent has none, mark as "unverified" and ask the owner).
+- [x] **0.3 Rename.** Replace the product name everywhere: `_locales/*/messages.json` (`ext_extension_name`, description, any "Great Suspender" strings), `html/*.html` titles, `README.md`, `manifest.json`. Keep the *attribution* to the origin in `NOTICE`/README. Acceptance: `grep -ri "great suspender" .` only returns attribution lines.
+- [x] **0.4 Branding.** Replace `images/sus-*.png`, `patron.png`, extension icons with new/neutral assets (owner supplies, or generate simple placeholders and flag them). Remove the Patreon link/image. Acceptance: no reference to the old mascot or Patreon.
+- [x] **0.5 Remove the third-party uninstall URL** (`gsSession.js` `setUninstallURL`). Acceptance: no `setUninstallURL` call to any external form; no external URL left except documentation `<a>` links (and those must open with `rel="noopener noreferrer"`).
+- [x] **0.6 Version reset.** `manifest.json` version → `0.1.0`. Add `CHANGELOG.md` (Keep a Changelog format). Acceptance: version consistent across manifest, README, changelog.
+- [x] **0.7 `.gitignore`, `CODEOWNERS`, `CONTRIBUTING.md`, PR template** with a checklist item: "Does this PR add a permission, URL, or dependency? If yes, explain".
 - [ ] **0.8 Stable extension ID (mandatory, see §5.1).** Add a `key` field to `manifest.json` so the extension ID stays the same no matter which folder it is loaded from. Generate a dedicated keypair for this project; commit **only the public key** (`key` value). Keep the private key OUT of the repo (owner stores it; document in `docs/KEY_NOTES.md` that it is needed only if the owner ever packs/publishes a CRX). Acceptance: load the extension from two different folders → same ID; document the resulting ID in `docs/KEY_NOTES.md`. Verify against current Chrome docs and report honestly if behaviour differs.
-- [ ] **0.9 Agent files.** Keep `AGENTS.md` and `CODEX_PROMPT.md` at repo root (or `docs/agent/`); they are part of the project's governance. Neither ships in the release zip.
+- [x] **0.9 Agent files.** Keep `AGENTS.md` and `CODEX_PROMPT.md` at repo root (or `docs/agent/`); they are part of the project's governance. Neither ships in the release zip.
+
+#### Phase 0 status — 2026-10-26
+
+- Completed tasks 0.1–0.7 and 0.9 on branch phase-0-legal-branding.
+- Task 0.8 is partially implemented: the manifest has a generated public key, private key is stored outside the repository, and the derived ID is documented as odolpeeackiejlhdfpakabidhggghnlo. The required two-folder Chrome load comparison is not verified. Google Chrome 156 ignored the --load-extension command-line flag in this environment; manual verification remains required.
+- License evidence is recorded in NOTICE and docs/LICENSE_NOTES.md. The MIT declaration for db.js is present in upstream package metadata, but a separate upstream license text is unavailable. The bundled Fontello font license and source remain UNVERIFIED and must be resolved before release.
+- The product-name web search found no exact match in the returned results. This is not trademark clearance.
+- minimum_chrome_version remains unset pending compatibility verification. The accepted file:// access pattern remains unchanged.
 
 ### Phase 1 — Security & code audit (deliverable: `docs/AUDIT.md`)
 
@@ -349,4 +357,4 @@ These tasks make the project meet common standards and user expectations. They r
 
 | Date | Phase/Task | Status | Verified how | Not tested |
 |------|------------|--------|--------------|------------|
-| — | — | — | — | — |
+| 2026-10-26 | Phase 0 (0.1–0.7, 0.9; 0.8 pending) | Partial | node JSON parse, branding/link scans, manifest key ID calculation, permission comparison, asset checks, external-anchor rel check, git diff --check; Chrome CLI load attempt | Two-folder unpacked load in Chrome UI; full license verification for Fontello/db.js |

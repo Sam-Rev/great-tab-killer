@@ -1,0 +1,26 @@
+# Набор страниц для автотеста: публичные страницы без входа, разного веса.
+# Одна строка — один URL. Строки с # игнорируются.
+https://www.youtube.com/watch?v=jNQXAC9IVRw
+https://www.youtube.com/
+https://en.wikipedia.org/wiki/Google_Chrome
+https://ru.wikipedia.org/wiki/Харьков
+https://github.com/chromium/chromium
+https://stackoverflow.com/questions/tagged/javascript
+https://www.reddit.com/r/programming/
+https://habr.com/ru/articles/
+https://www.meduza.io/
+https://www.bbc.com/news
+https://www.theguardian.com/international
+https://edition.cnn.com/
+https://www.amazon.com/
+https://www.ebay.com/
+https://www.google.com/maps/@55.7558,37.6173,12z
+https://www.figma.com/community
+https://www.twitch.tv/directory
+https://medium.com/
+https://developer.mozilla.org/en-US/docs/Web/JavaScript
+https://www.booking.com/
+https://www.nytimes.com/
+https://x.com/explore
+https://www.pinterest.com/ideas/
+https://yahoo.com/

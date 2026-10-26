@@ -1,0 +1,731 @@
+{
+  "ext_extension_name": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_extension_description": {
+    "message": "Sospendi le schede inattive di Chrome per liberare RAM. Il miglior Tab Suspender — sospende automaticamente le schede inutilizzate e le ripristina in un clic."
+  },
+  "ext_default_title": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_cmd_toggle_tab_suspension_description": {
+    "message": "Sospendi/Riattiva la scheda attiva"
+  },
+  "ext_cmd_toggle_tab_pause_description": {
+    "message": "Metti in pausa/Riprendi la sospensione della scheda attiva"
+  },
+  "ext_cmd_suspend_selected_tabs_description": {
+    "message": "Sospendi le schede selezionate"
+  },
+  "ext_cmd_unsuspend_selected_tabs_description": {
+    "message": "Riattiva le schede selezionate"
+  },
+  "ext_cmd_soft_suspend_active_window_description": {
+    "message": "Sospendi tutte le altre schede nella finestra attiva"
+  },
+  "ext_cmd_force_suspend_active_window_description": {
+    "message": "Forza la sospensione di tutte le altre schede nella finestra attiva"
+  },
+  "ext_cmd_unsuspend_active_window_description": {
+    "message": "Riattiva tutte le schede nella finestra attiva"
+  },
+  "ext_cmd_soft_suspend_all_windows_description": {
+    "message": "Sospendi tutte le schede in tutte le finestre"
+  },
+  "ext_cmd_force_suspend_all_windows_description": {
+    "message": "Forza la sospensione di tutte le schede in tutte le finestre"
+  },
+  "ext_cmd_unsuspend_all_windows_description": {
+    "message": "Riattiva tutte le schede in tutte le finestre"
+  },
+  "js_context_open_link_in_suspended_tab": {
+    "message": "Apri il link in una nuova scheda sospesa"
+  },
+  "js_context_toggle_suspend_state": {
+    "message": "Sospendi/Riattiva questa scheda"
+  },
+  "js_context_toggle_pause_suspension": {
+    "message": "Metti in pausa/Riprendi la sospensione di questa scheda"
+  },
+  "js_context_never_suspend_domain": {
+    "message": "Non sospendere mai questo dominio"
+  },
+  "js_context_never_suspend_page": {
+    "message": "Non sospendere mai questo URL"
+  },
+  "js_context_suspend_selected_tabs": {
+    "message": "Sospendi le schede selezionate"
+  },
+  "js_context_unsuspend_selected_tabs": {
+    "message": "Riattiva le schede selezionate"
+  },
+  "js_context_soft_suspend_other_tabs_in_window": {
+    "message": "Sospendi tutte le altre schede in questa finestra"
+  },
+  "js_context_force_suspend_other_tabs_in_window": {
+    "message": "Forza la sospensione di tutte le altre schede in questa finestra"
+  },
+  "js_context_unsuspend_all_tabs_in_window": {
+    "message": "Riattiva tutte le schede in questa finestra"
+  },
+  "js_context_soft_suspend_all_tabs": {
+    "message": "Sospendi tutte le schede in tutte le finestre"
+  },
+  "js_context_force_suspend_all_tabs": {
+    "message": "Forza la sospensione di tutte le schede in tutte le finestre"
+  },
+  "js_context_unsuspend_all_tabs": {
+    "message": "Riattiva tutte le schede in tutte le finestre"
+  },
+  "html_about_title": {
+    "message": "Informazioni"
+  },
+  "html_history_title": {
+    "message": "Gestione sessioni"
+  },
+  "html_history_current_session": {
+    "message": "Sessione corrente"
+  },
+  "html_history_recent_sessions": {
+    "message": "Sessioni recenti"
+  },
+  "html_history_saved_sessions": {
+    "message": "Sessioni salvate"
+  },
+  "html_history_import_session": {
+    "message": "Importa sessione"
+  },
+  "html_notice_title": {
+    "message": "Avviso"
+  },
+  "html_notice_important_notice": {
+    "message": "Avviso importante da The Great Tab Killer"
+  },
+  "html_options_title": {
+    "message": "Impostazioni"
+  },
+  "html_options_suspend_title": {
+    "message": "Sospensione automatica delle schede"
+  },
+  "html_options_suspended_title": {
+    "message": "Schede sospese"
+  },
+  "html_options_other_title": {
+    "message": "Altro"
+  },
+  "html_options_suspend_automatically_after": {
+    "message": "Sospendi automaticamente le schede dopo"
+  },
+  "html_options_suspend_never": {
+    "message": "Mai"
+  },
+  "html_options_suspend_seconds": {
+    "message": "secondi"
+  },
+  "html_options_suspend_minute": {
+    "message": "min"
+  },
+  "html_options_suspend_minutes": {
+    "message": "min"
+  },
+  "html_options_suspend_hour": {
+    "message": "ora"
+  },
+  "html_options_suspend_hours": {
+    "message": "ore"
+  },
+  "html_options_suspend_day": {
+    "message": "giorno"
+  },
+  "html_options_suspend_days": {
+    "message": "giorni"
+  },
+  "html_options_suspend_week": {
+    "message": "settimana"
+  },
+  "html_options_suspend_weeks": {
+    "message": "settimane"
+  },
+  "html_options_suspend_no_pinned": {
+    "message": "Non sospendere mai le schede bloccate"
+  },
+  "html_options_suspend_no_forms": {
+    "message": "Non sospendere mai le schede con moduli non salvati"
+  },
+  "html_options_suspend_no_audio": {
+    "message": "Non sospendere mai le schede che riproducono audio"
+  },
+  "html_options_suspend_only_connected": {
+    "message": "Non sospendere mai le schede quando offline"
+  },
+  "html_options_suspend_only_on_battery": {
+    "message": "Non sospendere mai le schede quando connesso a una fonte di alimentazione"
+  },
+  "html_options_suspend_no_active_tabs": {
+    "message": "Non sospendere mai la scheda attiva in ogni finestra"
+  },
+  "html_options_suspend_automatically_unsuspend": {
+    "message": "Riattiva automaticamente la scheda quando viene visualizzata"
+  },
+  "html_options_suspend_discard_after_suspend": {
+    "message": "Applica il risparmio di memoria integrato di Chrome durante la sospensione"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1a": {
+    "message": "Riduce ulteriormente l'utilizzo di memoria di una scheda sospesa, utilizzando"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1b": {
+    "message": "la funzionalità 'scarto schede' integrata in Chrome. Ciò può comportare fino a"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1c": {
+    "message": "un risparmio di memoria del 500% quando si lavora con un gran numero di schede."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2a": {
+    "message": "Tuttavia, causerà un leggero ritardo di rendering quando si seleziona"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2b": {
+    "message": "una scheda sospesa."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3a": {
+    "message": "Per ulteriori informazioni sullo scarto di schede di Chrome, fare riferimento a:"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3b": {
+    "message": ""
+  },
+  "html_options_suspend_theme": {
+    "message": "Tema"
+  },
+  "html_options_suspend_theme_light": {
+    "message": "Chiaro"
+  },
+  "html_options_suspend_theme_dark": {
+    "message": "Scuro"
+  },
+  "html_options_suspend_screen_capturing": {
+    "message": "Acquisizione schermo"
+  },
+  "html_options_suspend_screen_capturing_disabled": {
+    "message": "Disabilitato"
+  },
+  "html_options_suspend_screen_capturing_screen_only": {
+    "message": "Acquisisci solo la parte superiore dello schermo"
+  },
+  "html_options_suspend_screen_capturing_entire_page": {
+    "message": "Acquisisci l'intera pagina"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1a": {
+    "message": "Su una scheda sospesa, l'estensione può mostrare un'anteprima di come appariva la scheda"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1b": {
+    "message": "subito prima di essere sospesa."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2a": {
+    "message": "L'acquisizione schermo è una funzione sperimentale che può causare un uso elevato della CPU"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2b": {
+    "message": "e un leggero aumento dell'utilizzo di memoria."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3a": {
+    "message": "Se noti comportamenti strani (schede lente a sospendersi o Chrome"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3b": {
+    "message": "che si blocca inaspettatamente), prova a disattivare questa funzione."
+  },
+  "html_options_suspend_force_screen_capture": {
+    "message": "Abilita la modalità di acquisizione schermo ad alta qualità"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line1": {
+    "message": "Quando disabilitata, le acquisizioni schermo hanno le seguenti limitazioni per migliorare le prestazioni:"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line2": {
+    "message": "- Acquisizione schermo a bassa qualità"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line4": {
+    "message": "- Non acquisirà lo schermo se la generazione dell'immagine richiede più di 1 minuto"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line5": {
+    "message": "- Altezza massima dell'acquisizione limitata a 5000 px"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line6": {
+    "message": "L'abilitazione della modalità alta qualità può aumentare significativamente il carico della CPU"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line7": {
+    "message": "e l'utilizzo di memoria."
+  },
+  "html_options_whitelist_title": {
+    "message": "Non sospendere mai le schede con URL presenti nel seguente elenco:"
+  },
+  "html_options_whitelist_tooltip_line1": {
+    "message": "Aggiungi l'URL di ogni pagina da inserire nella lista bianca su una nuova riga. Ad esempio:"
+  },
+  "html_options_whitelist_tooltip_line2": {
+    "message": "Per inserire più siti in una riga, puoi specificare una parte dell'URL:"
+  },
+  "html_options_whitelist_tooltip_line3": {
+    "message": "Puoi anche usare espressioni regolari racchiudendo il testo tra barre oblique:"
+  },
+  "html_options_whitelist_test": {
+    "message": "Testa la lista bianca"
+  },
+  "html_options_other_enable_context_menu": {
+    "message": "Aggiungi The Great Tab Killer al menu contestuale (clic destro)"
+  },
+  "html_options_other_enable_context_menu_tooltip_line1": {
+    "message": "Aggiunge i controlli di questa estensione al menu contestuale di una pagina web."
+  },
+  "html_options_other_enable_context_menu_tooltip_line2": {
+    "message": "Dà accesso ad azioni di sospensione avanzate non disponibili"
+  },
+  "html_options_other_enable_context_menu_tooltip_line3": {
+    "message": "altrove nell'estensione."
+  },
+  "html_options_other_enable_sync": {
+    "message": "Sincronizza le impostazioni con il tuo profilo Chrome"
+  },
+  "html_options_other_enable_sync_tooltip_line1a": {
+    "message": "Le impostazioni dell'estensione verranno sincronizzate su tutti i browser Chrome"
+  },
+  "html_options_other_enable_sync_tooltip_line1b": {
+    "message": "connessi con lo stesso profilo."
+  },
+  "html_options_other_enable_sync_tooltip_line2": {
+    "message": "Verranno sincronizzate anche le impostazioni in modalità in incognito."
+  },
+  "html_options_other_enable_sync_warning": {
+    "message": "Attivare questa opzione sovrascriverà le impostazioni su tutti gli altri browser connessi allo stesso profilo Chrome"
+  },
+  "html_options_other_language": {
+    "message": "Lingua dell'interfaccia"
+  },
+  "html_options_other_backup_frequency": {
+    "message": "Backup automatico"
+  },
+  "html_options_other_backup_frequency_tooltip": {
+    "message": "Salvato anche prima degli aggiornamenti."
+  },
+  "html_options_other_backup_never": {
+    "message": "Mai"
+  },
+  "html_options_other_backup_every_minute": {
+    "message": "Ogni minuto"
+  },
+  "html_options_other_backup_hourly": {
+    "message": "Ogni ora"
+  },
+  "html_options_other_backup_daily": {
+    "message": "Ogni giorno"
+  },
+  "html_options_other_backup_weekly": {
+    "message": "Ogni settimana"
+  },
+  "html_options_other_backup_monthly": {
+    "message": "Ogni mese"
+  },
+  "html_options_other_language_system": {
+    "message": "Lingua del sistema"
+  },
+  "html_options_suspend_on_low_memory": {
+    "message": "Sospendi immediatamente quando la memoria di sistema è molto bassa"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line1": {
+    "message": "Questa opzione sovrascriverà la funzionalità di scarto automatico delle schede di Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line2": {
+    "message": "Se attivata, forzerà la sospensione di una scheda invece che il suo scarto da parte di Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line3": {
+    "message": "Normalmente, Chrome scarta le schede solo quando la memoria di sistema è molto bassa."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line4": {
+    "message": "Nota: questo potrebbe causare la sospensione delle schede prima del tempo"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line5": {
+    "message": "specificato nelle opzioni di sospensione automatica."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line6": {
+    "message": "Per ulteriori informazioni sullo scarto di Chrome, fare riferimento a:"
+  },
+  "html_options_suspend_on_low_memory_tooltip_discarding_link": {
+    "message": ""
+  },
+  "html_popup_unsuspend_tab": {
+    "message": "Riattiva questa scheda"
+  },
+  "html_popup_suspend_tab": {
+    "message": "Sospendi questa scheda ora"
+  },
+  "html_popup_dont_suspend_now": {
+    "message": "Non sospendere ora"
+  },
+  "html_popup_never_suspend_domain": {
+    "message": "Non sospendere mai questo dominio"
+  },
+  "html_popup_never_suspend_page": {
+    "message": "Non sospendere mai questo URL"
+  },
+  "html_popup_suspend_other_tabs": {
+    "message": "Sospendi tutte le altre schede"
+  },
+  "html_popup_unsuspend_all_tabs": {
+    "message": "Riattiva tutte le schede"
+  },
+  "html_popup_suspend_selected_tabs": {
+    "message": "Sospendi le schede selezionate"
+  },
+  "html_popup_unsuspend_selected_tabs": {
+    "message": "Riattiva le schede selezionate"
+  },
+  "html_popup_settings": {
+    "message": "Impostazioni"
+  },
+  "html_restoring_title": {
+    "message": "Ripristino finestra"
+  },
+  "html_restoring_heading": {
+    "message": "Ripristino schede"
+  },
+  "html_restoring_detail": {
+    "message": "Attendi mentre ripristino questa finestra..."
+  },
+  "html_recovery_title": {
+    "message": "Recupero"
+  },
+  "html_recovery_ruh_roh": {
+    "message": "Ops!"
+  },
+  "html_recovery_description_line1": {
+    "message": "Sembra che tu stia recuperando da un crash dell'estensione."
+  },
+  "html_recovery_description_line2": {
+    "message": "Le tue schede sospese potrebbero essere andate in crash o essere scomparse."
+  },
+  "html_recovery_restore_tabs_automatically": {
+    "message": "Ripristina le schede automaticamente"
+  },
+  "html_recovery_go_to_session_manager": {
+    "message": "Vai al gestore sessioni"
+  },
+  "html_recovery_important_message": {
+    "message": "L'acquisizione schermo è attualmente attiva. Se l'estensione continua a crashare, si consiglia di disabilitare questa opzione."
+  },
+  "html_recovery_disable_screen_capturing": {
+    "message": "Disabilita acquisizione schermo"
+  },
+  "html_recovery_tabs_to_restore": {
+    "message": "Schede da ripristinare"
+  },
+  "html_shortcuts_title": {
+    "message": "Scorciatoie da tastiera"
+  },
+  "html_shortcuts_keyboard_shortcuts": {
+    "message": "Scorciatoie da tastiera"
+  },
+  "html_shortcuts_context_menu_note": {
+    "message": "Nota: queste azioni sono disponibili anche tramite il menu contestuale (clic destro)."
+  },
+  "html_shortcuts_remap_keys": {
+    "message": "Modifica scorciatoie"
+  },
+  "html_sidebar_general_settings": {
+    "message": "Impostazioni"
+  },
+  "html_sidebar_session_management": {
+    "message": "Gestione sessioni"
+  },
+  "html_sidebar_shortcuts": {
+    "message": "Scorciatoie da tastiera"
+  },
+  "html_sidebar_support": {
+    "message": "Informazioni"
+  },
+  "html_sidebar_changelog": {
+    "message": "Novità"
+  },
+  "html_success_great_success": {
+    "message": "Ottimo risultato!"
+  },
+  "html_success_all_tabs_restored": {
+    "message": "Tutte le tue schede sono state ripristinate."
+  },
+  "html_success_goto_advanced_prefix": {
+    "message": "Per la gestione avanzata delle sessioni, visita la"
+  },
+  "html_success_goto_advanced_suffix": {
+    "message": "pagina"
+  },
+  "html_session_manager": {
+    "message": "gestione sessioni"
+  },
+  "html_suspended_title": {
+    "message": "Scheda sospesa"
+  },
+  "html_suspended_tab_suspended": {
+    "message": "Scheda sospesa"
+  },
+  "html_suspended_tab_reload": {
+    "message": "Ricarica scheda"
+  },
+  "html_suspended_tab_whitelist_prefix": {
+    "message": "Non sospendere mai"
+  },
+  "html_suspended_tab_whitelist_suffix": {
+    "message": "..."
+  },
+  "html_suspended_click_to_reload": {
+    "message": "Aggiorna o clicca per ricaricare"
+  },
+  "html_suspended_toast_not_connected": {
+    "message": "Non sei connesso a Internet"
+  },
+  "html_suspended_toast_reload_disabled": {
+    "message": "Il ricaricamento automatico delle schede è temporaneamente disabilitato."
+  },
+  "html_suspended_donation_question": {
+    "message": "Questa estensione ti fa felice?\nMostra il tuo supporto con una donazione."
+  },
+  "html_permissions_title": {
+    "message": "Autorizzazioni"
+  },
+  "html_permissions_heading": {
+    "message": "Concedimi l'accesso agli URL di file locali"
+  },
+  "html_permissions_info": {
+    "message": "Questa estensione non è autorizzata a sospendere URL che iniziano con \"file\".\nPer modificarlo, attiva \"Consenti accesso agli URL di file\" nelle impostazioni dell'estensione."
+  },
+  "html_permissions_backup": {
+    "message": "Nota: modificare questa opzione causerà la temporanea scomparsa delle schede sospese.\nPer sicurezza, potrebbe essere utile salvare un backup della sessione corrente."
+  },
+  "html_update_title": {
+    "message": "Aggiornamento"
+  },
+  "html_update_heading2": {
+    "message": "sta per migliorare"
+  },
+  "html_update_info": {
+    "message": "Una nuova versione di The Great Tab Killer è pronta per essere installata.\nNota: durante l'aggiornamento le schede sospese scompariranno brevemente."
+  },
+  "html_update_info_withbackup": {
+    "message": "Per sicurezza, potrebbe essere utile salvare un backup della sessione corrente."
+  },
+  "html_update_info_nobackup_prefix": {
+    "message": "Si consiglia vivamente di esportare una copia della sessione corrente da "
+  },
+  "html_update_info_nobackup_suffix": {
+    "message": " prima di continuare con l'aggiornamento."
+  },
+  "html_updated_title": {
+    "message": "Aggiornato"
+  },
+  "html_updating_heading": {
+    "message": "si sta aggiornando"
+  },
+  "html_updating_message": {
+    "message": "Attendi mentre ripristino le tue schede sospese..."
+  },
+  "html_updated_great_suspender_updated": {
+    "message": "è stato aggiornato"
+  },
+  "html_updated_info_line1": {
+    "message": "Un backup automatico delle tue schede è stato effettuato prima dell'aggiornamento."
+  },
+  "html_updated_info_line2_prefix": {
+    "message": "Se hai riscontrato problemi durante l'aggiornamento, puoi recuperare le schede perse dalla "
+  },
+  "html_updated_info_line2_suffix": {
+    "message": "."
+  },
+  "html_updated_detail_header_prefix": {
+    "message": "Novità in "
+  },
+  "html_updated_detail_header_suffix": {
+    "message": "?"
+  },
+  "html_updated_new_features_header": {
+    "message": "Nuove funzionalità:"
+  },
+  "html_updated_bug_fixes_header": {
+    "message": "Correzioni di bug:"
+  },
+  "html_updated_release_notes": {
+    "message": "Visita GitHub per le note di rilascio complete: "
+  },
+  "html_updated_patch_message": {
+    "message": "Ci scusiamo per il disagio. Era necessaria una piccola manutenzione."
+  },
+  "html_welcome_title": {
+    "message": "Benvenuto"
+  },
+  "html_welcome_text_line1": {
+    "message": "Grazie per provare"
+  },
+  "html_welcome_text_line2": {
+    "message": "Faccio funzionare il tuo computer senza problemi sospendendo le schede che non stai usando."
+  },
+  "html_welcome_text_line3": {
+    "message": "Puoi regolare le impostazioni qui sotto."
+  },
+  "html_thanks_title": {
+    "message": "Grazie"
+  },
+  "html_thanks_header": {
+    "message": "Grazie per il supporto!"
+  },
+  "html_thanks_sub_header": {
+    "message": "Che grandi cose ti arrivino oggi."
+  },
+  "js_popup_normal": {
+    "message": "La scheda verrà sospesa automaticamente."
+  },
+  "js_popup_normal_pause": {
+    "message": "Non ora"
+  },
+  "js_popup_special": {
+    "message": "La scheda non può essere sospesa"
+  },
+  "js_popup_suspended": {
+    "message": "Scheda sospesa"
+  },
+  "js_popup_suspended_pause": {
+    "message": "Non sospendere"
+  },
+  "js_popup_whitelisted": {
+    "message": "Sito nella lista bianca."
+  },
+  "js_popup_whitelisted_remove": {
+    "message": "Rimuovi dalla lista bianca"
+  },
+  "js_popup_audible": {
+    "message": "La scheda sta riproducendo audio."
+  },
+  "js_popup_form_input": {
+    "message": "La scheda sta ricevendo input da modulo."
+  },
+  "js_popup_form_input_unpause": {
+    "message": "Riprendi"
+  },
+  "js_popup_pinned": {
+    "message": "La scheda è stata bloccata"
+  },
+  "js_popup_temp_whitelist": {
+    "message": "Sospensione della scheda in pausa."
+  },
+  "js_popup_temp_whitelist_unpause": {
+    "message": "Riprendi"
+  },
+  "js_popup_never": {
+    "message": "Sospensione automatica delle schede disabilitata."
+  },
+  "js_popup_no_connectivity": {
+    "message": "Nessuna connessione di rete"
+  },
+  "js_popup_charging": {
+    "message": "Connesso a una fonte di alimentazione"
+  },
+  "js_popup_blockedFile": {
+    "message": "I file locali non possono essere sospesi."
+  },
+  "js_popup_blockedFile_enable": {
+    "message": "Abilita"
+  },
+  "js_popup_unknown": {
+    "message": "In attesa del caricamento della scheda..."
+  },
+  "js_popup_initialising": {
+    "message": "In attesa dell'inizializzazione dell'estensione..."
+  },
+  "js_popup_error": {
+    "message": "Sospensione automatica non disponibile per questa scheda"
+  },
+  "js_history_delete": {
+    "message": "elimina"
+  },
+  "js_history_export": {
+    "message": "esporta"
+  },
+  "js_history_reload": {
+    "message": "apri e carica"
+  },
+  "js_history_resuspend": {
+    "message": "apri e sospendi"
+  },
+  "js_history_save": {
+    "message": "salva"
+  },
+  "js_history_window": {
+    "message": "Finestra"
+  },
+  "js_history_tab": {
+    "message": "Scheda"
+  },
+  "js_history_plural": {
+    "message": "e"
+  },
+  "js_history_enter_name_for_session": {
+    "message": "Inserisci un nome per questa sessione"
+  },
+  "js_history_confirm_delete": {
+    "message": "Sei sicuro di voler eliminare questa sessione?"
+  },
+  "js_history_confirm_session_overwrite": {
+    "message": "Esiste già una sessione salvata con questo nome. Sovrascrivere la sessione esistente?"
+  },
+  "js_history_import_fail": {
+    "message": "Impossibile caricare il file. Assicurati che sia testo normale e contenga un URL per riga."
+  },
+  "js_suspended_remove_from_whitelist": {
+    "message": "Rimuovi il sito dalla lista bianca"
+  },
+  "js_suspended_hotkey_to_reload": {
+    "message": "Imposta scorciatoie da tastiera"
+  },
+  "js_suspended_low_memory": {
+    "message": "Scheda sospesa a causa della memoria di sistema insufficiente"
+  },
+  "js_options_incognito_warning": {
+    "message": "Sei in modalità in incognito. Alcune funzionalità non saranno disponibili."
+  },
+  "js_options_whitelist_no_matches": {
+    "message": "Nessuna scheda aperta corrisponde alla lista bianca corrente."
+  },
+  "js_options_whitelist_matches_heading": {
+    "message": "Schede aperte nella lista bianca:"
+  },
+  "js_options_whitelist_matches_overflow_prefix": {
+    "message": "e"
+  },
+  "js_options_whitelist_matches_overflow_suffix": {
+    "message": "altri."
+  },
+  "js_permissions_button_export": {
+    "message": "Salva backup"
+  },
+  "js_permissions_button_set": {
+    "message": "Apri impostazioni estensione"
+  },
+  "js_update_confirm": {
+    "message": "Non hai ancora salvato un backup. Aggiornare l'estensione comunque?"
+  },
+  "js_update_button_export": {
+    "message": "Salva backup"
+  },
+  "js_update_button_reload": {
+    "message": "Aggiorna estensione ora"
+  },
+  "js_shortcuts_not_set": {
+    "message": "non impostato"
+  },
+  "js_session_save_point": {
+    "message": "Punto di salvataggio automatico per v"
+  },
+  "html_changelog_rating_title": {
+    "message": "Cosa ne pensi di questo aggiornamento?",
+    "description": "Title for the rating widget in changelog"
+  },
+  "html_changelog_rating_5stars": {
+    "message": "Grazie!",
+    "description": "Message shown when user clicks 5 stars"
+  },
+  "html_changelog_rating_feedback": {
+    "message": "Grazie per il feedback!",
+    "description": "Message shown when user clicks 1-4 stars"
+  }
+}
