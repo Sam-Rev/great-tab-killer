@@ -7,7 +7,6 @@ import {gsIndexedDb} from "./gsIndexedDb.js"
 export var gsFavicon = (function () {
   "use strict";
 
-  // const GOOGLE_S2_URL = 'https://www.google.com/s2/favicons?domain_url=';
   const FALLBACK_CHROME_FAVICON_META = {
     favIconUrl: "chrome://favicon/size/16@2x/fallbackChromeFaviconMeta",
     isDark: true,
@@ -157,22 +156,6 @@ export var gsFavicon = (function () {
       }
     }
 
-    // Else try to fetch from google
-    // if (fallbackToGoogle) {
-    //   const rootUrl = encodeURIComponent(gsUtils.getRootUrl(originalUrl));
-    //   const tabFavIconUrl = GOOGLE_S2_URL + rootUrl;
-    //   //TODO: Handle reject case below
-    //   faviconMeta = await buildFaviconMetaData(tabFavIconUrl, 5000);
-    //   faviconMetaValid = await isFaviconMetaValid(faviconMeta);
-    //   if (faviconMetaValid) {
-    //     gsUtils.log(
-    //       tab.id,
-    //       'Built faviconMeta from google.com/s2 service',
-    //       faviconMeta
-    //     );
-    //     return faviconMeta;
-    //   }
-    // }
 
     // Else return the default chrome favicon
     gsUtils.log(tab.id, "Failed to build faviconMeta. Using default icon");

@@ -72,7 +72,6 @@ export function GsTabQueue(queueId, queueProps) {
       executionProps = executionProps || {};
       let tabDetails = _tabDetailsByTabId[tab.id];
       if (!tabDetails) {
-        // gsUtils.log(tab.id, _queueId, 'Queueing new tab.');
         tabDetails = {
           tab,
           executionProps,
@@ -113,7 +112,6 @@ export function GsTabQueue(queueId, queueProps) {
     function unqueueTab(tab) {
       const tabDetails = _tabDetailsByTabId[tab.id];
       if (tabDetails) {
-        // gsUtils.log(tab.id, _queueId, 'Unqueueing tab.');
         clearTimeout(tabDetails.timeoutTimer);
         removeTabFromQueue(tabDetails);
         rejectTabPromise(tabDetails, 'Queued tab job cancelled externally');

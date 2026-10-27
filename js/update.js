@@ -8,16 +8,10 @@ import {gsUtils} from "./helpers/gsUtils.js";
 (function (global) {
   "use strict";
 
-  function setRestartExtensionClickHandler(warnFirst) {
+  function setRestartExtensionClickHandler() {
     document.getElementById("restartExtensionBtn").onclick = async function (
       e
     ) {
-      // var result = true;
-      // if (warnFirst) {
-      //   result = window.confirm(chrome.i18n.getMessage('js_update_confirm'));
-      // }
-      // if (result) {
-
       const currentSession = await gsSession.buildCurrentSession();
       if (currentSession) {
         var currentVersion = chrome.runtime.getManifest().version;
@@ -27,7 +21,6 @@ import {gsUtils} from "./helpers/gsUtils.js";
         );
       }
       chrome.runtime.reload();
-      // }
     };
   }
 
@@ -36,7 +29,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       const currentSession = await gsSession.buildCurrentSession();
       historyUtils.exportSession(currentSession, function () {
         document.getElementById("exportBackupBtn").style.display = "none";
-        setRestartExtensionClickHandler(false);
+        setRestartExtensionClickHandler();
       });
     };
   }
@@ -45,13 +38,13 @@ import {gsUtils} from "./helpers/gsUtils.js";
     document.getElementById("sessionManagerLink").onclick = function (e) {
       e.preventDefault();
       chrome.tabs.create({ url: chrome.runtime.getURL("html/history.html") });
-      setRestartExtensionClickHandler(false);
+      setRestartExtensionClickHandler();
     };
   }
 
   gsUtils.documentReadyAndLocalisedAsPromsied(document).then(function () {
     setSessionManagerClickHandler();
-    setRestartExtensionClickHandler(true);
+    setRestartExtensionClickHandler();
     setExportBackupClickHandler();
 
     var currentVersion = chrome.runtime.getManifest().version;

@@ -489,20 +489,6 @@ export var gsTabSuspendManager = (function () {
   }
 
   async function requestGeneratePreviewImage(tab) {
-    // Will not implement this for now as it does not actually capture the whole
-    // screen, just the visible area
-    // NOTE: It also requires the <all_urls> manifest permission
-    // if (tab.active) {
-    //   chrome.tabs.captureVisibleTab(
-    //     tab.windowId,
-    //     { format: 'png' },
-    //     dataUrl => {
-    //       handlePreviewImageResponse(tab, dataUrl, chrome.runtime.lastError);
-    //     }
-    //   ); //async. unhandled promise.
-    //   return;
-    // }
-
     const screenCaptureMode = await gsStorage.getOption(gsStorage.SCREEN_CAPTURE);
     const forceScreenCapture = await gsStorage.getOption(
       gsStorage.SCREEN_CAPTURE_FORCE

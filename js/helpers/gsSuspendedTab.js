@@ -97,7 +97,6 @@ export var gsSuspendedTab = (function () {
     // Set scrollPosition (must come after showing page contents)
     const scrollPosition = gsUtils.getSuspendedScrollPosition(suspendedUrl);
     setScrollPosition(tab, scrollPosition, previewMode);
-    // const whitelisted = await gsUtils.checkWhiteList(originalUrl);
   }
 
   function requestUnsuspendTab(tab) {

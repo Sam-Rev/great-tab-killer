@@ -608,7 +608,6 @@ export var tgs = (function () {
     return _tabStateByTabId[tabId] ? _tabStateByTabId[tabId][prop] : undefined;
   }
   function setTabStatePropForTabId(tabId, prop, value) {
-    // gsUtils.log(tabId, `Setting tab state prop: ${prop}:`, value);
     const tabState = _tabStateByTabId[tabId] || {};
     tabState[prop] = value;
     _tabStateByTabId[tabId] = tabState;
@@ -1318,7 +1317,6 @@ export var tgs = (function () {
 
   //change the icon to either active or inactive
   function setIconStatus(status, tabId) {
-    // gsUtils.log(tabId, 'Setting icon status: ' + status);
     var icon = ![gsUtils.STATUS_NORMAL, gsUtils.STATUS_ACTIVE].includes(status)
       ? ICON_SUSPENSION_PAUSED
       : ICON_SUSPENSION_ACTIVE;

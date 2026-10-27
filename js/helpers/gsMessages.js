@@ -135,7 +135,6 @@ export var gsMessages = {
       gsUtils.log(tabId, 'send message to tab', message);
       chrome.tabs.sendMessage(tabId, message, { frameId: 0 }, responseHandler);
     } catch (e) {
-      // gsUtils.error(tabId, e);
       chrome.tabs.sendMessage(tabId, message, responseHandler);
     }
   },
