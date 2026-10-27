@@ -12,3 +12,7 @@ The Great Tab Killer is derived from the GPL-2.0 project The Great Suspender and
 | Fontello icon font | UNVERIFIED | UNVERIFIED | `font/fontello.woff` and `font/fontello.woff2`; source configuration and license have not been identified. |
 
 The bundled dependency versions and file hashes must be pinned by the supply-chain inventory before release. The `db.js` and Fontello license evidence remains incomplete and must be resolved before the first release.
+
+## Owner-provided project assets
+
+- `assets/source/Tab_Killer_logo.png` (original) and generated files in `images/` are owner-provided project artwork. License terms are to be confirmed by the owner.
