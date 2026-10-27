@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildEstimate, summarizeProcesses, processTotal, median, MIB, formatBytes, collectPageSignals } from '../js/monitor-lab.js';
+import { buildEstimate, summarizeProcesses, processTotal, median, MIB, formatBytes, collectPageSignals } from '../../js/monitor-lab.js';
 
 const frame = (frameId = 0, overrides = {}) => ({ frameId, result: {
   href: 'https://example.com/', origin: 'https://example.com', sampledAt: 1000,
