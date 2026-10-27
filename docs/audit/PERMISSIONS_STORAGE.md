@@ -6,20 +6,29 @@ Date: 2026-10-27. Static source map for the current manifest and source tree. A 
 
 | Manifest entry | Source call sites / purpose |
 |---|---|
-| `tabs` | `chrome.tabs.*` broadly used for tab querying, navigation, state, suspend/restore, session backup and recovery (`js/tgs.js`, `js/helpers/gsChrome.js`, `gsSession.js`, `gsBackup.js`, `gsMemorySampler.js`, UI modules). |
-| `storage` | `chrome.storage.local/sync/session` (`gsStorage.js`, `serviceWorker.js`, `gsMemorySampler.js`, `tgs.js`). |
-| `history` | `chrome.history.onVisited` and `deleteUrl` listener in `js/tgs.js` to remove suspended entries from browser history. |
-| `unlimitedStorage` | No direct method call; allows larger extension-origin storage (IndexedDB/previews). Candidate to review based on measured data use. |
-| `contextMenus` | Context menu create/update/remove/click handlers in `js/tgs.js` (search sites around `chrome.contextMenus`). |
-| `cookies` | `js/helpers/gsChrome.js:10,26`; legacy migration in `js/helpers/gsIndexedDb.js:563-576` removes `gsScrollPos*` cookies. |
-| `alarms` | `js/tgs.js` per-tab suspension and recurring metrics/backup/sampler alarms; `gsBackup.js:79-103`; `gsMemorySampler.js:379-385`. |
-| `favicon` | `js/helpers/gsFavicon.js` reads `chrome://favicon` or `_favicon` resources for tab icons. |
-| `scripting` | `js/helpers/gsMessages.js:149,167`, `gsTabCheckManager.js:512,527`, `gsMemorySampler.js:154` for injection into tabs/all frames. |
-| `offscreen` | `js/helpers/gsBackup.js:57-72` creates/closes an offscreen page to download a backup Blob. |
-| `system.cpu` | `js/helpers/gsMemorySampler.js` reads CPU info for resource estimates (verify exact API sites with `chrome.system.cpu`). |
-| `system.memory` | `js/helpers/gsMemorySampler.js` reads system memory estimate input (`chrome.system.memory`). |
-| Optional `processes` | Debug/monitor process APIs in `js/helpers/debug.js:128+` and `js/monitor.js`; optional permission must be distinguished from required manifest permissions. |
-| Optional `management` | `js/monitor.js` lists/toggles installed extensions; `chrome.management.setEnabled` is present. |
+| Required `tabs` | `chrome.tabs.*` queries, navigation, state, suspend/restore, history snapshots, backup and sampling: `js/tgs.js`, `js/helpers/gsChrome.js`, `js/helpers/gsSession.js`, `js/helpers/gsBackup.js`, `js/helpers/gsMemorySampler.js`, and UI modules. Many calls need this permission to read tab URL/title or manipulate tabs. |
+| Required `storage` | `chrome.storage.local/sync/session`: `js/helpers/gsStorage.js`, `js/serviceWorker.js`, `js/helpers/gsMemorySampler.js`, `js/tgs.js`; settings, migration/version markers, monitor cache, and startup state. |
+| Required `history` | `js/tgs.js:1888-1892` registers `chrome.history.onVisited` and calls `chrome.history.deleteUrl` to remove suspended entries from browser history. |
+| Required `unlimitedStorage` | No direct API call; permits larger extension-origin storage quotas used by IndexedDB (`js/helpers/gsIndexedDb.js`), particularly preview image data and session stores. Review against measured storage needs. |
+| Required `contextMenus` | `js/tgs.js:1421-1514` creates/removes suspension context-menu items and handles clicks at `1514+`. |
+| Required `cookies` | `js/helpers/gsChrome.js:8-28` wraps `chrome.cookies.getAll/remove`; called only by the inherited `gsScrollPos*` migration at `js/helpers/gsIndexedDb.js:561-577`. |
+| Required `alarms` | Per-tab suspension deadlines and alarm handlers in `js/tgs.js:580,1898-1915`; backup schedule in `js/helpers/gsBackup.js:79-103`; sampler schedule in `js/helpers/gsMemorySampler.js:379-385`. |
+| Required `favicon` | `js/helpers/gsFavicon.js:100-104,183` builds `chrome://favicon`/`_favicon` URLs to obtain tab icons; monitor views also use `_favicon` (`js/monitor.js:354`, `js/monitor-lab.js:315`). |
+| Required `scripting` | `js/helpers/gsMessages.js:143-174` injects preview libraries/code; `js/helpers/gsTabCheckManager.js:511-531` injects tab checks; `js/helpers/gsMemorySampler.js:154` injects sampler code. |
+| Required `offscreen` | `js/helpers/gsBackup.js:54-72` creates/checks/closes an offscreen document to turn a Blob into a downloaded text file. |
+| Required `system.cpu` | `js/monitor.js:296-298` reads CPU samples for monitor estimates. |
+| Required `system.memory` | `js/monitor.js:281` reads system memory for monitor estimates. |
+| Optional `processes` | `js/monitor.js:66-109,852,1510-1515` reads process memory and subscribes to process updates when the user grants access; `js/helpers/debug.js:128` also has a process-updated diagnostic listener. |
+| Optional `management` | `js/monitor.js:1128,1290-1300,1374-1402` requests permission, enumerates extensions with `getAll`, and toggles them with `setEnabled`. |
+
+## Host access and content-script match patterns
+
+| Manifest entry | Call sites / purpose |
+|---|---|
+| `host_permissions: http://*/*` | `js/contentscript.js` is injected at `document_start`; `js/helpers/gsTabCheckManager.js` and `gsMessages.js` inspect/check pages; `js/helpers/gsMemorySampler.js:154` injects the optional monitor sampler. Tab suspension and restore operate on these URLs through `js/tgs.js` and `js/helpers/gsTabSuspendManager.js`. |
+| `host_permissions: https://*/*` | Same content-script, tab-check, suspension/restore, and sampler call paths as HTTP pages. |
+| `host_permissions: file://*/*` | `js/contentscript.js` match, with file-scheme handling in `js/helpers/gsUtils.js:172,492`, `js/helpers/gsSession.js:36,456`, `js/helpers/gsTabCheckManager.js:298`, and suspension/restore paths. The user must enable the browser's “Allow access to file URLs” setting; no file-page runtime test was run. |
+| `content_scripts.matches` (`http://*/*`, `https://*/*`, `file://*/*`) | All three patterns load `js/contentscript.js` at `document_start` per `manifest.json:14-25`. These are distinct from `host_permissions` and overlap the pages the extension handles. |
 
 Manifest host access and content script matches cover `http://*/*`, `https://*/*`, and `file://*/*`; `js/contentscript.js` is declared at `document_start` across those pages. Broad HTTP/HTTPS access supports automatic tab inspection, form/scroll/battery/online state, and the monitor's all-tab sampler. `file://` access appears intended to let the same suspension/content checks include local documents, but that behavior was not browser-tested and Chrome requires the user to enable file access. The manifest also exposes suspended resources to `<all_urls>` in `web_accessible_resources`; the required consumer is unclear from static review. The source has no on-demand `activeTab`-only design. Narrowing access could break automatic checks and belongs at Gate B before any manifest change.
 
