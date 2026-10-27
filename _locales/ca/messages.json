@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importar sessió"
   },
-  "html_notice_title": {
-    "message": "Avís"
-  },
-  "html_notice_important_notice": {
-    "message": "Avís important de The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Configuració"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Mai"
-  },
-  "html_options_suspend_seconds": {
-    "message": "segons"
   },
   "html_options_suspend_minute": {
     "message": "minut"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Suspendre aquesta pestanya ara"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "No suspendre de moment"
-  },
   "html_popup_never_suspend_domain": {
     "message": "No suspendre mai aquest domini"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Pestanya suspesa"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Pestanya suspesa"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Recarregar pestanya"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "No suspendre mai"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Actualitza o fes clic per recarregar"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "La recàrrega automàtica de pestanyes està desactivada temporalment."
-  },
-  "html_suspended_donation_question": {
-    "message": "T'agrada aquesta extensió?\nMostra el teu suport fent una donació."
   },
   "html_permissions_title": {
     "message": "Permisos"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": ""
   },
-  "html_updated_title": {
-    "message": "Actualitzat"
-  },
-  "html_updating_heading": {
-    "message": "s'està actualitzant"
-  },
-  "html_updating_message": {
-    "message": "Si us plau, espereu mentre restauro les vostres pestanyes suspeses..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "s'ha actualitzat"
-  },
-  "html_updated_info_line1": {
-    "message": "S'ha fet una còpia de seguretat automàtica de les vostres pestanyes abans de l'actualització."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Si heu tingut algun problema, podeu recuperar les pestanyes des de la"
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "pàgina."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Què hi ha de nou a "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Noves funcions:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Correcció d'errors:"
-  },
-  "html_updated_release_notes": {
-    "message": "Visiteu GitHub per a les notes de la versió completes: "
-  },
-  "html_updated_patch_message": {
-    "message": "Perdonat per les molèsties. Només he hagut de fer un petit manteniment."
-  },
-  "html_welcome_title": {
-    "message": "Benvingut"
-  },
   "html_welcome_text_line1": {
     "message": "Gràcies per provar"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Pots ajustar la configuració a continuació."
-  },
-  "html_thanks_title": {
-    "message": "Gràcies"
-  },
-  "html_thanks_header": {
-    "message": "Gràcies pel vostre suport!"
-  },
-  "html_thanks_sub_header": {
-    "message": ""
   },
   "js_popup_normal": {
     "message": "La pestanya se suspendrà automàticament."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Pestanya suspesa"
-  },
-  "js_popup_suspended_pause": {
-    "message": "No suspendre"
   },
   "js_popup_whitelisted": {
     "message": "Lloc a la llista blanca."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Error en carregar el fitxer."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Treure lloc de la llista blanca"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Configurar dreceres de teclat"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Obrir la configuració de l'extensió"
-  },
-  "js_update_confirm": {
-    "message": "Encara no has desat una còpia de seguretat. Voleu actualitzar l'extensió de totes maneres?"
   },
   "js_update_button_export": {
     "message": "Desar còpia de seguretat"

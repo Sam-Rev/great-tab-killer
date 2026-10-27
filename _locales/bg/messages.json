@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Импортиране на сесия"
   },
-  "html_notice_title": {
-    "message": "Известие"
-  },
-  "html_notice_important_notice": {
-    "message": "Важно известие от The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Настройки"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Никога"
-  },
-  "html_options_suspend_seconds": {
-    "message": "секунди"
   },
   "html_options_suspend_minute": {
     "message": "мин"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Спиране на този раздел сега"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Не спирай сега"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Никога не спирай този домейн"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Спрян раздел"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Разделът е спрян"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Презареждане на раздела"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Никога не спирай"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Обновяване или щракнете за презареждане"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Автоматичното презареждане на раздела е временно изключено."
-  },
-  "html_suspended_donation_question": {
-    "message": "Радва ли ви това разширение?\nПокажете подкрепата си с дарение."
   },
   "html_permissions_title": {
     "message": "Разрешения"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " преди да продължите с актуализацията."
   },
-  "html_updated_title": {
-    "message": "Актуализирано"
-  },
-  "html_updating_heading": {
-    "message": "актуализира се"
-  },
-  "html_updating_message": {
-    "message": "Изчакайте, докато възстановявам спрените раздели..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "беше актуализирано"
-  },
-  "html_updated_info_line1": {
-    "message": "Автоматично резервно копие на разделите ви беше направено преди актуализацията."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Ако сте срещнали проблеми при актуализацията, можете да възстановите изгубените раздели от "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " страницата."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Какво е новото в "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Нови функции:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Поправени грешки:"
-  },
-  "html_updated_release_notes": {
-    "message": "Посетете GitHub за пълните бележки на изданието: "
-  },
-  "html_updated_patch_message": {
-    "message": "Съжаляваме за безпокойството. Трябваше само да извършим малка поддръжка."
-  },
-  "html_welcome_title": {
-    "message": "Добре дошли"
-  },
   "html_welcome_text_line1": {
     "message": "Благодарим, че изпробвате"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Можете да настроите параметрите по-долу."
-  },
-  "html_thanks_title": {
-    "message": "Благодарности"
-  },
-  "html_thanks_header": {
-    "message": "Благодарим за подкрепата!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Нека добри неща ви сполетят днес."
   },
   "js_popup_normal": {
     "message": "Разделът ще бъде спрян автоматично."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Разделът е спрян"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Не спирай"
   },
   "js_popup_whitelisted": {
     "message": "Сайтът е в белия списък."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Неуспешно зареждане на файла. Убедете се, че файлът е обикновен текст с един URL на ред."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Премахване на сайта от белия списък"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Задаване на клавишни комбинации"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Отваряне на настройките на разширението"
-  },
-  "js_update_confirm": {
-    "message": "Все още не сте запазили резервно копие. Актуализирате ли разширението въпреки това?"
   },
   "js_update_button_export": {
     "message": "Запазване на резервно копие"

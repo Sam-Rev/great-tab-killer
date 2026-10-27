@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Munkamenet importálása"
   },
-  "html_notice_title": {
-    "message": "Értesítés"
-  },
-  "html_notice_important_notice": {
-    "message": "Fontos értesítés a The Great Tab Killertől"
-  },
   "html_options_title": {
     "message": "Beállítások"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Soha"
-  },
-  "html_options_suspend_seconds": {
-    "message": "másodperc"
   },
   "html_options_suspend_minute": {
     "message": "perc"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Ezen lap felfüggesztése most"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Most ne függessze fel"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Soha ne függessze fel ezt a domént"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Felfüggesztett lap"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Lap felfüggesztve"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Lap újratöltése"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Soha ne függessze fel"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Frissítés vagy kattintás az újratöltéshez"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Az automatikus lapújratöltés ideiglenesen le van tiltva."
-  },
-  "html_suspended_donation_question": {
-    "message": "Boldoggá teszi Önt ez a bővítmény?\nMutassa ki támogatását adománnyal."
   },
   "html_permissions_title": {
     "message": "Engedélyek"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " a frissítés folytatása előtt."
   },
-  "html_updated_title": {
-    "message": "Frissítve"
-  },
-  "html_updating_heading": {
-    "message": "frissítés folyamatban"
-  },
-  "html_updating_message": {
-    "message": "Kérem várjon, amíg visszaállítom a felfüggesztett lapokat..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "frissítve lett"
-  },
-  "html_updated_info_line1": {
-    "message": "A lapokról automatikus biztonsági mentés készült a frissítés előtt."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Ha problémákat tapasztalt a frissítés során, az elveszett lapokat visszaállíthatja innen: "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " oldal."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Mi újság a következőben: "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Új funkciók:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Hibajavítások:"
-  },
-  "html_updated_release_notes": {
-    "message": "Teljes kiadási megjegyzésekért látogassa meg a GitHubot: "
-  },
-  "html_updated_patch_message": {
-    "message": "Elnézést a zavarásért. Csak egy kis karbantartást kellett elvégezni."
-  },
-  "html_welcome_title": {
-    "message": "Üdvözöljük"
-  },
   "html_welcome_text_line1": {
     "message": "Köszönjük, hogy kipróbálja"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Az alábbiakban finomhangolhatja a beállításokat."
-  },
-  "html_thanks_title": {
-    "message": "Köszönet"
-  },
-  "html_thanks_header": {
-    "message": "Köszönjük a támogatást!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Legyen ma sok jó dolog az Ön útjában."
   },
   "js_popup_normal": {
     "message": "Lap automatikusan fel lesz függesztve."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Lap felfüggesztve"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Ne függessze fel"
   },
   "js_popup_whitelisted": {
     "message": "Oldal engedélyezési listán van."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "A fájl betöltése sikertelen. Győződjön meg, hogy a fájl egyszerű szöveges és soronként egy URL-t tartalmaz."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Oldal eltávolítása az engedélyezési listáról"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Billentyűparancsok beállítása"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Bővítménybeállítások megnyitása"
-  },
-  "js_update_confirm": {
-    "message": "Még nem mentett biztonsági másolatot. Mégis frissíti a bővítményt?"
   },
   "js_update_button_export": {
     "message": "Biztonsági mentés mentése"

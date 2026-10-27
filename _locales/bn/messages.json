@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "সেশন ইম্পোর্ট করুন"
   },
-  "html_notice_title": {
-    "message": "বিজ্ঞপ্তি"
-  },
-  "html_notice_important_notice": {
-    "message": "The Great Tab Killer থেকে গুরুত্বপূর্ণ বিজ্ঞপ্তি"
-  },
   "html_options_title": {
     "message": "সেটিংস"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "কখনই নয়"
-  },
-  "html_options_suspend_seconds": {
-    "message": "সেকেন্ড"
   },
   "html_options_suspend_minute": {
     "message": "মিনিট"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "এখনই এই ট্যাব স্থগিত করুন"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "আপাতত স্থগিত করবেন না"
-  },
   "html_popup_never_suspend_domain": {
     "message": "এই ডোমেইন কখনই স্থগিত করবেন না"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "স্থগিত ট্যাব"
   },
-  "html_suspended_tab_suspended": {
-    "message": "ট্যাব স্থগিত করা হয়েছে"
-  },
-  "html_suspended_tab_reload": {
-    "message": "ট্যাব রিলোড করুন"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "কখনই স্থগিত করবেন না"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "রিফ্রেশ করুন বা রিলোড করতে ক্লিক করুন"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "স্বয়ংক্রিয় ট্যাব রিলোডিং সাময়িকভাবে নিষ্ক্রিয়।"
-  },
-  "html_suspended_donation_question": {
-    "message": "এই এক্সটেনশনটি কি আপনার ভালো লেগেছে?\nডোনেট করে সহায়তা করুন।"
   },
   "html_permissions_title": {
     "message": "অনুমতিসমূহ"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": ""
   },
-  "html_updated_title": {
-    "message": "আপডেট করা হয়েছে"
-  },
-  "html_updating_heading": {
-    "message": "আপডেট হচ্ছে"
-  },
-  "html_updating_message": {
-    "message": "দয়া করে অপেক্ষা করুন ট্যাবগুলি পুনরুদ্ধার করা হচ্ছে..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "আপডেট করা হয়েছে"
-  },
-  "html_updated_info_line1": {
-    "message": "আপডেটের আগে একটি স্বয়ংক্রিয় ব্যাকআপ নেওয়া হয়েছে।"
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "কোনো সমস্যা হলে হারানো ট্যাবগুলো পেতে পারেন"
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "পেজে।"
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "নতুন কী আছে "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "-এ?"
-  },
-  "html_updated_new_features_header": {
-    "message": "নতুন ফিচার:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "বাগ ফিক্স:"
-  },
-  "html_updated_release_notes": {
-    "message": "পুরো নোটের জন্য GitHub ভিজিট করুন: "
-  },
-  "html_updated_patch_message": {
-    "message": "সামান্য রক্ষণাবেজের কাজের জন্য দুঃখিত।"
-  },
-  "html_welcome_title": {
-    "message": "স্বাগতম"
-  },
   "html_welcome_text_line1": {
     "message": "ব্যবহারের জন্য ধন্যবাদ"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "আপনি নিচের সেটিংস পরিবর্তন করতে পারেন।"
-  },
-  "html_thanks_title": {
-    "message": "ধন্যবাদ"
-  },
-  "html_thanks_header": {
-    "message": "সহায়তার জন্য ধন্যবাদ!"
-  },
-  "html_thanks_sub_header": {
-    "message": ""
   },
   "js_popup_normal": {
     "message": "ট্যাব স্বয়ংক্রিয়ভাবে স্থগিত হবে।"
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "ট্যাব স্থগিত"
-  },
-  "js_popup_suspended_pause": {
-    "message": "স্থগিত করবেন না"
   },
   "js_popup_whitelisted": {
     "message": "সাইট হোয়াইটলিস্ট করা হয়েছে।"
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "ফাইল আপলোড ব্যর্থ হয়েছে।"
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "হোয়াইটলিস্ট থেকে সাইট সরান"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "কীবোর্ড শর্টকাট সেট করুন"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "এক্সটেনশন সেটিংস খুলুন"
-  },
-  "js_update_confirm": {
-    "message": "আপনি কি আপডেট করতে চান?"
   },
   "js_update_button_export": {
     "message": "ব্যাকআপ সংরক্ষণ করুন"

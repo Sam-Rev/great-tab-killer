@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importer une session"
   },
-  "html_notice_title": {
-    "message": "Avis"
-  },
-  "html_notice_important_notice": {
-    "message": "Avis important de The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Paramètres"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Jamais"
-  },
-  "html_options_suspend_seconds": {
-    "message": "secondes"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Suspendre cet onglet maintenant"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Ne pas suspendre maintenant"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Ne jamais suspendre ce domaine"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Onglet suspendu"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Onglet suspendu"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Recharger l'onglet"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Ne jamais suspendre"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Actualiser ou cliquer pour recharger"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Le rechargement automatique des onglets est temporairement désactivé."
-  },
-  "html_suspended_donation_question": {
-    "message": "Cette extension vous rend-elle heureux ?\nMontrez votre soutien en faisant un don."
   },
   "html_permissions_title": {
     "message": "Autorisations"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " avant de continuer la mise à jour."
   },
-  "html_updated_title": {
-    "message": "Mis à jour"
-  },
-  "html_updating_heading": {
-    "message": "est en cours de mise à jour"
-  },
-  "html_updating_message": {
-    "message": "Veuillez patienter pendant la restauration de vos onglets suspendus..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "a été mis à jour"
-  },
-  "html_updated_info_line1": {
-    "message": "Une sauvegarde automatique de vos onglets a été effectuée avant la mise à jour."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Si vous avez rencontré des problèmes lors de la mise à jour, vous pouvez récupérer les onglets perdus depuis la page "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Quoi de neuf dans "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nouvelles fonctionnalités :"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Corrections de bugs :"
-  },
-  "html_updated_release_notes": {
-    "message": "Consultez GitHub pour les notes de version complètes : "
-  },
-  "html_updated_patch_message": {
-    "message": "Désolé pour le dérangement. J'avais juste besoin d'effectuer une petite maintenance."
-  },
-  "html_welcome_title": {
-    "message": "Bienvenue"
-  },
   "html_welcome_text_line1": {
     "message": "Merci d'essayer"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Vous pouvez affiner les paramètres ci-dessous."
-  },
-  "html_thanks_title": {
-    "message": "Merci"
-  },
-  "html_thanks_header": {
-    "message": "Merci pour votre soutien !"
-  },
-  "html_thanks_sub_header": {
-    "message": "Que de belles choses vous arrivent aujourd'hui."
   },
   "js_popup_normal": {
     "message": "L'onglet sera suspendu automatiquement."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Onglet suspendu"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Ne pas suspendre"
   },
   "js_popup_whitelisted": {
     "message": "Site en liste blanche."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Échec du chargement du fichier. Assurez-vous que le fichier est en texte brut et contient une seule URL par ligne."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Retirer le site de la liste blanche"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Définir les raccourcis clavier"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "Ouvrir les paramètres de l'extension"
   },
-  "js_update_confirm": {
-    "message": "Vous n'avez pas encore enregistré de sauvegarde. Mettre à jour l'extension quand même ?"
-  },
   "js_update_button_export": {
     "message": "Enregistrer la sauvegarde"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "Point de sauvegarde automatique pour v"
-  },
-  "html_changelog_rating_title": {
-    "message": "Que pensez-vous de cette mise à jour ?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Merci !",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Merci pour vos retours !",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

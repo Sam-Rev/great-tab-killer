@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "นำเข้าเซสชัน"
   },
-  "html_notice_title": {
-    "message": "ประกาศ"
-  },
-  "html_notice_important_notice": {
-    "message": "ประกาศสำคัญจาก The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "การตั้งค่า"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "ไม่เคย"
-  },
-  "html_options_suspend_seconds": {
-    "message": "วินาที"
   },
   "html_options_suspend_minute": {
     "message": "นาที"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "หยุดแท็บนี้ตอนนี้"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "ยังไม่หยุด"
-  },
   "html_popup_never_suspend_domain": {
     "message": "ไม่หยุดโดเมนนี้เลย"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "แท็บที่หยุด"
   },
-  "html_suspended_tab_suspended": {
-    "message": "แท็บถูกหยุดแล้ว"
-  },
-  "html_suspended_tab_reload": {
-    "message": "โหลดแท็บใหม่"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "ไม่หยุดเลย"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "รีเฟรชหรือคลิกเพื่อโหลดใหม่"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "การโหลดแท็บอัตโนมัติถูกปิดใช้งานชั่วคราว"
-  },
-  "html_suspended_donation_question": {
-    "message": "ส่วนขยายนี้ทำให้คุณมีความสุขไหม?\nแสดงการสนับสนุนด้วยการบริจาค"
   },
   "html_permissions_title": {
     "message": "การอนุญาต"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " ก่อนดำเนินการอัปเดต"
   },
-  "html_updated_title": {
-    "message": "อัปเดตแล้ว"
-  },
-  "html_updating_heading": {
-    "message": "กำลังอัปเดต"
-  },
-  "html_updating_message": {
-    "message": "กรุณารอสักครู่ขณะกู้คืนแท็บที่หยุด..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "ได้รับการอัปเดตแล้ว"
-  },
-  "html_updated_info_line1": {
-    "message": "สำเนาสำรองอัตโนมัติของแท็บคุณถูกสร้างก่อนการอัปเดต"
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "หากพบปัญหาระหว่างการอัปเดต คุณสามารถกู้คืนแท็บที่หายจาก "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " หน้า"
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "มีอะไรใหม่ใน "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "ฟีเจอร์ใหม่:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "การแก้ไขบัก:"
-  },
-  "html_updated_release_notes": {
-    "message": "เยี่ยมชม GitHub สำหรับบันทึกการเผยแพร่ฉบับเต็ม: "
-  },
-  "html_updated_patch_message": {
-    "message": "ขออภัยในความไม่สะดวก ฉันแค่ต้องทำการบำรุงรักษาเล็กน้อย"
-  },
-  "html_welcome_title": {
-    "message": "ยินดีต้อนรับ"
-  },
   "html_welcome_text_line1": {
     "message": "ขอบคุณที่ลอง"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "คุณสามารถปรับแต่งการตั้งค่าด้านล่าง"
-  },
-  "html_thanks_title": {
-    "message": "ขอบคุณ"
-  },
-  "html_thanks_header": {
-    "message": "ขอบคุณสำหรับการสนับสนุน!"
-  },
-  "html_thanks_sub_header": {
-    "message": "ขอให้วันนี้มีแต่สิ่งดีๆ"
   },
   "js_popup_normal": {
     "message": "แท็บจะถูกหยุดอัตโนมัติ"
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "แท็บถูกหยุดแล้ว"
-  },
-  "js_popup_suspended_pause": {
-    "message": "ไม่หยุด"
   },
   "js_popup_whitelisted": {
     "message": "ไซต์อยู่ในรายการอนุญาต"
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "โหลดไฟล์ไม่สำเร็จ ตรวจสอบให้แน่ใจว่าไฟล์เป็นข้อความธรรมดาที่มี URL หนึ่งรายการต่อบรรทัด"
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "ลบไซต์ออกจากรายการอนุญาต"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "ตั้งค่าแป้นพิมพ์ลัด"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "เปิดการตั้งค่าส่วนขยาย"
-  },
-  "js_update_confirm": {
-    "message": "คุณยังไม่ได้บันทึกสำเนาสำรอง อัปเดตส่วนขยายต่อไปหรือไม่?"
   },
   "js_update_button_export": {
     "message": "บันทึกสำเนาสำรอง"

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Увези сесију"
   },
-  "html_notice_title": {
-    "message": "Обавештење"
-  },
-  "html_notice_important_notice": {
-    "message": "Важно обавештење од The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Подешавања"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Никад"
-  },
-  "html_options_suspend_seconds": {
-    "message": "секунди"
   },
   "html_options_suspend_minute": {
     "message": "мин"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Суспендуј ову картицу сада"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Не сада"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Никада не суспендуј овај домен"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Суспендована картица"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Картица суспендована"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Поново учитај картицу"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Никада не суспендуј"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Освежи или кликни за поновно учитавање"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Аутоматско учитавање картица је привремено онемогућено."
-  },
-  "html_suspended_donation_question": {
-    "message": "Чини ли те овај додатак срећним?\nПокажи своју подршку донацијом."
   },
   "html_permissions_title": {
     "message": "Дозволе"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " пре него наставиш са ажурирањем."
   },
-  "html_updated_title": {
-    "message": "Ажурирано"
-  },
-  "html_updating_heading": {
-    "message": "ажурира се"
-  },
-  "html_updating_message": {
-    "message": "Сачекај, враћам суспендоване картице..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "је ажуриран"
-  },
-  "html_updated_info_line1": {
-    "message": "Аутоматска резервна копија картица је направљена пре ажурирања."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Ако сте наишли на проблеме, изгубљене картице можете вратити са "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " странице."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Шта је ново у "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Нове функције:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Исправке грешака:"
-  },
-  "html_updated_release_notes": {
-    "message": "Посетите GitHub за потпуне напомене уз издање: "
-  },
-  "html_updated_patch_message": {
-    "message": "Извините за сметњу. Требало је само обавити мало одржавања."
-  },
-  "html_welcome_title": {
-    "message": "Добродошли"
-  },
   "html_welcome_text_line1": {
     "message": "Хвала на испробавању"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Можеш подесити параметре испод."
-  },
-  "html_thanks_title": {
-    "message": "Захвалност"
-  },
-  "html_thanks_header": {
-    "message": "Хвала на подршци!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Нека вас данас прате добре ствари."
   },
   "js_popup_normal": {
     "message": "Картица ће бити аутоматски суспендована."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Картица суспендована"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Не суспендуј"
   },
   "js_popup_whitelisted": {
     "message": "Сајт је на белој листи."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Учитавање датотеке није успело. Проверите да ли је датотека обичан текст са једним URL-ом по реду."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Уклони сајт са беле листе"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Постави пречице на тастатури"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Отвори подешавања додатка"
-  },
-  "js_update_confirm": {
-    "message": "Нисте сачували резервну копију. Свеједно ажурирати додатак?"
   },
   "js_update_button_export": {
     "message": "Сачувај резервну копију"

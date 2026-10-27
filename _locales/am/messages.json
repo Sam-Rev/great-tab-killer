@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "ስራዎችን አስገባ"
   },
-  "html_notice_title": {
-    "message": "ማሳሰቢያ"
-  },
-  "html_notice_important_notice": {
-    "message": "ጠቃሚ ማሳሰቢያ ከ The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "ቅንብሮች"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "በፍጹም"
-  },
-  "html_options_suspend_seconds": {
-    "message": "ሰከንድ"
   },
   "html_options_suspend_minute": {
     "message": "ደቂቃ"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "አሁንኑ አቁም"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "ለአሁኑ አታቁም"
-  },
   "html_popup_never_suspend_domain": {
     "message": "ይህንን ዌብሳይት በፍጹም አታቁም"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "የቆመ ታብ"
   },
-  "html_suspended_tab_suspended": {
-    "message": "ታብ ቆሟል"
-  },
-  "html_suspended_tab_reload": {
-    "message": "ታቡን እንደገና ክፈት"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "በፍጹም አታቁም"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "እንደገና ለመክፈት ተጫን"
   },
@@ -477,9 +453,6 @@
     "message": "ኢንተርኔት የለም"
   },
   "html_suspended_toast_reload_disabled": {
-    "message": ""
-  },
-  "html_suspended_donation_question": {
     "message": ""
   },
   "html_permissions_title": {
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": ""
   },
-  "html_updated_title": {
-    "message": "ተሻሽሏል"
-  },
-  "html_updating_heading": {
-    "message": "በማዘመን ላይ"
-  },
-  "html_updating_message": {
-    "message": "እባክህ ታቦችህ እስኪመለሱ ድረስ ጠብቅ..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "ታድሷል"
-  },
-  "html_updated_info_line1": {
-    "message": ""
-  },
-  "html_updated_info_line2_prefix": {
-    "message": ""
-  },
-  "html_updated_info_line2_suffix": {
-    "message": ""
-  },
-  "html_updated_detail_header_prefix": {
-    "message": ""
-  },
-  "html_updated_detail_header_suffix": {
-    "message": ""
-  },
-  "html_updated_new_features_header": {
-    "message": "አዳዲስ ነገሮች፦"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "የተስተካከሉ ስህተቶች፦"
-  },
-  "html_updated_release_notes": {
-    "message": ""
-  },
-  "html_updated_patch_message": {
-    "message": "ስለተፈጠረው ችግር ይቅርታ እንጠይቃለን።"
-  },
-  "html_welcome_title": {
-    "message": "እንኳን ደህና መጡ"
-  },
   "html_welcome_text_line1": {
     "message": "ስለምትጠቀሙ እናመሰግናለን"
   },
@@ -561,15 +492,6 @@
     "message": ""
   },
   "html_welcome_text_line3": {
-    "message": ""
-  },
-  "html_thanks_title": {
-    "message": "ምስጋና"
-  },
-  "html_thanks_header": {
-    "message": "ለድጋፍዎ እናመሰግናለን!"
-  },
-  "html_thanks_sub_header": {
     "message": ""
   },
   "js_popup_normal": {
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "ታብ ቆሟል"
-  },
-  "js_popup_suspended_pause": {
-    "message": "አታቁም"
   },
   "js_popup_whitelisted": {
     "message": "ታቡ ተፈቅዶለታል።"
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "ፋይሉን ማስገባት አልተቻለም።"
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": ""
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "አቋራጮችን አስተካክል"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "ቅንብሮች"
-  },
-  "js_update_confirm": {
-    "message": ""
   },
   "js_update_button_export": {
     "message": "አስቀምጥ"

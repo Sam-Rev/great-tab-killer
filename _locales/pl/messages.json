@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importuj sesję"
   },
-  "html_notice_title": {
-    "message": "Powiadomienie"
-  },
-  "html_notice_important_notice": {
-    "message": "Ważne powiadomienie od The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Ustawienia"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Nigdy"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekundy"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Zawieś tę kartę teraz"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Nie zawieszaj teraz"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Nigdy nie zawieszaj tej domeny"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Zawieszona karta"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Karta zawieszona"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Przeładuj kartę"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Nigdy nie zawieszaj"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Odśwież lub kliknij, aby przeładować"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatyczne przeładowywanie kart jest tymczasowo wyłączone."
-  },
-  "html_suspended_donation_question": {
-    "message": "Czy to rozszerzenie sprawia, że jesteś szczęśliwy?\nOkaż wsparcie, przekazując darowiznę."
   },
   "html_permissions_title": {
     "message": "Uprawnienia"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " przed kontynuowaniem aktualizacji."
   },
-  "html_updated_title": {
-    "message": "Zaktualizowano"
-  },
-  "html_updating_heading": {
-    "message": "jest aktualizowany"
-  },
-  "html_updating_message": {
-    "message": "Proszę czekać na przywrócenie zawieszonych kart..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "został zaktualizowany"
-  },
-  "html_updated_info_line1": {
-    "message": "Automatyczna kopia zapasowa kart została wykonana przed aktualizacją."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Jeśli napotkałeś problemy podczas aktualizacji, możesz odzyskać utracone karty ze strony "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Co nowego w wersji "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nowe funkcje:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Poprawki błędów:"
-  },
-  "html_updated_release_notes": {
-    "message": "Odwiedź GitHub, aby zobaczyć pełne informacje o wydaniu: "
-  },
-  "html_updated_patch_message": {
-    "message": "Przepraszamy za zakłócenia. Musiałem tylko przeprowadzić niewielką konserwację."
-  },
-  "html_welcome_title": {
-    "message": "Witamy"
-  },
   "html_welcome_text_line1": {
     "message": "Dziękujemy za wypróbowanie"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Możesz dostosować ustawienia poniżej."
-  },
-  "html_thanks_title": {
-    "message": "Dziękujemy"
-  },
-  "html_thanks_header": {
-    "message": "Dziękujemy za wsparcie!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Niech dzisiaj spotkają cię same wspaniałe rzeczy."
   },
   "js_popup_normal": {
     "message": "Karta zostanie automatycznie zawieszona."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Karta zawieszona"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Nie zawieszaj"
   },
   "js_popup_whitelisted": {
     "message": "Witryna na białej liście."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Nie udało się załadować pliku. Upewnij się, że jest to zwykły tekst z jednym adresem URL na linię."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Usuń witrynę z białej listy"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Ustaw skróty klawiszowe"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "Otwórz ustawienia rozszerzenia"
   },
-  "js_update_confirm": {
-    "message": "Nie zapisałeś jeszcze kopii zapasowej. Zaktualizować rozszerzenie mimo to?"
-  },
   "js_update_button_export": {
     "message": "Zapisz kopię zapasową"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "Automatyczny punkt zapisu dla v"
-  },
-  "html_changelog_rating_title": {
-    "message": "Jak podoba Ci się ta aktualizacja?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Dziękujemy!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Dzięki za opinię!",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

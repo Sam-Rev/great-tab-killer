@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importovat relaci"
   },
-  "html_notice_title": {
-    "message": "Upozornění"
-  },
-  "html_notice_important_notice": {
-    "message": "Důležité upozornění od The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Nastavení"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Nikdy"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekundách"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Pozastavit tuto kartu nyní"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Nepozastavovat teď"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Nikdy nepozastavovat tuto doménu"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Pozastavená karta"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Karta pozastavena"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Znovu načíst kartu"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Nikdy nepozastavovat"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Obnovit nebo kliknutím načíst"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatické načítání karet je dočasně zakázáno."
-  },
-  "html_suspended_donation_question": {
-    "message": "Dělá vás toto rozšíření šťastným?\nUkažte svou podporu darováním."
   },
   "html_permissions_title": {
     "message": "Oprávnění"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " před pokračováním s aktualizací."
   },
-  "html_updated_title": {
-    "message": "Aktualizováno"
-  },
-  "html_updating_heading": {
-    "message": "aktualizuje se"
-  },
-  "html_updating_message": {
-    "message": "Počkejte prosím, obnovuji pozastavené karty..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "bylo aktualizováno"
-  },
-  "html_updated_info_line1": {
-    "message": "Před aktualizací byla automaticky vytvořena záloha vašich karet."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Pokud jste narazili na problémy, ztracené karty obnovíte na stránce "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Co je nového ve "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nové funkce:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Opravy chyb:"
-  },
-  "html_updated_release_notes": {
-    "message": "Navštivte GitHub pro úplné poznámky k vydání: "
-  },
-  "html_updated_patch_message": {
-    "message": "Omlouváme se za rušení. Stačilo jen provést malou údržbu."
-  },
-  "html_welcome_title": {
-    "message": "Vítejte"
-  },
   "html_welcome_text_line1": {
     "message": "Děkujeme, že zkoušíte"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Níže si můžete doladit nastavení."
-  },
-  "html_thanks_title": {
-    "message": "Děkujeme"
-  },
-  "html_thanks_header": {
-    "message": "Děkujeme za podporu!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Ať vás dnes potkají jen dobré věci."
   },
   "js_popup_normal": {
     "message": "Karta bude automaticky pozastavena."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Karta pozastavena"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Nepozastavovat"
   },
   "js_popup_whitelisted": {
     "message": "Stránka je na whitelistu."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Soubor se nepodařilo načíst. Ujistěte se, že soubor je prostý text s jednou URL na řádek."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Odebrat stránku z whitelistu"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Nastavit klávesové zkratky"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Otevřít nastavení rozšíření"
-  },
-  "js_update_confirm": {
-    "message": "Ještě jste neuložili zálohu. Přesto aktualizovat rozšíření?"
   },
   "js_update_button_export": {
     "message": "Uložit zálohu"

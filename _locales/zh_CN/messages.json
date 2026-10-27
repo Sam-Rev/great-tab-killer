@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "导入会话"
   },
-  "html_notice_title": {
-    "message": "通知"
-  },
-  "html_notice_important_notice": {
-    "message": "来自 The Great Tab Killer 的重要通知"
-  },
   "html_options_title": {
     "message": "设置"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "永不"
-  },
-  "html_options_suspend_seconds": {
-    "message": "秒"
   },
   "html_options_suspend_minute": {
     "message": "分钟"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "冻结此标签页"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "现在还不要冻结"
-  },
   "html_popup_never_suspend_domain": {
     "message": "永远不要冻结此域名"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "冻结标签页"
   },
-  "html_suspended_tab_suspended": {
-    "message": "标签页已被冻结"
-  },
-  "html_suspended_tab_reload": {
-    "message": "重新加载标签页"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "永远不要冻结"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "刷新页面或点击此处重新加载"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "暂时禁用标签页自动重新加载。"
-  },
-  "html_suspended_donation_question": {
-    "message": "你喜欢这个扩展吗?\n通过捐赠来表达你的支持。"
   },
   "html_permissions_title": {
     "message": "许可权限"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " 导出当前标签页会话的备份。"
   },
-  "html_updated_title": {
-    "message": "更新"
-  },
-  "html_updating_heading": {
-    "message": "正在更新"
-  },
-  "html_updating_message": {
-    "message": "恢复冻结的标签页中，请稍等..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "已更新"
-  },
-  "html_updated_info_line1": {
-    "message": "更新之前，您的标签页已被自动保存。"
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "如果在更新过程中遇到任何问题，可以从 "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " 页面中恢复丢失的标签页。"
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "在 "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "有什么新功能?"
-  },
-  "html_updated_new_features_header": {
-    "message": "新的功能："
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Bug 修复："
-  },
-  "html_updated_release_notes": {
-    "message": "请浏览 GitHub 获取完整的发行说明: "
-  },
-  "html_updated_patch_message": {
-    "message": "很抱歉打扰你。我们需要做一些小维护。"
-  },
-  "html_welcome_title": {
-    "message": "欢迎来到"
-  },
   "html_welcome_text_line1": {
     "message": "感谢你安装"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "您可以在下面更改设置"
-  },
-  "html_thanks_title": {
-    "message": "感谢"
-  },
-  "html_thanks_header": {
-    "message": "感谢您的捐赠！"
-  },
-  "html_thanks_sub_header": {
-    "message": "好人一生平安。"
   },
   "js_popup_normal": {
     "message": "标签页将会自动被冻结。"
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "标签页已经被冻结"
-  },
-  "js_popup_suspended_pause": {
-    "message": "暂时不要冻结"
   },
   "js_popup_whitelisted": {
     "message": "白名单。"
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "无法导入文件。确保文件是纯文本，并且每行只有一条 URL。"
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "从白名单移除"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "设置键盘快捷键"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "打开扩展设置"
   },
-  "js_update_confirm": {
-    "message": "您尚未保存备份。即使如此也要更新扩展吗？"
-  },
   "js_update_button_export": {
     "message": "导出备份"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "自动保存点 v"
-  },
-  "html_changelog_rating_title": {
-    "message": "您觉得这次更新怎么样？",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "谢谢！",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "感谢您的反馈！",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

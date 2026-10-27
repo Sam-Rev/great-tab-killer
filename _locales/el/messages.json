@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Εισαγωγή συνεδρίας"
   },
-  "html_notice_title": {
-    "message": "Ειδοποίηση"
-  },
-  "html_notice_important_notice": {
-    "message": "Σημαντική ειδοποίηση από το The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Ρυθμίσεις"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Ποτέ"
-  },
-  "html_options_suspend_seconds": {
-    "message": "δευτερόλεπτα"
   },
   "html_options_suspend_minute": {
     "message": "λεπτό"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Αναστολή αυτής της καρτέλας τώρα"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Όχι τώρα"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Ποτέ να μην ανασταλεί αυτός ο τομέας"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Ανασταλμένη καρτέλα"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Καρτέλα ανεσταλμένη"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Επαναφόρτωση καρτέλας"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Ποτέ να μην ανασταλεί"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Ανανέωση ή κλικ για επαναφόρτωση"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Η αυτόματη επαναφόρτωση καρτέλας είναι προσωρινά απενεργοποιημένη."
-  },
-  "html_suspended_donation_question": {
-    "message": "Σας κάνει χαρούμενους αυτή η επέκταση;\nΔείξτε την υποστήριξή σας με δωρεά."
   },
   "html_permissions_title": {
     "message": "Άδειες"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " πριν συνεχίσετε με την ενημέρωση."
   },
-  "html_updated_title": {
-    "message": "Ενημερώθηκε"
-  },
-  "html_updating_heading": {
-    "message": "ενημερώνεται"
-  },
-  "html_updating_message": {
-    "message": "Παρακαλώ περιμένετε ενώ επαναφέρω τις ανασταλμένες καρτέλες..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "ενημερώθηκε"
-  },
-  "html_updated_info_line1": {
-    "message": "Αυτόματο αντίγραφο ασφαλείας των καρτελών σας έγινε πριν από την ενημέρωση."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Εάν αντιμετωπίσατε προβλήματα κατά την ενημέρωση, μπορείτε να ανακτήσετε χαμένες καρτέλες από "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " σελίδα."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Τι νέο στην έκδοση "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": ";"
-  },
-  "html_updated_new_features_header": {
-    "message": "Νέες λειτουργίες:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Διορθώσεις σφαλμάτων:"
-  },
-  "html_updated_release_notes": {
-    "message": "Επισκεφθείτε το GitHub για πλήρεις σημειώσεις έκδοσης: "
-  },
-  "html_updated_patch_message": {
-    "message": "Συγνώμη για την ενόχληση. Χρειάστηκε μόνο να κάνω λίγη συντήρηση."
-  },
-  "html_welcome_title": {
-    "message": "Καλώς ορίσατε"
-  },
   "html_welcome_text_line1": {
     "message": "Ευχαριστούμε που δοκιμάζετε"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Μπορείτε να ρυθμίσετε τις παραμέτρους παρακάτω."
-  },
-  "html_thanks_title": {
-    "message": "Ευχαριστίες"
-  },
-  "html_thanks_header": {
-    "message": "Ευχαριστούμε για την υποστήριξη!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Να σας συνοδεύουν καλά πράγματα σήμερα."
   },
   "js_popup_normal": {
     "message": "Η καρτέλα θα ανασταλεί αυτόματα."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Καρτέλα ανεσταλμένη"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Να μην ανασταλεί"
   },
   "js_popup_whitelisted": {
     "message": "Ο ιστότοπος είναι στη λίστα επιτρεπόμενων."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Αποτυχία φόρτωσης αρχείου. Βεβαιωθείτε ότι το αρχείο είναι απλό κείμενο με ένα URL ανά γραμμή."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Αφαίρεση ιστότοπου από λίστα επιτρεπόμενων"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Ορισμός συντομεύσεων πληκτρολογίου"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Άνοιγμα ρυθμίσεων επέκτασης"
-  },
-  "js_update_confirm": {
-    "message": "Δεν έχετε αποθηκεύσει αντίγραφο ασφαλείας ακόμα. Να γίνει ενημέρωση επέκτασης;"
   },
   "js_update_button_export": {
     "message": "Αποθήκευση αντιγράφου ασφαλείας"

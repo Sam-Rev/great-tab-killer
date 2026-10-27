@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "세션 가져오기"
   },
-  "html_notice_title": {
-    "message": "공지"
-  },
-  "html_notice_important_notice": {
-    "message": "The Great Tab Killer의 중요 공지"
-  },
   "html_options_title": {
     "message": "설정"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "안 함"
-  },
-  "html_options_suspend_seconds": {
-    "message": "초"
   },
   "html_options_suspend_minute": {
     "message": "분"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "이 탭 지금 일시정지"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "지금은 일시정지하지 않음"
-  },
   "html_popup_never_suspend_domain": {
     "message": "이 도메인은 일시정지하지 않음"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "일시정지된 탭"
   },
-  "html_suspended_tab_suspended": {
-    "message": "탭 일시정지됨"
-  },
-  "html_suspended_tab_reload": {
-    "message": "탭 새로고침"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "일시정지 안 함"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "새로고침 또는 클릭하여 다시 로드"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "탭 자동 새로고침이 일시적으로 비활성화되었습니다."
-  },
-  "html_suspended_donation_question": {
-    "message": "이 확장 프로그램이 도움이 되나요?\n기부로 지원해 주세요."
   },
   "html_permissions_title": {
     "message": "권한"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": "."
   },
-  "html_updated_title": {
-    "message": "업데이트 완료"
-  },
-  "html_updating_heading": {
-    "message": "업데이트 중"
-  },
-  "html_updating_message": {
-    "message": "일시정지된 탭을 복원하는 동안 잠시 기다려 주세요..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "이(가) 업데이트되었습니다"
-  },
-  "html_updated_info_line1": {
-    "message": "업데이트 전에 탭의 자동 백업이 생성되었습니다."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "업데이트 중 문제가 발생한 경우 "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " 페이지에서 잃어버린 탭을 복구할 수 있습니다."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "버전 "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "의 새로운 기능"
-  },
-  "html_updated_new_features_header": {
-    "message": "새 기능:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "버그 수정:"
-  },
-  "html_updated_release_notes": {
-    "message": "전체 릴리스 노트는 GitHub를 방문하세요: "
-  },
-  "html_updated_patch_message": {
-    "message": "불편을 드려 죄송합니다. 약간의 유지 관리가 필요했습니다."
-  },
-  "html_welcome_title": {
-    "message": "환영합니다"
-  },
   "html_welcome_text_line1": {
     "message": "사용해 주셔서 감사합니다"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "아래 설정을 세부 조정할 수 있습니다."
-  },
-  "html_thanks_title": {
-    "message": "감사합니다"
-  },
-  "html_thanks_header": {
-    "message": "지원해 주셔서 감사합니다!"
-  },
-  "html_thanks_sub_header": {
-    "message": "오늘 좋은 일들이 가득하길 바랍니다."
   },
   "js_popup_normal": {
     "message": "탭이 자동으로 일시정지됩니다."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "탭 일시정지됨"
-  },
-  "js_popup_suspended_pause": {
-    "message": "일시정지 안 함"
   },
   "js_popup_whitelisted": {
     "message": "사이트가 화이트리스트에 있습니다."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "파일을 불러오지 못했습니다. 파일이 일반 텍스트이고 한 줄에 하나의 URL이 포함되어 있는지 확인하세요."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "화이트리스트에서 사이트 제거"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "키보드 단축키 설정"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "확장 프로그램 설정 열기"
   },
-  "js_update_confirm": {
-    "message": "아직 백업을 저장하지 않았습니다. 그래도 확장 프로그램을 업데이트할까요?"
-  },
   "js_update_button_export": {
     "message": "백업 저장"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "v에 대한 자동 저장 지점"
-  },
-  "html_changelog_rating_title": {
-    "message": "이번 업데이트는 어떠신가요?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "감사합니다!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "피드백을 주셔서 감사합니다!",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

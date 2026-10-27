@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "セッションをインポート"
   },
-  "html_notice_title": {
-    "message": "お知らせ"
-  },
-  "html_notice_important_notice": {
-    "message": "The Great Tab Killerからの重要なお知らせ"
-  },
   "html_options_title": {
     "message": "設定"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "しない"
-  },
-  "html_options_suspend_seconds": {
-    "message": "秒"
   },
   "html_options_suspend_minute": {
     "message": "分"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "このタブを今すぐ一時停止"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "今は一時停止しない"
-  },
   "html_popup_never_suspend_domain": {
     "message": "このドメインを一時停止しない"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "一時停止中のタブ"
   },
-  "html_suspended_tab_suspended": {
-    "message": "タブを一時停止"
-  },
-  "html_suspended_tab_reload": {
-    "message": "タブを再読み込み"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "一時停止しない"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "更新またはクリックして再読み込み"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "タブの自動再読み込みは一時的に無効になっています。"
-  },
-  "html_suspended_donation_question": {
-    "message": "この拡張機能は役に立っていますか？\n寄付でサポートしてください。"
   },
   "html_permissions_title": {
     "message": "権限"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": "。"
   },
-  "html_updated_title": {
-    "message": "アップデート完了"
-  },
-  "html_updating_heading": {
-    "message": "アップデート中"
-  },
-  "html_updating_message": {
-    "message": "一時停止中のタブを復元しています。しばらくお待ちください..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "がアップデートされました"
-  },
-  "html_updated_info_line1": {
-    "message": "アップデート前にタブの自動バックアップが作成されました。"
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "アップデート中に問題が発生した場合は、"
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "ページから失われたタブを復元できます。"
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "バージョン "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": " の新機能"
-  },
-  "html_updated_new_features_header": {
-    "message": "新機能："
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "バグ修正："
-  },
-  "html_updated_release_notes": {
-    "message": "完全なリリースノートはGitHubをご覧ください："
-  },
-  "html_updated_patch_message": {
-    "message": "ご不便をおかけして申し訳ありません。少しメンテナンスが必要でした。"
-  },
-  "html_welcome_title": {
-    "message": "ようこそ"
-  },
   "html_welcome_text_line1": {
     "message": "お試しいただきありがとうございます"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "以下の設定で詳細を調整できます。"
-  },
-  "html_thanks_title": {
-    "message": "ありがとうございます"
-  },
-  "html_thanks_header": {
-    "message": "サポートありがとうございます！"
-  },
-  "html_thanks_sub_header": {
-    "message": "今日も素晴らしいことがありますように。"
   },
   "js_popup_normal": {
     "message": "タブは自動的に一時停止されます。"
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "タブを一時停止"
-  },
-  "js_popup_suspended_pause": {
-    "message": "一時停止しない"
   },
   "js_popup_whitelisted": {
     "message": "サイトはホワイトリストに登録されています。"
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "ファイルの読み込みに失敗しました。プレーンテキストで1行に1つのURLが含まれていることを確認してください。"
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "ホワイトリストからサイトを削除"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "キーボードショートカットを設定"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "拡張機能の設定を開く"
   },
-  "js_update_confirm": {
-    "message": "バックアップをまだ保存していません。それでも拡張機能をアップデートしますか？"
-  },
   "js_update_button_export": {
     "message": "バックアップを保存"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "v の自動保存ポイント"
-  },
-  "html_changelog_rating_title": {
-    "message": "このアップデートはいかがですか？",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "ありがとうございます！",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "フィードバックありがとうございます！",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

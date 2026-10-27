@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "ייבוא סשן"
   },
-  "html_notice_title": {
-    "message": "הודעה"
-  },
-  "html_notice_important_notice": {
-    "message": "הודעה חשובה מ-The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "הגדרות"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "אף פעם"
-  },
-  "html_options_suspend_seconds": {
-    "message": "שניות"
   },
   "html_options_suspend_minute": {
     "message": "דקה"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "השהה לשונית זו עכשיו"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "לא עכשיו"
-  },
   "html_popup_never_suspend_domain": {
     "message": "אל תשהה אף פעם דומיין זה"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "לשונית מושהית"
   },
-  "html_suspended_tab_suspended": {
-    "message": "לשונית מושהית"
-  },
-  "html_suspended_tab_reload": {
-    "message": "טען מחדש לשונית"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "אל תשהה אף פעם"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "רענן או לחץ לטעינה מחדש"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "טעינה אוטומטית של לשוניות מושבתת זמנית."
-  },
-  "html_suspended_donation_question": {
-    "message": "האם התוסף הזה משמח אותך?\nהראה את תמיכתך בתרומה."
   },
   "html_permissions_title": {
     "message": "הרשאות"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " לפני המשך העדכון."
   },
-  "html_updated_title": {
-    "message": "עודכן"
-  },
-  "html_updating_heading": {
-    "message": "מתעדכן"
-  },
-  "html_updating_message": {
-    "message": "אנא המתן בזמן שחזור הלשוניות המושהות..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "עודכן"
-  },
-  "html_updated_info_line1": {
-    "message": "גיבוי אוטומטי של הלשוניות שלך נוצר לפני העדכון."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "אם נתקלת בבעיות במהלך העדכון, תוכל לשחזר לשוניות שאבדו מ "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " עמוד."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "מה חדש ב "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "תכונות חדשות:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "תיקוני באגים:"
-  },
-  "html_updated_release_notes": {
-    "message": "בקר ב-GitHub לקבלת הערות מלאות על הגרסה: "
-  },
-  "html_updated_patch_message": {
-    "message": "מצטער על ההפרעה. רק הייתי צריך לבצע תחזוקה קטנה."
-  },
-  "html_welcome_title": {
-    "message": "ברוך הבא"
-  },
   "html_welcome_text_line1": {
     "message": "תודה שניסית"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "תוכל לכוון את ההגדרות להלן."
-  },
-  "html_thanks_title": {
-    "message": "תודות"
-  },
-  "html_thanks_header": {
-    "message": "תודה על התמיכה!"
-  },
-  "html_thanks_sub_header": {
-    "message": "שדברים טובים יגיעו אליך היום."
   },
   "js_popup_normal": {
     "message": "לשונית תושהה אוטומטית."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "לשונית מושהית"
-  },
-  "js_popup_suspended_pause": {
-    "message": "אל תשהה"
   },
   "js_popup_whitelisted": {
     "message": "אתר ברשימה הלבנה."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "טעינת הקובץ נכשלה. ודא שהקובץ הוא טקסט רגיל עם URL אחד לשורה."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "הסר אתר מהרשימה הלבנה"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "הגדר קיצורי מקלדת"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "פתח הגדרות תוסף"
-  },
-  "js_update_confirm": {
-    "message": "עדיין לא שמרת גיבוי. לעדכן בכל זאת?"
   },
   "js_update_button_export": {
     "message": "שמור גיבוי"

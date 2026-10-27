@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Nhập phiên"
   },
-  "html_notice_title": {
-    "message": "Thông báo"
-  },
-  "html_notice_important_notice": {
-    "message": "Thông báo quan trọng từ The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Cài đặt"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Không bao giờ"
-  },
-  "html_options_suspend_seconds": {
-    "message": "giây"
   },
   "html_options_suspend_minute": {
     "message": "phút"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Tạm dừng tab này ngay"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Không tạm dừng lúc này"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Không bao giờ tạm dừng tên miền này"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Tab tạm dừng"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Tab đã tạm dừng"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Tải lại tab"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Không bao giờ tạm dừng"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Làm mới hoặc nhấp để tải lại"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Tự động tải lại tab tạm thời bị tắt."
-  },
-  "html_suspended_donation_question": {
-    "message": "Tiện ích này có làm bạn vui không?\nHãy thể hiện sự ủng hộ bằng cách quyên góp."
   },
   "html_permissions_title": {
     "message": "Quyền"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " trước khi tiếp tục cập nhật."
   },
-  "html_updated_title": {
-    "message": "Đã cập nhật"
-  },
-  "html_updating_heading": {
-    "message": "đang cập nhật"
-  },
-  "html_updating_message": {
-    "message": "Vui lòng đợi trong khi tôi khôi phục các tab tạm dừng..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "đã được cập nhật"
-  },
-  "html_updated_info_line1": {
-    "message": "Bản sao lưu tự động các tab của bạn đã được tạo trước khi cập nhật."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Nếu bạn gặp sự cố trong quá trình cập nhật, bạn có thể khôi phục tab bị mất từ "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " trang."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Có gì mới trong "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Tính năng mới:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Sửa lỗi:"
-  },
-  "html_updated_release_notes": {
-    "message": "Truy cập GitHub để xem ghi chú phát hành đầy đủ: "
-  },
-  "html_updated_patch_message": {
-    "message": "Xin lỗi vì sự gián đoạn. Tôi chỉ cần thực hiện một chút bảo trì."
-  },
-  "html_welcome_title": {
-    "message": "Chào mừng"
-  },
   "html_welcome_text_line1": {
     "message": "Cảm ơn bạn đã thử"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Bạn có thể tinh chỉnh cài đặt bên dưới."
-  },
-  "html_thanks_title": {
-    "message": "Cảm ơn"
-  },
-  "html_thanks_header": {
-    "message": "Cảm ơn vì sự hỗ trợ!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Chúc bạn có những điều tốt đẹp hôm nay."
   },
   "js_popup_normal": {
     "message": "Tab sẽ tự động tạm dừng."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Tab đã tạm dừng"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Không tạm dừng"
   },
   "js_popup_whitelisted": {
     "message": "Trang web trong danh sách trắng."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Không thể tải tệp. Đảm bảo tệp là văn bản thuần túy với một URL trên mỗi dòng."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Xóa trang web khỏi danh sách trắng"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Đặt phím tắt"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Mở cài đặt tiện ích"
-  },
-  "js_update_confirm": {
-    "message": "Bạn chưa lưu bản sao lưu. Vẫn cập nhật tiện ích?"
   },
   "js_update_button_export": {
     "message": "Lưu bản sao lưu"

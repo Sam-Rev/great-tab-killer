@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Импорт сессии"
   },
-  "html_notice_title": {
-    "message": "Уведомление"
-  },
-  "html_notice_important_notice": {
-    "message": "Важное уведомление от The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Настройки"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "никогда"
-  },
-  "html_options_suspend_seconds": {
-    "message": "секунд"
   },
   "html_options_suspend_minute": {
     "message": "минуты"
@@ -368,9 +359,6 @@
   "html_popup_suspend_tab": {
     "message": "Приостановить эту вкладку"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Не приостанавливать"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Никогда не приостанавливать этот домен"
   },
@@ -497,12 +485,6 @@
   "html_monitor_col_actions": {
     "message": "Действия"
   },
-  "html_monitor_note": {
-    "message": "Память — приблизительная оценка; подробности расчёта находятся над таблицей."
-  },
-  "html_popup_monitor": {
-    "message": "Монитор ресурсов"
-  },
   "js_monitor_mb": {
     "message": "МБ"
   },
@@ -520,9 +502,6 @@
   },
   "js_monitor_method_precise": {
     "message": "Chrome"
-  },
-  "js_monitor_freed": {
-    "message": "освобождено"
   },
   "js_monitor_free": {
     "message": "свободно"
@@ -677,14 +656,8 @@
   "js_monitor_tt_fixed_suspended": {
     "message": "Фиксированная оценка ≈4 МБ для страницы-заглушки расширения. Это условное значение, а не текущий замер."
   },
-  "js_monitor_tt_fixed_discarded": {
-    "message": "Фиксированное значение: выгруженная вкладка полностью удалена из памяти; остаётся только служебная запись (~0,5 МБ)."
-  },
   "js_monitor_tt_stale": {
     "message": "Последнее сохранённое измерение этой страницы. Сейчас вкладку измерить нельзя (например, она заморожена), но память она по-прежнему занимает."
-  },
-  "js_monitor_tt_released": {
-    "message": "Вкладка выгружена. Цифра показывает, сколько памяти страница занимала при последнем измерении — то есть сколько освободила выгрузка."
   },
   "html_success_great_success": {
     "message": "Отлично!"
@@ -704,18 +677,6 @@
   "html_suspended_title": {
     "message": "Приостановленная вкладка"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Вкладка приостановлена"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Обновить вкладку"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Никогда не приостанавливать"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Обновите или нажмите для обновления"
   },
@@ -724,9 +685,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Автоматическое обновление вкладок временно отключено."
-  },
-  "html_suspended_donation_question": {
-    "message": "Вам понравилось это расширение?\nОтправьте пожертвование."
   },
   "html_permissions_title": {
     "message": "Разрешения"
@@ -758,48 +716,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " перед обновлением расширения."
   },
-  "html_updated_title": {
-    "message": "Обновлено"
-  },
-  "html_updating_heading": {
-    "message": "обновляется"
-  },
-  "html_updating_message": {
-    "message": "Восстанавливаются приостановленные вкладки..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "успешно обновлён"
-  },
-  "html_updated_info_line1": {
-    "message": "Перед обновлением была создана резервная копия Ваших вкладок."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Если во время обновления возникли проблемы, то Вы можете восстановить потерянные вкладки из резервной копии в разделе "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Что нового в "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Новый функционал:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Исправлены баги:"
-  },
-  "html_updated_release_notes": {
-    "message": "Прочитать на странице расширения в GitHub: "
-  },
-  "html_updated_patch_message": {
-    "message": "Извините за беспокойство. Мне просто нужно было выполнить небольшое техобслуживание."
-  },
-  "html_welcome_title": {
-    "message": "Добро пожаловать"
-  },
   "html_welcome_text_line1": {
     "message": "Спасибо за использование"
   },
@@ -808,15 +724,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Вы можете настроить параметры ниже."
-  },
-  "html_thanks_title": {
-    "message": "Спасибо"
-  },
-  "html_thanks_header": {
-    "message": "Спасибо за поддержку!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Пусть сегодня Вам сопутствует удача."
   },
   "js_popup_normal": {
     "message": "Вкладка будет приостановлена автоматически."
@@ -829,9 +736,6 @@
   },
   "js_popup_suspended": {
     "message": "Вкладка приостановлена"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Не приостанавливать"
   },
   "js_popup_whitelisted": {
     "message": "Сайт добавлен в белый список."
@@ -917,9 +821,6 @@
   "js_history_import_fail": {
     "message": "Ошибка при загрузке файла. Убедитесь, что это текстовый файл, и что он содержит не более одного URL-адреса в каждой строке."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Удалить сайт из белого списка"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Назначить горячие клавиши"
   },
@@ -947,9 +848,6 @@
   "js_permissions_button_set": {
     "message": "Открыть настройки расширения"
   },
-  "js_update_confirm": {
-    "message": "Вы ещё не сделали резервную копию. Всё равно обновить?"
-  },
   "js_update_button_export": {
     "message": "Сохранить резервную копию"
   },
@@ -961,18 +859,6 @@
   },
   "js_session_save_point": {
     "message": "Автоматическая точка восстановления для версии "
-  },
-  "html_changelog_rating_title": {
-    "message": "Как вам это обновление?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Спасибо!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Спасибо за отзыв!",
-    "description": "Message shown when user clicks 1-4 stars"
   },
   "html_monitor_col_chrome": {
     "message": "Память Chrome"

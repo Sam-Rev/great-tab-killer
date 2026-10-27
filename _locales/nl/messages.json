@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Sessie importeren"
   },
-  "html_notice_title": {
-    "message": "Melding"
-  },
-  "html_notice_important_notice": {
-    "message": "Belangrijke melding van The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Instellingen"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Nooit"
-  },
-  "html_options_suspend_seconds": {
-    "message": "seconden"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Dit tabblad nu opschorten"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Nu niet opschorten"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Dit domein nooit opschorten"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Opgeschort tabblad"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Tabblad opgeschort"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Tabblad herladen"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Nooit opschorten"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Vernieuwen of klikken om te herladen"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatisch herladen van tabbladen is tijdelijk uitgeschakeld."
-  },
-  "html_suspended_donation_question": {
-    "message": "Maakt deze extensie u blij?\nToon uw steun door te doneren."
   },
   "html_permissions_title": {
     "message": "Machtigingen"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " voordat u doorgaat met de update."
   },
-  "html_updated_title": {
-    "message": "Bijgewerkt"
-  },
-  "html_updating_heading": {
-    "message": "wordt bijgewerkt"
-  },
-  "html_updating_message": {
-    "message": "Even geduld terwijl ik uw opgeschorte tabbladen herstel..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "is bijgewerkt"
-  },
-  "html_updated_info_line1": {
-    "message": "Er is automatisch een back-up van uw tabbladen gemaakt vóór de update."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Als u problemen ondervond tijdens de update, kunt u verloren tabbladen herstellen via de "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Nieuw in "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nieuwe functies:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Bugfixes:"
-  },
-  "html_updated_release_notes": {
-    "message": "Bezoek GitHub voor de volledige release-opmerkingen: "
-  },
-  "html_updated_patch_message": {
-    "message": "Excuses voor het ongemak. Er was een kleine onderhoudsbeurt nodig."
-  },
-  "html_welcome_title": {
-    "message": "Welkom"
-  },
   "html_welcome_text_line1": {
     "message": "Bedankt voor het proberen"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "U kunt de instellingen hieronder aanpassen."
-  },
-  "html_thanks_title": {
-    "message": "Bedankt"
-  },
-  "html_thanks_header": {
-    "message": "Bedankt voor de steun!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Moge er vandaag geweldige dingen op uw pad komen."
   },
   "js_popup_normal": {
     "message": "Tabblad wordt automatisch opgeschort."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Tabblad opgeschort"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Niet opschorten"
   },
   "js_popup_whitelisted": {
     "message": "Site op witte lijst."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Laden van bestand mislukt. Zorg ervoor dat het platte tekst is met één URL per regel."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Site van witte lijst verwijderen"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Sneltoetsen instellen"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Extensie-instellingen openen"
-  },
-  "js_update_confirm": {
-    "message": "U heeft nog geen back-up opgeslagen. Extensie toch bijwerken?"
   },
   "js_update_button_export": {
     "message": "Back-up opslaan"

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importuoti seansą"
   },
-  "html_notice_title": {
-    "message": "Pranešimas"
-  },
-  "html_notice_important_notice": {
-    "message": "Svarbus pranešimas iš The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Nustatymai"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Niekada"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sek."
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Sustabdyti šią skiltelę dabar"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Dabar ne"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Niekada nesustabdyti šio domeno"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Sustabdyta skiltelė"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Skiltelė sustabdyta"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Perkrauti skiltelę"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Niekada nesustabdyti"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Atnaujinti arba spustelėkite norėdami perkrauti"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatinis skiltelių perkrovimas laikinai išjungtas."
-  },
-  "html_suspended_donation_question": {
-    "message": "Ar šis plėtinys jus džiugina?\nParodykite palaikymą paaukoję."
   },
   "html_permissions_title": {
     "message": "Leidimai"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " prieš tęsiant atnaujinimą."
   },
-  "html_updated_title": {
-    "message": "Atnaujinta"
-  },
-  "html_updating_heading": {
-    "message": "atnaujinama"
-  },
-  "html_updating_message": {
-    "message": "Palaukite kol atkuriu sustabdytas skilteles..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "buvo atnaujintas"
-  },
-  "html_updated_info_line1": {
-    "message": "Prieš atnaujinimą automatiškai buvo sukurta jūsų skiltelių atsarginė kopija."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Jei atnaujinimo metu kilo problemų, prarastas skilteles galite atkurti iš "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " puslapio."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Kas naujo "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Naujos funkcijos:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Klaidų pataisymai:"
-  },
-  "html_updated_release_notes": {
-    "message": "Apsilankykite GitHub dėl išsamių išleidimo pastabų: "
-  },
-  "html_updated_patch_message": {
-    "message": "Atsiprašome už nepatogumus. Tik reikėjo atlikti nedidelę priežiūrą."
-  },
-  "html_welcome_title": {
-    "message": "Sveiki atvykę"
-  },
   "html_welcome_text_line1": {
     "message": "Dėkojame, kad išbandote"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Žemiau galite tiksliai nustatyti parametrus."
-  },
-  "html_thanks_title": {
-    "message": "Dėkojame"
-  },
-  "html_thanks_header": {
-    "message": "Dėkojame už palaikymą!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Tegul šiandien jus lydi geri dalykai."
   },
   "js_popup_normal": {
     "message": "Skiltelė bus automatiškai sustabdyta."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Skiltelė sustabdyta"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Nesustabdyti"
   },
   "js_popup_whitelisted": {
     "message": "Svetainė yra baltajame sąraše."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Nepavyko įkelti failo. Įsitikinkite, kad failas yra paprastas tekstas su vienu URL eilutėje."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Pašalinti svetainę iš baltojo sąrašo"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Nustatyti klaviatūros sparčiuosius klavišus"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Atidaryti plėtinio nustatymus"
-  },
-  "js_update_confirm": {
-    "message": "Dar neišsaugojote atsarginės kopijos. Vis tiek atnaujinti plėtinį?"
   },
   "js_update_button_export": {
     "message": "Išsaugoti atsarginę kopiją"

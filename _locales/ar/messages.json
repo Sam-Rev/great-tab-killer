@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "استيراد جلسة"
   },
-  "html_notice_title": {
-    "message": "إشعار"
-  },
-  "html_notice_important_notice": {
-    "message": "إشعار مهم من The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "الإعدادات"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "أبداً"
-  },
-  "html_options_suspend_seconds": {
-    "message": "ثانية"
   },
   "html_options_suspend_minute": {
     "message": "دقيقة"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "تعليق هذا التبويب الآن"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "عدم التعليق الآن"
-  },
   "html_popup_never_suspend_domain": {
     "message": "عدم تعليق هذا النطاق أبداً"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "تبويب معلق"
   },
-  "html_suspended_tab_suspended": {
-    "message": "تم تعليق التبويب"
-  },
-  "html_suspended_tab_reload": {
-    "message": "إعادة تحميل التبويب"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "عدم التعليق أبداً"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "حدّث أو انقر لإعادة التحميل"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "إعادة تحميل التبويب التلقائية معطلة مؤقتاً."
-  },
-  "html_suspended_donation_question": {
-    "message": "هل تجعلك هذه الإضافة سعيداً؟\nأظهر دعمك بالتبرع."
   },
   "html_permissions_title": {
     "message": "الأذونات"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " قبل المتابعة بالتحديث."
   },
-  "html_updated_title": {
-    "message": "تم التحديث"
-  },
-  "html_updating_heading": {
-    "message": "يتم التحديث"
-  },
-  "html_updating_message": {
-    "message": "يُرجى الانتظار أثناء استعادة تبويباتك المعلقة..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "تم تحديثه"
-  },
-  "html_updated_info_line1": {
-    "message": "تم إنشاء نسخة احتياطية تلقائية من تبويباتك قبل التحديث."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "إذا واجهت أي مشاكل أثناء التحديث، يمكنك استرداد التبويبات المفقودة من "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "ما الجديد في الإصدار "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "؟"
-  },
-  "html_updated_new_features_header": {
-    "message": "ميزات جديدة:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "إصلاح الأخطاء:"
-  },
-  "html_updated_release_notes": {
-    "message": "تفضل بزيارة GitHub للاطلاع على ملاحظات الإصدار الكاملة: "
-  },
-  "html_updated_patch_message": {
-    "message": "نعتذر عن الإزعاج. كنت بحاجة فقط إلى إجراء بعض الصيانة الطفيفة."
-  },
-  "html_welcome_title": {
-    "message": "أهلاً وسهلاً"
-  },
   "html_welcome_text_line1": {
     "message": "شكراً لتجربتك"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "يمكنك ضبط الإعدادات أدناه."
-  },
-  "html_thanks_title": {
-    "message": "شكراً"
-  },
-  "html_thanks_header": {
-    "message": "شكراً على دعمك!"
-  },
-  "html_thanks_sub_header": {
-    "message": "نتمنى لك يوماً مليئاً بالأشياء الرائعة."
   },
   "js_popup_normal": {
     "message": "سيتم تعليق التبويب تلقائياً."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "تم تعليق التبويب"
-  },
-  "js_popup_suspended_pause": {
-    "message": "عدم التعليق"
   },
   "js_popup_whitelisted": {
     "message": "الموقع في القائمة البيضاء."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "فشل تحميل الملف. تأكد من أنه نص عادي ويحتوي على رابط واحد في كل سطر."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "إزالة الموقع من القائمة البيضاء"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "تعيين اختصارات لوحة المفاتيح"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "فتح إعدادات الإضافة"
-  },
-  "js_update_confirm": {
-    "message": "لم تحفظ نسخة احتياطية بعد. هل تريد تحديث الإضافة على أي حال؟"
   },
   "js_update_button_export": {
     "message": "حفظ نسخة احتياطية"

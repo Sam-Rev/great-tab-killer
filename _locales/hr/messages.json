@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Uvezi sesiju"
   },
-  "html_notice_title": {
-    "message": "Obavijest"
-  },
-  "html_notice_important_notice": {
-    "message": "Važna obavijest od The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Postavke"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Nikad"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekundi"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Obustavi ovu karticu sada"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Ne obustavljaj sada"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Nikad ne obustavljaj ovu domenu"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Obustavljena kartica"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Kartica obustavljena"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Ponovo učitaj karticu"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Nikad ne obustavljaj"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Osvježi ili klikni za ponovnim učitavanjem"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatsko učitavanje kartica privremeno je onemogućeno."
-  },
-  "html_suspended_donation_question": {
-    "message": "Čini li te ovo proširenje sretnim?\nPokaži svoju podršku donacijom."
   },
   "html_permissions_title": {
     "message": "Dozvole"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " prije nastavka ažuriranja."
   },
-  "html_updated_title": {
-    "message": "Ažurirano"
-  },
-  "html_updating_heading": {
-    "message": "ažurira se"
-  },
-  "html_updating_message": {
-    "message": "Molimo pričekajte dok obnavljam obustavljene kartice..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "je ažuriran"
-  },
-  "html_updated_info_line1": {
-    "message": "Automatska sigurnosna kopija vaših kartica je napravljena prije ažuriranja."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Ako ste naišli na probleme tijekom ažuriranja, možete obnoviti izgubljene kartice s "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " stranice."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Što je novo u "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nove značajke:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Ispravci grešaka:"
-  },
-  "html_updated_release_notes": {
-    "message": "Posjetite GitHub za potpune napomene uz izdanje: "
-  },
-  "html_updated_patch_message": {
-    "message": "Ispričavamo se zbog smetnji. Trebao sam samo izvršiti malo održavanja."
-  },
-  "html_welcome_title": {
-    "message": "Dobrodošli"
-  },
   "html_welcome_text_line1": {
     "message": "Hvala što isprobavate"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Možete prilagoditi postavke u nastavku."
-  },
-  "html_thanks_title": {
-    "message": "Zahvale"
-  },
-  "html_thanks_header": {
-    "message": "Hvala na podršci!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Neka vam danas krenu dobre stvari."
   },
   "js_popup_normal": {
     "message": "Kartica će se automatski obustaviti."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Kartica obustavljena"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Ne obustavljaj"
   },
   "js_popup_whitelisted": {
     "message": "Stranica je na popisu dopuštenih."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Učitavanje datoteke nije uspjelo. Provjeri da je datoteka čisti tekst s jednim URL-om po retku."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Ukloni stranicu s popisa dopuštenih"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Postavi tipkovne prečace"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Otvori postavke proširenja"
-  },
-  "js_update_confirm": {
-    "message": "Još nisi spremio sigurnosnu kopiju. Svejedno ažurirati proširenje?"
   },
   "js_update_button_export": {
     "message": "Spremi sigurnosnu kopiju"

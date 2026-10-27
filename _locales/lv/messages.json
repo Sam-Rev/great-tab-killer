@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importēt sesiju"
   },
-  "html_notice_title": {
-    "message": "Paziņojums"
-  },
-  "html_notice_important_notice": {
-    "message": "Svarīgs paziņojums no The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Iestatījumi"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Nekad"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sek."
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Apturēt šo cilni tagad"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Ne tagad"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Nekad neapturēt šo domēnu"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Apturēta cilne"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Cilne apturēta"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Pārlādēt cilni"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Nekad neapturēt"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Atsvaidzināt vai klikšķināt lai pārlādētu"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automātiska cilņu pārlāde ir īslaicīgi atspējota."
-  },
-  "html_suspended_donation_question": {
-    "message": "Vai šis paplašinājums jūs iepriecina?\nParādiet savu atbalstu ziedojot."
   },
   "html_permissions_title": {
     "message": "Atļaujas"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " pirms turpināt atjaunināšanu."
   },
-  "html_updated_title": {
-    "message": "Atjaunināts"
-  },
-  "html_updating_heading": {
-    "message": "atjaunina"
-  },
-  "html_updating_message": {
-    "message": "Lūdzu uzgaidiet kamēr atjaunoju apturētās cilnes..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "ir atjaunināts"
-  },
-  "html_updated_info_line1": {
-    "message": "Pirms atjaunināšanas automātiski tika izveidota jūsu cilņu rezerves kopija."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Ja atjaunināšanas laikā radās problēmas, zaudētās cilnes varat atjaunot no "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " lapas."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Kas jauns "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Jaunas funkcijas:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Kļūdu labojumi:"
-  },
-  "html_updated_release_notes": {
-    "message": "Apmeklējiet GitHub pilniem izlaiduma piezīmēm: "
-  },
-  "html_updated_patch_message": {
-    "message": "Atvainojamies par traucējumu. Bija jāveic neliela apkope."
-  },
-  "html_welcome_title": {
-    "message": "Laipni lūgti"
-  },
   "html_welcome_text_line1": {
     "message": "Paldies ka izmēģināt"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Zemāk varat precīzi iestatīt parametrus."
-  },
-  "html_thanks_title": {
-    "message": "Pateicības"
-  },
-  "html_thanks_header": {
-    "message": "Paldies par atbalstu!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Lai šodien jums veicas."
   },
   "js_popup_normal": {
     "message": "Cilne tiks automātiski apturēta."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Cilne apturēta"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Neapturēt"
   },
   "js_popup_whitelisted": {
     "message": "Vietne ir baltajā sarakstā."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Neizdevās ielādēt failu. Pārliecinieties ka fails ir vienkāršs teksts ar vienu URL rindā."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Noņemt vietni no baltā saraksta"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Iestatīt tastatūras īsinājumtaustiņus"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Atvērt paplašinājuma iestatījumus"
-  },
-  "js_update_confirm": {
-    "message": "Vēl neesat saglabājis rezerves kopiju. Tomēr atjaunināt paplašinājumu?"
   },
   "js_update_button_export": {
     "message": "Saglabāt rezerves kopiju"

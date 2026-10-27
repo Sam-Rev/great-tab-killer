@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Ingiza kikao"
   },
-  "html_notice_title": {
-    "message": "Taarifa"
-  },
-  "html_notice_important_notice": {
-    "message": "Taarifa muhimu kutoka kwa The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Mipangilio"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Kamwe"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekunde"
   },
   "html_options_suspend_minute": {
     "message": "dakika"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Simamisha kadi hii sasa"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Usisimamishe kwa sasa"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Usisimamishe kamwe tovuti hii"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Kadi iliyosimama"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Kadi imesimama"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Pakia upya kadi"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Usisimamishe kamwe"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Pakia upya au bofya ili kupakia"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": ""
-  },
-  "html_suspended_donation_question": {
-    "message": "Je, nyongeza hii inakufanya uwe na furaha?\nOnyesha usaidizi wako kwa kutoa mchango."
   },
   "html_permissions_title": {
     "message": "Ruhusa"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": ""
   },
-  "html_updated_title": {
-    "message": "Imesasishwa"
-  },
-  "html_updating_heading": {
-    "message": "inasasisha"
-  },
-  "html_updating_message": {
-    "message": "Tafadhali subiri nikirudisha kadi zako zilizosimama..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "imesasishwa"
-  },
-  "html_updated_info_line1": {
-    "message": ""
-  },
-  "html_updated_info_line2_prefix": {
-    "message": ""
-  },
-  "html_updated_info_line2_suffix": {
-    "message": ""
-  },
-  "html_updated_detail_header_prefix": {
-    "message": ""
-  },
-  "html_updated_detail_header_suffix": {
-    "message": ""
-  },
-  "html_updated_new_features_header": {
-    "message": "Sifa mpya:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Marekebisho ya hitilafu:"
-  },
-  "html_updated_release_notes": {
-    "message": ""
-  },
-  "html_updated_patch_message": {
-    "message": ""
-  },
-  "html_welcome_title": {
-    "message": "Karibu"
-  },
   "html_welcome_text_line1": {
     "message": "Asante kwa kujaribu"
   },
@@ -561,15 +492,6 @@
     "message": "Nafanya kompyuta yako iende vizuri kwa kusimamisha kadi usizozitumia."
   },
   "html_welcome_text_line3": {
-    "message": ""
-  },
-  "html_thanks_title": {
-    "message": "Asante"
-  },
-  "html_thanks_header": {
-    "message": "Asante kwa usaidizi!"
-  },
-  "html_thanks_sub_header": {
     "message": ""
   },
   "js_popup_normal": {
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Kadi imesimama"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Usisimamishe"
   },
   "js_popup_whitelisted": {
     "message": "Tovuti imeorodheshwa kwenye orodha nyeupe."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Imeshindwa kupakia faili."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Ondoa tovuti kwenye orodha nyeupe"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Weka njia za mkato za kibodi"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Fungua mipangilio ya nyongeza"
-  },
-  "js_update_confirm": {
-    "message": ""
   },
   "js_update_button_export": {
     "message": "Hifadhi nakala"

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Oturum içe aktar"
   },
-  "html_notice_title": {
-    "message": "Duyuru"
-  },
-  "html_notice_important_notice": {
-    "message": "The Great Tab Killer'dan önemli duyuru"
-  },
   "html_options_title": {
     "message": "Ayarlar"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Hiçbir zaman"
-  },
-  "html_options_suspend_seconds": {
-    "message": "saniye"
   },
   "html_options_suspend_minute": {
     "message": "dk"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Bu sekmeyi şimdi askıya al"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Şimdi askıya alma"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Bu alan adını hiçbir zaman askıya alma"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Askıya alınmış sekme"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Sekme askıya alındı"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Sekmeyi yenile"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Askıya alma"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Yenile veya yeniden yüklemek için tıkla"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Sekmelerin otomatik yeniden yüklenmesi geçici olarak devre dışı bırakıldı."
-  },
-  "html_suspended_donation_question": {
-    "message": "Bu uzantı sizi mutlu ediyor mu?\nBağış yaparak destek gösterin."
   },
   "html_permissions_title": {
     "message": "İzinler"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": "."
   },
-  "html_updated_title": {
-    "message": "Güncellendi"
-  },
-  "html_updating_heading": {
-    "message": "güncelleniyor"
-  },
-  "html_updating_message": {
-    "message": "Askıya alınmış sekmelerinizi geri yüklerken lütfen bekleyin..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "güncellendi"
-  },
-  "html_updated_info_line1": {
-    "message": "Güncelleme öncesinde sekmelerinizin otomatik yedeği alındı."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Güncelleme sırasında sorun yaşadıysanız, kayıp sekmeleri "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " sayfasından kurtarabilirsiniz."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Yenilikler - sürüm "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Yeni özellikler:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Hata düzeltmeleri:"
-  },
-  "html_updated_release_notes": {
-    "message": "Tam sürüm notları için GitHub'ı ziyaret edin: "
-  },
-  "html_updated_patch_message": {
-    "message": "Rahatsızlık için özür dileriz. Küçük bir bakım yapmam gerekiyordu."
-  },
-  "html_welcome_title": {
-    "message": "Hoş geldiniz"
-  },
   "html_welcome_text_line1": {
     "message": "Denediğiniz için teşekkürler"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Aşağıdaki ayarları ince ayarlayabilirsiniz."
-  },
-  "html_thanks_title": {
-    "message": "Teşekkürler"
-  },
-  "html_thanks_header": {
-    "message": "Destek için teşekkürler!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Bugün harika şeyler başınıza gelsin."
   },
   "js_popup_normal": {
     "message": "Sekme otomatik olarak askıya alınacak."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Sekme askıya alındı"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Askıya alma"
   },
   "js_popup_whitelisted": {
     "message": "Site beyaz listede."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Dosya yüklenemedi. Dosyanın düz metin olduğundan ve her satırda bir URL içerdiğinden emin olun."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Siteyi beyaz listeden kaldır"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Klavye kısayollarını ayarla"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "Uzantı ayarlarını aç"
   },
-  "js_update_confirm": {
-    "message": "Henüz bir yedek kaydetmediniz. Yine de uzantıyı güncelleyelim mi?"
-  },
   "js_update_button_export": {
     "message": "Yedek kaydet"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "v için otomatik kayıt noktası"
-  },
-  "html_changelog_rating_title": {
-    "message": "Bu güncellemeyi nasıl buldunuz?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Teşekkürler!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Geri bildiriminiz için teşekkürler!",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "وارد کردن جلسه"
   },
-  "html_notice_title": {
-    "message": "اطلاعیه"
-  },
-  "html_notice_important_notice": {
-    "message": "اطلاعیه مهم از The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "تنظیمات"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "هرگز"
-  },
-  "html_options_suspend_seconds": {
-    "message": "ثانیه"
   },
   "html_options_suspend_minute": {
     "message": "دقیقه"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "توقف این زبانه اکنون"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "الان نه"
-  },
   "html_popup_never_suspend_domain": {
     "message": "هرگز این دامنه را متوقف نکن"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "زبانه متوقف"
   },
-  "html_suspended_tab_suspended": {
-    "message": "زبانه متوقف شد"
-  },
-  "html_suspended_tab_reload": {
-    "message": "بارگذاری مجدد زبانه"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "هرگز متوقف نکن"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "رفرش یا کلیک برای بارگذاری مجدد"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "بارگذاری مجدد خودکار زبانه موقتاً غیرفعال است."
-  },
-  "html_suspended_donation_question": {
-    "message": "آیا این افزونه شما را خوشحال می‌کند؟\nحمایت خود را با کمک مالی نشان دهید."
   },
   "html_permissions_title": {
     "message": "مجوزها"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " صادر کنید."
   },
-  "html_updated_title": {
-    "message": "به‌روزرسانی شد"
-  },
-  "html_updating_heading": {
-    "message": "در حال به‌روزرسانی"
-  },
-  "html_updating_message": {
-    "message": "لطفاً صبر کنید تا زبانه‌های متوقف بازیابی شوند..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "به‌روزرسانی شد"
-  },
-  "html_updated_info_line1": {
-    "message": "قبل از به‌روزرسانی، پشتیبان خودکار از زبانه‌ها گرفته شد."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "اگر در طول به‌روزرسانی مشکلی داشتید، می‌توانید زبانه‌های گمشده را از "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " بازیابی کنید."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "چه چیزی در "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": " جدید است؟"
-  },
-  "html_updated_new_features_header": {
-    "message": "ویژگی‌های جدید:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "رفع اشکال:"
-  },
-  "html_updated_release_notes": {
-    "message": "برای یادداشت‌های کامل انتشار به GitHub مراجعه کنید: "
-  },
-  "html_updated_patch_message": {
-    "message": "عذرخواهی برای مزاحمت. فقط نیاز به انجام کمی نگهداری داشتم."
-  },
-  "html_welcome_title": {
-    "message": "خوش آمدید"
-  },
   "html_welcome_text_line1": {
     "message": "ممنون که امتحان می‌کنید"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "می‌توانید تنظیمات را در زیر تنظیم دقیق کنید."
-  },
-  "html_thanks_title": {
-    "message": "سپاسگزاری"
-  },
-  "html_thanks_header": {
-    "message": "ممنون از حمایت شما!"
-  },
-  "html_thanks_sub_header": {
-    "message": "امیدوارم امروز اتفاقات خوبی برایتان بیفتد."
   },
   "js_popup_normal": {
     "message": "زبانه به‌صورت خودکار متوقف می‌شود."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "زبانه متوقف شد"
-  },
-  "js_popup_suspended_pause": {
-    "message": "متوقف نکن"
   },
   "js_popup_whitelisted": {
     "message": "سایت در لیست سفید است."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "بارگذاری فایل ناموفق بود. مطمئن شوید فایل متن ساده است با یک URL در هر خط."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "حذف سایت از لیست سفید"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "تنظیم میانبرهای صفحه‌کلید"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "باز کردن تنظیمات افزونه"
-  },
-  "js_update_confirm": {
-    "message": "هنوز پشتیبانی ذخیره نکرده‌اید. در هر صورت افزونه را به‌روزرسانی کنید؟"
   },
   "js_update_button_export": {
     "message": "ذخیره پشتیبان"

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importa sessione"
   },
-  "html_notice_title": {
-    "message": "Avviso"
-  },
-  "html_notice_important_notice": {
-    "message": "Avviso importante da The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Impostazioni"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Mai"
-  },
-  "html_options_suspend_seconds": {
-    "message": "secondi"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Sospendi questa scheda ora"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Non sospendere ora"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Non sospendere mai questo dominio"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Scheda sospesa"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Scheda sospesa"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Ricarica scheda"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Non sospendere mai"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Aggiorna o clicca per ricaricare"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Il ricaricamento automatico delle schede è temporaneamente disabilitato."
-  },
-  "html_suspended_donation_question": {
-    "message": "Questa estensione ti fa felice?\nMostra il tuo supporto con una donazione."
   },
   "html_permissions_title": {
     "message": "Autorizzazioni"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " prima di continuare con l'aggiornamento."
   },
-  "html_updated_title": {
-    "message": "Aggiornato"
-  },
-  "html_updating_heading": {
-    "message": "si sta aggiornando"
-  },
-  "html_updating_message": {
-    "message": "Attendi mentre ripristino le tue schede sospese..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "è stato aggiornato"
-  },
-  "html_updated_info_line1": {
-    "message": "Un backup automatico delle tue schede è stato effettuato prima dell'aggiornamento."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Se hai riscontrato problemi durante l'aggiornamento, puoi recuperare le schede perse dalla "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Novità in "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nuove funzionalità:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Correzioni di bug:"
-  },
-  "html_updated_release_notes": {
-    "message": "Visita GitHub per le note di rilascio complete: "
-  },
-  "html_updated_patch_message": {
-    "message": "Ci scusiamo per il disagio. Era necessaria una piccola manutenzione."
-  },
-  "html_welcome_title": {
-    "message": "Benvenuto"
-  },
   "html_welcome_text_line1": {
     "message": "Grazie per provare"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Puoi regolare le impostazioni qui sotto."
-  },
-  "html_thanks_title": {
-    "message": "Grazie"
-  },
-  "html_thanks_header": {
-    "message": "Grazie per il supporto!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Che grandi cose ti arrivino oggi."
   },
   "js_popup_normal": {
     "message": "La scheda verrà sospesa automaticamente."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Scheda sospesa"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Non sospendere"
   },
   "js_popup_whitelisted": {
     "message": "Sito nella lista bianca."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Impossibile caricare il file. Assicurati che sia testo normale e contenga un URL per riga."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Rimuovi il sito dalla lista bianca"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Imposta scorciatoie da tastiera"
   },
@@ -701,9 +617,6 @@
   "js_permissions_button_set": {
     "message": "Apri impostazioni estensione"
   },
-  "js_update_confirm": {
-    "message": "Non hai ancora salvato un backup. Aggiornare l'estensione comunque?"
-  },
   "js_update_button_export": {
     "message": "Salva backup"
   },
@@ -715,17 +628,5 @@
   },
   "js_session_save_point": {
     "message": "Punto di salvataggio automatico per v"
-  },
-  "html_changelog_rating_title": {
-    "message": "Cosa ne pensi di questo aggiornamento?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Grazie!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Grazie per il feedback!",
-    "description": "Message shown when user clicks 1-4 stars"
   }
 }

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Impordi seanss"
   },
-  "html_notice_title": {
-    "message": "Teade"
-  },
-  "html_notice_important_notice": {
-    "message": "Oluline teade The Great Tab Killerilt"
-  },
   "html_options_title": {
     "message": "Seaded"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Mitte kunagi"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sek"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Peata see vahekaart kohe"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Mitte praegu"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Ära kunagi peata seda domeeni"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Peatatud vahekaart"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Vahekaart peatatud"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Laadi vahekaart uuesti"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Ära kunagi peata"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Värskenda või klõpsa uuesti laadimiseks"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Vahekaartide automaatne laadimine on ajutiselt keelatud."
-  },
-  "html_suspended_donation_question": {
-    "message": "Kas see laiendus teeb teid õnnelikuks?\nNäidake oma toetust annetades."
   },
   "html_permissions_title": {
     "message": "Õigused"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " enne uuendamisega jätkamist."
   },
-  "html_updated_title": {
-    "message": "Uuendatud"
-  },
-  "html_updating_heading": {
-    "message": "uuendab"
-  },
-  "html_updating_message": {
-    "message": "Palun oodake kuni taastan peatatud vahekaardid..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "on uuendatud"
-  },
-  "html_updated_info_line1": {
-    "message": "Enne uuendamist loodi teie vahekaartidest automaatne varukoopia."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Kui uuendamise ajal tekkisid probleemid saate kaotatud vahekaardid taastada "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " lehelt."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Mis on uut "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Uued funktsioonid:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Veaparandused:"
-  },
-  "html_updated_release_notes": {
-    "message": "Külastage GitHubi täielike väljalaskemärkuste saamiseks: "
-  },
-  "html_updated_patch_message": {
-    "message": "Vabandame häirimise pärast. Pidin lihtsalt tegema väikese hooldustöö."
-  },
-  "html_welcome_title": {
-    "message": "Tere tulemast"
-  },
   "html_welcome_text_line1": {
     "message": "Täname proovimise eest"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Saate allpool seadeid peenhäälestada."
-  },
-  "html_thanks_title": {
-    "message": "Tänu"
-  },
-  "html_thanks_header": {
-    "message": "Täname toetuse eest!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Loodan et teil läheb täna hästi."
   },
   "js_popup_normal": {
     "message": "Vahekaart peatatakse automaatselt."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Vahekaart peatatud"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Ära peata"
   },
   "js_popup_whitelisted": {
     "message": "Sait on valgel nimekirjal."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Faili laadimine ebaõnnestus. Veenduge et fail on lihtne tekst ühe URL-iga real."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Eemalda sait valgest nimekirjast"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Seadista klaviatuuri otseteed"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Ava laienduse seaded"
-  },
-  "js_update_confirm": {
-    "message": "Te pole veel varukooipat salvestanud. Uuenda laiendust ikkagi?"
   },
   "js_update_button_export": {
     "message": "Salvesta varukoopia"

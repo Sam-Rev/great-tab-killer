@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Import session"
   },
-  "html_notice_title": {
-    "message": "Notice"
-  },
-  "html_notice_important_notice": {
-    "message": "Important notice from The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Settings"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Never"
-  },
-  "html_options_suspend_seconds": {
-    "message": "seconds"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -368,9 +359,6 @@
   "html_popup_suspend_tab": {
     "message": "Suspend this tab now"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Don't suspend for now"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Never suspend this domain"
   },
@@ -497,12 +485,6 @@
   "html_monitor_col_actions": {
     "message": "Actions"
   },
-  "html_monitor_note": {
-    "message": "Memory is approximate; calculation details are above the table."
-  },
-  "html_popup_monitor": {
-    "message": "Resource monitor"
-  },
   "js_monitor_mb": {
     "message": "MB"
   },
@@ -520,9 +502,6 @@
   },
   "js_monitor_method_precise": {
     "message": "Chrome"
-  },
-  "js_monitor_freed": {
-    "message": "freed"
   },
   "js_monitor_free": {
     "message": "free"
@@ -677,14 +656,8 @@
   "js_monitor_tt_fixed_suspended": {
     "message": "A fixed estimate of ≈4 MB for the extension placeholder. This is an assumption, not a current measurement."
   },
-  "js_monitor_tt_fixed_discarded": {
-    "message": "Fixed value: a discarded tab is unloaded from memory entirely; only a bookkeeping entry (~0.5 MB) remains."
-  },
   "js_monitor_tt_stale": {
     "message": "Last saved measurement of this page. The tab cannot be measured right now (e.g. frozen), but it still holds its memory."
-  },
-  "js_monitor_tt_released": {
-    "message": "This tab is unloaded. The figure shows how much memory the page was using when it was last measured — i.e. how much was freed by unloading it."
   },
   "html_success_great_success": {
     "message": "Great success!"
@@ -704,18 +677,6 @@
   "html_suspended_title": {
     "message": "Suspended Tab"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Tab suspended"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Reload tab"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Never suspend"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Refresh or click to reload"
   },
@@ -724,9 +685,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatic tab reloading is temporarily disabled."
-  },
-  "html_suspended_donation_question": {
-    "message": "Does this extension make you happy?\nShow your support by donating."
   },
   "html_permissions_title": {
     "message": "Permissions"
@@ -758,48 +716,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " before restarting the extension."
   },
-  "html_updated_title": {
-    "message": "Updated"
-  },
-  "html_updating_heading": {
-    "message": "is updating"
-  },
-  "html_updating_message": {
-    "message": "Please wait while I restore your suspended tabs..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "has been updated"
-  },
-  "html_updated_info_line1": {
-    "message": "An automatic backup was made of your tabs before the update."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "If you encountered any issues during the update, you can recover lost tabs from the "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " page."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "What's new in "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "New features:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Bug fixes:"
-  },
-  "html_updated_release_notes": {
-    "message": "Visit GitHub for full release notes: "
-  },
-  "html_updated_patch_message": {
-    "message": "Sorry for the disturbance. I just needed to perform a little maintenance."
-  },
-  "html_welcome_title": {
-    "message": "Welcome"
-  },
   "html_welcome_text_line1": {
     "message": "Thanks for trying"
   },
@@ -808,15 +724,6 @@
   },
   "html_welcome_text_line3": {
     "message": "You can fine-tune the settings below."
-  },
-  "html_thanks_title": {
-    "message": "Thanks"
-  },
-  "html_thanks_header": {
-    "message": "Thanks for the support!"
-  },
-  "html_thanks_sub_header": {
-    "message": "May great things come your way today."
   },
   "js_popup_normal": {
     "message": "Tab will suspend automatically."
@@ -829,9 +736,6 @@
   },
   "js_popup_suspended": {
     "message": "Tab suspended"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Don't suspend"
   },
   "js_popup_whitelisted": {
     "message": "Site whitelisted."
@@ -917,9 +821,6 @@
   "js_history_import_fail": {
     "message": "Failed to load file. Ensure file is plain text and contains a single url per line."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Remove site from whitelist"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Set keyboard shortcuts"
   },
@@ -947,9 +848,6 @@
   "js_permissions_button_set": {
     "message": "Open extension settings"
   },
-  "js_update_confirm": {
-    "message": "You have not saved a backup yet. Update the extension anyway?"
-  },
   "js_update_button_export": {
     "message": "Save backup"
   },
@@ -961,18 +859,6 @@
   },
   "js_session_save_point": {
     "message": "Automatic save point for v"
-  },
-  "html_changelog_rating_title": {
-    "message": "How do you like this update?",
-    "description": "Title for the rating widget in changelog"
-  },
-  "html_changelog_rating_5stars": {
-    "message": "Thank you!",
-    "description": "Message shown when user clicks 5 stars"
-  },
-  "html_changelog_rating_feedback": {
-    "message": "Thanks for the feedback!",
-    "description": "Message shown when user clicks 1-4 stars"
   },
   "html_changelog_heading": {
     "message": "Update complete"
@@ -1069,17 +955,5 @@
   },
   "js_monitor_action_done": {
     "message": "Tab state and memory updated"
-  },
-  "html_changelog_heading": {
-    "message": "Update complete"
-  },
-  "html_changelog_version_prefix": {
-    "message": "Current version:"
-  },
-  "html_changelog_info": {
-    "message": "The Great Tab Killer is a local-first Chromium extension. This page confirms that the extension update finished."
-  },
-  "html_changelog_history": {
-    "message": "Use Session History to review or recover saved tabs. Project release notes are maintained in CHANGELOG.md."
   }
 }

@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importera session"
   },
-  "html_notice_title": {
-    "message": "Meddelande"
-  },
-  "html_notice_important_notice": {
-    "message": "Viktigt meddelande från The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Inställningar"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Aldrig"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekunder"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Pausa denna flik nu"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Pausa inte nu"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Pausa aldrig denna domän"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Pausad flik"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Flik pausad"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Ladda om flik"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Pausa aldrig"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Uppdatera eller klicka för att ladda om"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatisk flikladdning är tillfälligt inaktiverad."
-  },
-  "html_suspended_donation_question": {
-    "message": "Gör detta tillägg dig glad?\nVisa ditt stöd genom att donera."
   },
   "html_permissions_title": {
     "message": "Behörigheter"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " innan du fortsätter med uppdateringen."
   },
-  "html_updated_title": {
-    "message": "Uppdaterad"
-  },
-  "html_updating_heading": {
-    "message": "uppdaterar"
-  },
-  "html_updating_message": {
-    "message": "Vänta medan jag återställer dina pausade flikar..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "har uppdaterats"
-  },
-  "html_updated_info_line1": {
-    "message": "En automatisk säkerhetskopia av dina flikar gjordes innan uppdateringen."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Om du stötte på problem under uppdateringen kan du återställa förlorade flikar från "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": " sidan."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Nyheter i "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nya funktioner:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Felrättningar:"
-  },
-  "html_updated_release_notes": {
-    "message": "Besök GitHub för fullständiga versionsnoteringar: "
-  },
-  "html_updated_patch_message": {
-    "message": "Ursäkta störningen. Jag behövde bara utföra lite underhåll."
-  },
-  "html_welcome_title": {
-    "message": "Välkommen"
-  },
   "html_welcome_text_line1": {
     "message": "Tack för att du provar"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Du kan finjustera inställningarna nedan."
-  },
-  "html_thanks_title": {
-    "message": "Tack"
-  },
-  "html_thanks_header": {
-    "message": "Tack för stödet!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Må goda saker komma din väg idag."
   },
   "js_popup_normal": {
     "message": "Flik pausas automatiskt."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Flik pausad"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Pausa inte"
   },
   "js_popup_whitelisted": {
     "message": "Sida vitlistad."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Det gick inte att läsa in filen. Se till att filen är ren text och innehåller en URL per rad."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Ta bort sida från vitlistan"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Ange tangentbordsgenvägar"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Öppna tilläggsinställningar"
-  },
-  "js_update_confirm": {
-    "message": "Du har inte sparat en säkerhetskopia ännu. Uppdatera tillägget ändå?"
   },
   "js_update_button_export": {
     "message": "Spara säkerhetskopia"

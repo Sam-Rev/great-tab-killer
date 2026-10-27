@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Importer økt"
   },
-  "html_notice_title": {
-    "message": "Merknad"
-  },
-  "html_notice_important_notice": {
-    "message": "Viktig merknad fra The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Innstillinger"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Aldri"
-  },
-  "html_options_suspend_seconds": {
-    "message": "sekunder"
   },
   "html_options_suspend_minute": {
     "message": "min"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Suspender denne fanen nå"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Ikke suspender nå"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Aldri suspender dette domenet"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Suspendert fane"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Fane suspendert"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Last inn fane på nytt"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Aldri suspender"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Oppdater eller klikk for å laste på nytt"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Automatisk innlasting av faner er midlertidig deaktivert."
-  },
-  "html_suspended_donation_question": {
-    "message": "Gjør denne utvidelsen deg glad?\nVis din støtte ved å donere."
   },
   "html_permissions_title": {
     "message": "Tillatelser"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " før du fortsetter med oppdateringen."
   },
-  "html_updated_title": {
-    "message": "Oppdatert"
-  },
-  "html_updating_heading": {
-    "message": "oppdateres"
-  },
-  "html_updating_message": {
-    "message": "Vent mens jeg gjenoppretter de suspenderte fanene dine..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "er oppdatert"
-  },
-  "html_updated_info_line1": {
-    "message": "En automatisk sikkerhetskopi av fanene dine ble laget før oppdateringen."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Hvis du opplevde problemer under oppdateringen, kan du gjenopprette tapte faner fra "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Hva er nytt i "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Nye funksjoner:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Feilrettinger:"
-  },
-  "html_updated_release_notes": {
-    "message": "Besøk GitHub for fullstendige utgivelsesnotater: "
-  },
-  "html_updated_patch_message": {
-    "message": "Beklager forstyrrelsene. Jeg måtte bare utføre litt vedlikehold."
-  },
-  "html_welcome_title": {
-    "message": "Velkommen"
-  },
   "html_welcome_text_line1": {
     "message": "Takk for at du prøver"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Du kan finjustere innstillingene nedenfor."
-  },
-  "html_thanks_title": {
-    "message": "Takk"
-  },
-  "html_thanks_header": {
-    "message": "Takk for støtten!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Må store ting komme din vei i dag."
   },
   "js_popup_normal": {
     "message": "Fanen suspenderes automatisk."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Fane suspendert"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Ikke suspender"
   },
   "js_popup_whitelisted": {
     "message": "Nettsted på hvitelisten."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Klarte ikke å laste filen. Kontroller at den er ren tekst med én URL per linje."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Fjern nettsted fra hvitelisten"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Angi tastatursnarveier"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Åpne utvidelsesinnstillinger"
-  },
-  "js_update_confirm": {
-    "message": "Du har ikke lagret en sikkerhetskopi ennå. Oppdater utvidelsen uansett?"
   },
   "js_update_button_export": {
     "message": "Lagre sikkerhetskopi"

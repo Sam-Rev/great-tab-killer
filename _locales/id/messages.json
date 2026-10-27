@@ -95,12 +95,6 @@
   "html_history_import_session": {
     "message": "Impor sesi"
   },
-  "html_notice_title": {
-    "message": "Pemberitahuan"
-  },
-  "html_notice_important_notice": {
-    "message": "Pemberitahuan penting dari The Great Tab Killer"
-  },
   "html_options_title": {
     "message": "Pengaturan"
   },
@@ -118,9 +112,6 @@
   },
   "html_options_suspend_never": {
     "message": "Tidak pernah"
-  },
-  "html_options_suspend_seconds": {
-    "message": "detik"
   },
   "html_options_suspend_minute": {
     "message": "mnt"
@@ -353,9 +344,6 @@
   "html_popup_suspend_tab": {
     "message": "Tangguhkan tab ini sekarang"
   },
-  "html_popup_dont_suspend_now": {
-    "message": "Jangan tangguhkan sekarang"
-  },
   "html_popup_never_suspend_domain": {
     "message": "Jangan pernah tangguhkan domain ini"
   },
@@ -458,18 +446,6 @@
   "html_suspended_title": {
     "message": "Tab ditangguhkan"
   },
-  "html_suspended_tab_suspended": {
-    "message": "Tab ditangguhkan"
-  },
-  "html_suspended_tab_reload": {
-    "message": "Muat ulang tab"
-  },
-  "html_suspended_tab_whitelist_prefix": {
-    "message": "Jangan tangguhkan"
-  },
-  "html_suspended_tab_whitelist_suffix": {
-    "message": "..."
-  },
   "html_suspended_click_to_reload": {
     "message": "Segarkan atau klik untuk memuat ulang"
   },
@@ -478,9 +454,6 @@
   },
   "html_suspended_toast_reload_disabled": {
     "message": "Muat ulang tab otomatis untuk sementara dinonaktifkan."
-  },
-  "html_suspended_donation_question": {
-    "message": "Apakah ekstensi ini membuat Anda senang?\nTunjukkan dukungan Anda dengan berdonasi."
   },
   "html_permissions_title": {
     "message": "Izin"
@@ -512,48 +485,6 @@
   "html_update_info_nobackup_suffix": {
     "message": " sebelum melanjutkan pembaruan."
   },
-  "html_updated_title": {
-    "message": "Diperbarui"
-  },
-  "html_updating_heading": {
-    "message": "sedang diperbarui"
-  },
-  "html_updating_message": {
-    "message": "Harap tunggu saat saya memulihkan tab yang ditangguhkan..."
-  },
-  "html_updated_great_suspender_updated": {
-    "message": "telah diperbarui"
-  },
-  "html_updated_info_line1": {
-    "message": "Cadangan otomatis tab Anda dibuat sebelum pembaruan."
-  },
-  "html_updated_info_line2_prefix": {
-    "message": "Jika Anda mengalami masalah selama pembaruan, Anda dapat memulihkan tab yang hilang dari "
-  },
-  "html_updated_info_line2_suffix": {
-    "message": "."
-  },
-  "html_updated_detail_header_prefix": {
-    "message": "Yang baru di versi "
-  },
-  "html_updated_detail_header_suffix": {
-    "message": "?"
-  },
-  "html_updated_new_features_header": {
-    "message": "Fitur baru:"
-  },
-  "html_updated_bug_fixes_header": {
-    "message": "Perbaikan bug:"
-  },
-  "html_updated_release_notes": {
-    "message": "Kunjungi GitHub untuk catatan rilis lengkap: "
-  },
-  "html_updated_patch_message": {
-    "message": "Maaf atas gangguan ini. Saya hanya perlu melakukan sedikit perawatan."
-  },
-  "html_welcome_title": {
-    "message": "Selamat datang"
-  },
   "html_welcome_text_line1": {
     "message": "Terima kasih telah mencoba"
   },
@@ -562,15 +493,6 @@
   },
   "html_welcome_text_line3": {
     "message": "Anda dapat menyesuaikan pengaturan di bawah."
-  },
-  "html_thanks_title": {
-    "message": "Terima kasih"
-  },
-  "html_thanks_header": {
-    "message": "Terima kasih atas dukungannya!"
-  },
-  "html_thanks_sub_header": {
-    "message": "Semoga hal-hal luar biasa datang hari ini."
   },
   "js_popup_normal": {
     "message": "Tab akan ditangguhkan secara otomatis."
@@ -583,9 +505,6 @@
   },
   "js_popup_suspended": {
     "message": "Tab ditangguhkan"
-  },
-  "js_popup_suspended_pause": {
-    "message": "Jangan tangguhkan"
   },
   "js_popup_whitelisted": {
     "message": "Situs dalam daftar putih."
@@ -671,9 +590,6 @@
   "js_history_import_fail": {
     "message": "Gagal memuat file. Pastikan file berupa teks biasa dan berisi satu URL per baris."
   },
-  "js_suspended_remove_from_whitelist": {
-    "message": "Hapus situs dari daftar putih"
-  },
   "js_suspended_hotkey_to_reload": {
     "message": "Atur pintasan keyboard"
   },
@@ -700,9 +616,6 @@
   },
   "js_permissions_button_set": {
     "message": "Buka pengaturan ekstensi"
-  },
-  "js_update_confirm": {
-    "message": "Anda belum menyimpan cadangan. Perbarui ekstensi tetap?"
   },
   "js_update_button_export": {
     "message": "Simpan cadangan"
