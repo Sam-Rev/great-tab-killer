@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const storageSource = (await readFile(new URL('../js/helpers/gsStorage.js', import.meta.url), 'utf8'))
+const storageSource = (await readFile(new URL('../../js/helpers/gsStorage.js', import.meta.url), 'utf8'))
   .replace(/^import .*;?\s*$/gm, '')
   .replace('export var gsStorage =', 'var gsStorage =') +
   '\nglobalThis.gsStorageForTest = gsStorage;';

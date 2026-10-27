@@ -26,9 +26,9 @@ Scope: checked-in project files on `phase-1-audit`; generated from source inspec
 | `js/changelog.js:54,56` | Localized changelog strings into HTML | Static repository translations | **Likely, Low**: values come from bundled locale files, not a remote source. |
 | `js/helpers/gsUtils.js:426` | Localized `data-i18n` content | Static repository translations | **Likely, Low**: repository-owned locale strings; the helper intentionally supports markup. |
 | `js/suspended.js:24,87` | Clone fixed templates | Static template cloning | **Certain, Info**: no dynamic HTML string is inserted at these sites. |
-| `scripts/memlab/dashboard.html:298,313,353,378,394,407,428,451,509,532` | Local developer dashboard `innerHTML` | Dev-only; interpolated values are escaped at relevant text insertion points or built from fixed/typed data | **Likely, Low**: not included in shipped extension. |
+| `dev/scripts/memlab/dashboard.html:298,313,353,378,394,407,428,451,509,532` | Local developer dashboard `innerHTML` | Dev-only; interpolated values are escaped at relevant text insertion points or built from fixed/typed data | **Likely, Low**: not included in shipped extension. |
 
-Searches found no shipped `eval(`, `new Function`, string-form timer, `document.write`, `outerHTML`, `insertAdjacentHTML`, `dangerouslySet*`, or literal `javascript:` URL. `new Function` occurs in `tests/monitor-lab.test.mjs:89` only. These are source scans, not runtime proof.
+Searches found no shipped `eval(`, `new Function`, string-form timer, `document.write`, `outerHTML`, `insertAdjacentHTML`, `dangerouslySet*`, or literal `javascript:` URL. `new Function` occurs in `dev/tests/monitor-lab.test.mjs:89` only. These are source scans, not runtime proof.
 
 ## Network and URL construction
 
@@ -38,8 +38,8 @@ Searches found no shipped `eval(`, `new Function`, string-form timer, `document.
 | `js/helpers/gsUtils.js:399` | `fetch(chrome.runtime.getURL(...))` | **Certain**: reads the extension's bundled locale JSON. |
 | `js/helpers/dom-to-image.js:480-486` | `XMLHttpRequest` | Vendored image/font inliner can request resources referenced by the DOM being captured; see `vendor/README.md`. |
 | `js/helpers/html2canvas.min.js:1770-1776,3451-3484,5820-5841,6387` | XHR/fetch resource loading | Vendored renderer has resource-loading paths; observed call sites do not establish a fixed remote endpoint. |
-| `scripts/memlab/dashboard.html:252` | `fetch` local dashboard API | Dev-only memory lab server, bound to loopback by its source; not shipped extension code. |
-| `scripts/memlab/bench_urls.txt` | Public benchmark URLs | Test inputs only; benchmark was not run. |
+| `dev/scripts/memlab/dashboard.html:252` | `fetch` local dashboard API | Dev-only memory lab server, bound to loopback by its source; not shipped extension code. |
+| `dev/scripts/memlab/bench_urls.txt` | Public benchmark URLs | Test inputs only; benchmark was not run. |
 
 No `WebSocket`, `EventSource`, or `sendBeacon` call was found in project JavaScript/HTML. Remote URLs in source were documentation links or benchmark inputs; the reviewed HTML link paths are click-driven. `chrome.tabs.create` sites mostly open extension pages or Chrome settings; `js/recovery.js:153` opens imported session URLs. Imported URL parsing checks for `://` but does not enforce an allowed scheme, so scheme validation remains an audit finding.
 

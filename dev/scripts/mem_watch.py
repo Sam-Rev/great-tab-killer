@@ -2,9 +2,9 @@
 """
 TGS Memory Lab — real resource measurements for Chrome on macOS.
 
-  python3 scripts/mem_watch.py              dashboard at http://127.0.0.1:8765
-  python3 scripts/mem_watch.py bench ...    automatic A/B in the terminal
-  python3 scripts/mem_watch.py snapshot     current numbers, once
+  python3 dev/scripts/mem_watch.py              dashboard at http://127.0.0.1:8765
+  python3 dev/scripts/mem_watch.py bench ...    automatic A/B in the terminal
+  python3 dev/scripts/mem_watch.py snapshot     current numbers, once
 
 No dependencies (Python 3.9+, macOS). Results: ~/.tgs-memlab/results.json
 """
@@ -21,7 +21,7 @@ from memlab.metrics import Sampler, find_browsers  # noqa: E402
 from memlab.bench import (Bench, Store, VARIANTS, SUMMARY_METRICS,  # noqa: E402
                           RESULTS_FILE, summarize_session)
 
-REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def cmd_serve(args):

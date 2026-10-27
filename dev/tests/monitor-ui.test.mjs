@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const M = 1048576;
-const source = (await readFile(new URL('../js/monitor.js', import.meta.url), 'utf8'))
+const source = (await readFile(new URL('../../js/monitor.js', import.meta.url), 'utf8'))
   .replace(/^import .*;$/gm, '')
   .replace(/\}\)\(\);\s*$/, 'globalThis.monitorTest = { measureAllTabs, renderTabStats, buildTabActions, buildStatusChip, performTabAction, runTabAction, rowAfterAction, refresh, actions: _tabActions, getRows: () => _rows, setRows: rows => { _rows = rows; } }; })();');
 function setup(processes) {
@@ -135,7 +135,7 @@ test('resume routes placeholders through TGS and native sleeping tabs through ac
 
 test('normal status is labelled Running in English and Работает in Russian', async () => {
   for (const [lang, label] of [['en', 'Running'], ['ru', 'Работает']]) {
-    const messages = JSON.parse(await readFile(new URL('../_locales/' + lang + '/messages.json', import.meta.url)));
+    const messages = JSON.parse(await readFile(new URL('../../_locales/' + lang + '/messages.json', import.meta.url)));
     assert.equal(messages.js_monitor_status_normal.message, label);
   }
 });
