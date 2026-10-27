@@ -2,7 +2,6 @@
 'use strict';
 
 import {gsUtils} from "./gsUtils.js"
-import {gsChrome} from "./gsChrome.js"
 import {gsSession} from "./gsSession.js"
 
 export var gsIndexedDb = {
@@ -530,12 +529,8 @@ export var gsIndexedDb = {
   performMigration: async function(oldVersion) {
     try {
       const gsDb = await gsIndexedDb.getDb();
-      const extensionName = chrome.runtime.getManifest().name || '';
-
       const major = parseInt(oldVersion.split('.')[0] || 0);
       const minor = parseInt(oldVersion.split('.')[1] || 0);
-      const testMode = extensionName.includes('Test');
-      // patch = parseInt(oldVersion.split('.')[2] || 0);
 
       //perform migrated history fixup
       if (major < 6 || (major === 6 && minor < 13)) {
@@ -555,26 +550,6 @@ export var gsIndexedDb = {
             session.sessionId = '_' + gsUtils.generateHashCode(session.name);
           }
           await gsDb.update(gsIndexedDb.DB_SAVED_SESSIONS, session);
-        }
-      }
-      // Migration for versions < 6.30 removed (getOption/setOption no longer exist)
-      if (major < 6 || (major === 6 && minor < 31) || testMode) {
-        // if (oldVersion < 6.31)
-        const cookies = await gsChrome.cookiesGetAll();
-        const scrollPosByTabId = {};
-        for (const cookie of cookies) {
-          if (cookie.name.indexOf('gsScrollPos') === 0) {
-            if (cookie.value && cookie.value !== '0') {
-              const tabId = cookie.name.substr(12);
-              scrollPosByTabId[tabId] = cookie.value;
-            }
-            let prefix = cookie.secure ? 'https://' : 'http://';
-            if (cookie.domain.charAt(0) === '.') {
-              prefix += 'www';
-            }
-            const url = prefix + cookie.domain + cookie.path;
-            await gsChrome.cookiesRemove(url, cookie.name);
-          }
         }
       }
     } catch (e) {

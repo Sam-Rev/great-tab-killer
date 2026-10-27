@@ -5,34 +5,6 @@ import {gsUtils} from "./gsUtils.js"
 
 // eslint-disable-next-line no-unused-vars
 export var gsChrome = {
-  cookiesGetAll: function() {
-    return new Promise(resolve => {
-      chrome.cookies.getAll({}, cookies => {
-        if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeCookies', chrome.runtime.lastError);
-          cookies = [];
-        }
-        resolve(cookies);
-      });
-    });
-  },
-  cookiesRemove: function(url, name) {
-    return new Promise(resolve => {
-      if (!url || !name) {
-        gsUtils.warning('chromeCookies', 'url or name not specified');
-        resolve(null);
-        return;
-      }
-      chrome.cookies.remove({ url, name }, details => {
-        if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeCookies', chrome.runtime.lastError);
-          details = null;
-        }
-        resolve(details);
-      });
-    });
-  },
-
   tabsCreate: function(details) {
     return new Promise(resolve => {
       if (
