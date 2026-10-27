@@ -1671,13 +1671,6 @@ export var tgs = (function () {
         }
         sendResponse();
         return false;
-      case 'updateData':
-        sendResponse({
-          isUpdated: gsSession.isUpdated(),
-          getUpdateType: gsSession.getUpdateType()
-        });
-        return false;
-
     }
 
     // No async response pending by default

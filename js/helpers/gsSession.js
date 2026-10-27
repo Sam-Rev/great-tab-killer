@@ -19,8 +19,6 @@ export var gsSession = (function () {
 
   let initialisationMode = true;
   let sessionId;
-  let updateType = null;
-  let updated = false;
   let fileUrlsAccessAllowed = false;
 
   let startupTabCheckTimeTakenInSeconds;
@@ -126,10 +124,6 @@ export var gsSession = (function () {
     }
   }
 
-  function isUpdated() {
-    return updated;
-  }
-
   function isInitialising() {
     return initialisationMode;
   }
@@ -152,10 +146,6 @@ export var gsSession = (function () {
 
   function getStartupLastVersion() {
     return startupLastVersion;
-  }
-
-  function getUpdateType() {
-    return updateType;
   }
 
   function setSynchedSettingsOnInit(syncedSettings) {
@@ -319,18 +309,6 @@ export var gsSession = (function () {
 
   async function handleUpdate(currentSessionTabs, curVersion, lastVersion) {
     gsStorage.setLastVersion(curVersion);
-    const lastVersionParts = lastVersion.split(".");
-    const curVersionParts = curVersion.split(".");
-    if (lastVersionParts.length >= 2 && curVersionParts.length >= 2) {
-      if (parseInt(curVersionParts[0]) > parseInt(lastVersionParts[0])) {
-        updateType = "major";
-      } else if (parseInt(curVersionParts[1]) > parseInt(lastVersionParts[1])) {
-        updateType = "minor";
-      } else {
-        updateType = "patch";
-      }
-    }
-
     const sessionRestorePoint = await gsIndexedDb.fetchSessionRestorePoint(
       lastVersion
     );
@@ -357,8 +335,6 @@ export var gsSession = (function () {
       await gsUtils.createTabAndWaitForFinishLoading(updatedUrl, 10000);
 
       await recoverLostTabs();
-      updated = true;
-
       //update updated views
       has_updated_views = false;
       await chrome.tabs.query({}, (tabs) => {
@@ -374,7 +350,6 @@ export var gsSession = (function () {
         gsChrome.tabsCreate({ url: updatedUrl });
       }
     } else {
-      updated = true;
       await gsChrome.tabsCreate({ url: updatedUrl });
     }
   }
@@ -861,7 +836,6 @@ export var gsSession = (function () {
     buildCurrentSession,
     updateCurrentSession,
     isInitialising,
-    isUpdated,
     isFileUrlsAccessAllowed,
     getTabCheckTimeTakenInSeconds,
     getRecoveryTimeTakenInSeconds,
@@ -872,7 +846,6 @@ export var gsSession = (function () {
     triggerDiscardOfAllTabs,
     restoreSessionWindow,
     prepareForUpdate,
-    getUpdateType,
     updateSessionMetrics,
   };
 })();

@@ -732,31 +732,31 @@
     "message": "Permissions"
   },
   "html_permissions_heading": {
-    "message": "Please give me access to local file URLs"
+    "message": "Allow access to local file URLs"
   },
   "html_permissions_info": {
-    "message": "This extension is not currently permitted to suspend URLs beginning with the word \"file\".\nTo change this, please turn on \"Allow access to file URLs\" from the extension settings page."
+    "message": "To suspend local files, enable \"Allow access to file URLs\" for this extension in your browser's extension settings."
   },
   "html_permissions_backup": {
-    "message": "Please note: changing this option will cause all your suspended tabs will briefly disappear.\nJust in case, now might be a good time to save a backup of your current tab session."
+    "message": "Changing this setting may reload open tabs. You can export a session first from Session History."
   },
   "html_update_title": {
     "message": "Update"
   },
   "html_update_heading2": {
-    "message": "is about to get greater"
+    "message": "is applying an update"
   },
   "html_update_info": {
-    "message": "A new version of The Great Tab Killer is ready to be installed.\nPlease note: during the update your suspended tabs will briefly disappear."
+    "message": "Keep this page open while the extension restarts and restores your open tabs."
   },
   "html_update_info_withbackup": {
-    "message": "Just in case, now might be a good time to save a backup of your current tab session."
+    "message": "A session restore point is available for this update. If a tab is missing afterward, check Session History."
   },
   "html_update_info_nobackup_prefix": {
-    "message": "It is strongly recommended that you export a copy of your current session from "
+    "message": "No session restore point is available. You can review saved sessions in "
   },
   "html_update_info_nobackup_suffix": {
-    "message": " before continuing with the update."
+    "message": " before restarting the extension."
   },
   "html_updated_title": {
     "message": "Updated"
@@ -974,6 +974,18 @@
     "message": "Thanks for the feedback!",
     "description": "Message shown when user clicks 1-4 stars"
   },
+  "html_changelog_heading": {
+    "message": "Update complete"
+  },
+  "html_changelog_version_prefix": {
+    "message": "Current version:"
+  },
+  "html_changelog_info": {
+    "message": "The Great Tab Killer is a local-first Chromium extension. This page confirms that the extension update finished."
+  },
+  "html_changelog_history": {
+    "message": "Use Session History to review or recover saved tabs. Project release notes are maintained in CHANGELOG.md."
+  },
   "html_monitor_col_chrome": {
     "message": "Chrome memory"
   },
@@ -1057,5 +1069,17 @@
   },
   "js_monitor_action_done": {
     "message": "Tab state and memory updated"
+  },
+  "html_changelog_heading": {
+    "message": "Update complete"
+  },
+  "html_changelog_version_prefix": {
+    "message": "Current version:"
+  },
+  "html_changelog_info": {
+    "message": "The Great Tab Killer is a local-first Chromium extension. This page confirms that the extension update finished."
+  },
+  "html_changelog_history": {
+    "message": "Use Session History to review or recover saved tabs. Project release notes are maintained in CHANGELOG.md."
   }
 }
