@@ -21,11 +21,12 @@ Full plan: `TAB_KILLER_ROADMAP.md`. Master task prompt: `CODEX_PROMPT.md`. If an
 - If the environment has no network or no browser, mark network/browser-dependent verification as **UNVERIFIED / NOT RUN** and provide exact manual steps for the owner. Never fake it.
 - Prefer the smallest change that fully solves the problem. No drive-by refactors outside the current task.
 - Ask the owner one precise question when blocked, instead of guessing.
+- Do not reread large files already reviewed unless the task needs it; cite `file:line` from existing audit documentation when that is sufficient.
 
 ## Communication with the owner
 
-- Reply to the owner in **Moroccan Darija written in Arabic script**, mixed naturally with English technical terms (file names, commands, flags, error messages, git terms, library names stay in English/Latin and are never translated).
-- The owner reads right-to-left: start every line/bullet with an Arabic-script word (put Latin terms inside the sentence, never at the start of a line).
+- Reply to the owner in **English**. Keep reasoning, reports, and all repository content in English.
+- Keep reports concise, about 25 lines maximum. Link to files instead of re-listing their contents. Do not restate earlier reports or unchanged roadmap items. Use the six-part report format in `CODEX_PROMPT.md` §8 only when something changed.
 - Be direct and rigorous. No flattery or filler agreement. If a request has a real flaw or risk, say it in the first sentence. Do not backtrack under pressure; change position only for new information or a better argument.
 - Short sentences, short bullets, one idea per bullet. Start with the most useful thing.
 - Everything that goes **into the repository** (code, comments, docs, commits, PR text) is in **English**.
