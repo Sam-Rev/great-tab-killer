@@ -38,7 +38,8 @@ Manifest host access and content script matches cover `http://*/*`, `https://*/*
 |---|---|---|
 | `chrome.storage.local` `gsSettings` | Serialized extension options, including whitelist and backup frequency. | Persists until reset/extension removal; UI has reset behavior, but no unified wipe was verified. |
 | `chrome.storage.sync` setting keys | Current source defaults sync ON (`gsSyncSettings = true`); option values are written when sync is enabled. Owner decision: make it opt-in and OFF by default, with a privacy note in Options. | Chrome may sync enabled settings to the user's account. This is browser behavior. |
-| `chrome.storage.local` `gsVersion` and related version keys | Version/migration state. | No time expiry. |
+| `chrome.storage.local` `schemaVersion` | Project-owned storage schema version, initialized to integer version 1 before settings initialization. | Updated only by explicit future schema steps; not a browsing-data store. |
+| `chrome.storage.local` `gsVersion` and related version keys | Extension software version/session recovery state, distinct from `schemaVersion`. | No time expiry. |
 | `chrome.storage.local` `gsNotice` / recovery / metrics keys | Notice status, extension recovery state, and session metrics. | No general TTL; key-specific updates/deletes. |
 | `chrome.storage.local` `gsMonitorMemCache` | Full tab URL → estimated bytes and timestamp. | Up to 800 entries; entries older than 7 days are removed only during cache update. No dedicated user wipe found. |
 | `chrome.storage.local` `gsMonitorUsed` | Boolean indicating whether resource monitor has been opened. | Persists; no explicit expiry. |
