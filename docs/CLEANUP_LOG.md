@@ -1,0 +1,24 @@
+# Phase 2 Cleanup Log
+
+Branch: `phase-2-cleanup`. Every source removal is recorded with its evidence and source commit hash. The evidence register below was prepared before the first removal. Manifest permissions are intentionally unchanged in Phase 2; permission removal is reserved for Gate B/Phase 3.
+
+## Pre-removal evidence register
+
+| Task | Candidate and call-graph evidence | Decision / protected behavior | Status / commit |
+|---|---|---|---|
+| 2.1 | `js/notice.js` sends `requestNotice`/`clearNotice`; `html/notice.html` is opened only from `tgs.js` when `_noticeToDisplay` is truthy. Repository-wide search found no assignment to `_noticeToDisplay`. `setNoticeVersion` is called only by notice UI and legacy update handling. | Remove the dormant notice UI, message cases, storage key/helpers and interval. Keep backup behavior out of scope. | Pending |
+| 2.2 | `gsChrome.cookiesGetAll/cookiesRemove` are called only by the `<6.31` cookie migration in `gsIndexedDb.performMigration()`. | Remove the cookie migration/wrappers; leave manifest `cookies` permission until Phase 3. | Pending |
+| 2.3 | `gsIndexedDb.performMigration()` is called only from `gsSession.handleUpdate()` and contains the inherited `<6.13` saved-session rewrite plus `<6.31` cookie cleanup. `gsStorage` also contains inherited settings merge/special-case migration branches; storage currently uses `gsSettings` and a version marker but has no project schema version. | Drop inherited format conversions and add explicit project `schemaVersion`; retain current-project session recovery and defaults. | Pending |
+| 2.4 | No HTML/manifest/module imports `js/helpers/debug.js`; profiler DOM IDs have no HTML owner. Its `getDebugInfo` request has no sender except that helper; its dispatcher/function/export are otherwise unreferenced. | Remove profiler helper and its dedicated debug-info message path; keep normal warning/error logging and monitor UI. | Pending |
+| 2.5 | `thanks.html` is reached only by the old donation-success URL branch in `tgs.js`; donation popup messages/settings are only used by suspended-page donation code. `update.html`/`updated.html` participate in session update recovery; `broken.html` is the background-init failure route; `permissions.html` prompts for file access; `about.html` and `changelog.html` are linked in extension navigation; `changelog.html` is also the update-completion URL. | Remove donation-only route/page/UI; retain and rewrite needed update, failure, file-permission, about and changelog pages. Preserve `html/history.html` and `js/history*.js` session-history UI. | Pending |
+| 2.6 | `GOOGLE_S2_URL` is commented out and has no active reference. Popup monitor listener and Options monitor sidebar entry are commented HTML/JS blocks; current monitor entry points are separately present. | Delete only the enumerated obsolete comments/blocks; do not remove the monitor implementation. | Pending |
+| 2.7 | `migrateForeignSuspendedTabs()` is invoked only by `runtime.onInstalled` when reason is `install`; the function has no other caller. | Remove that automatic listener only. Keep the function body intact and dormant for task 7.7. | Pending |
+| 2.8 | Locale keys are referenced by HTML `data-i18n`, manifest message placeholders, JS `getMessage`/`chrome.i18n.getMessage`, plus some generated message-key patterns. A conservative cross-file inventory must be produced before deleting any keys. | Remove only keys proven unused after completed source removals; preserve dynamic-key families and English fallback behavior. | Pending |
+| 2.9 | `scripts/` contains the Python memory lab; `tests/` contains two Node monitor UI tests. No package manifest or CI workflow references their current paths; tests use paths relative to their own files. | Move tools/tests under `dev/` and fix their internal path references; keep them out of the shipped extension tree. | Pending |
+| 2.10 | `chrome.history.onVisited` and `chrome.history.deleteUrl` occur only in one listener in `js/tgs.js`. The session-history UI uses IndexedDB through `js/history*.js`, not `chrome.history`. | Remove listener only; preserve session-history UI. Leave manifest permission until Phase 3. | Pending |
+| 2.11 | `onMessageExternal` listener and `externalMessageRequestListener` have no internal caller; only the external API message strings and audit/roadmap documentation describe them. | Remove external listener/function/dispatch exposure and obsolete API strings/docs. | Pending |
+| 2.12 | `chrome.management` calls are confined to the optional extension-list/toggle section of `js/monitor.js`; no other module uses the management API. | Remove extension-list/toggle UI and related messages; leave optional manifest permission until Phase 3. | Pending |
+
+## Completed removals
+
+No source removals have been committed yet. After each task commit, record the affected file/symbol, the verified evidence, and the exact source commit hash here.
