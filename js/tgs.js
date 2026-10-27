@@ -1184,50 +1184,6 @@ export var tgs = (function () {
     return _isOnline;
   }
 
-  function getDebugInfo(tabId, callback) {
-    const timerDetails = getTabStatePropForTabId(tabId, STATE_TIMER_DETAILS);
-    const info = {
-      windowId: "",
-      tabId: "",
-      status: gsUtils.STATUS_UNKNOWN,
-      timerUp: timerDetails ? timerDetails.suspendDateTime : "-",
-    };
-
-    chrome.tabs.get(tabId, function (tab) {
-      if (chrome.runtime.lastError) {
-        gsUtils.error(tabId, chrome.runtime.lastError);
-        callback(info);
-        return;
-      }
-
-      info.windowId = tab.windowId;
-      info.tabId = tab.id;
-      if (gsUtils.isNormalTab(tab, true)) {
-        gsMessages.sendRequestInfoToContentScript(
-          tab.id,
-          function (error, tabInfo) {
-            if (error) {
-              gsUtils.warning(tab.id, "Failed to getDebugInfo", error);
-            }
-            if (tabInfo) {
-              calculateTabStatus(tab, tabInfo.status, function (status) {
-                info.status = status;
-                callback(info);
-              });
-            } else {
-              callback(info);
-            }
-          }
-        );
-      } else {
-        calculateTabStatus(tab, null, function (status) {
-          info.status = status;
-          callback(info);
-        });
-      }
-    });
-  }
-
   function getContentScriptStatus(tabId, knownContentScriptStatus) {
     return new Promise(function (resolve) {
       if (knownContentScriptStatus) {
@@ -1701,11 +1657,6 @@ export var tgs = (function () {
           sendResponse();
         });
         return true;
-      case 'getDebugInfo':
-        getDebugInfo(request.tabId, o => {
-          sendResponse(o);
-        })
-        return true;
       case 'online':
         if (!isOnline()) {
           _isOnline = true;
@@ -1918,7 +1869,6 @@ export var tgs = (function () {
     startTimers,
     buildContextMenu,
     getActiveTabStatus,
-    getDebugInfo,
     calculateTabStatus,
     isCurrentStationaryTab,
     isCurrentFocusedTab,

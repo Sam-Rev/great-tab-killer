@@ -11,7 +11,6 @@ import {gsSuspendedTab} from "./gsSuspendedTab.js"
 import {gsFavicon} from "./gsFavicon.js"
 import {tgs} from "../tgs.js"
 
-var debugInfo = false;
 var debugError = true;
 var _customMessages = null;
 var _currentLocale = null;
@@ -42,17 +41,7 @@ export var gsUtils = {
     return false;
   },
 
-  dir: function (object) {
-    if (debugInfo) {
-      console.dir(object);
-    }
-  },
-  log: function (id, text, ...args) {
-    if (debugInfo) {
-      args = args || [];
-      console.log(id, (new Date() + "").split(" ")[4], text, ...args);
-    }
-  },
+  log: function () {},
   warning: function (id, text, ...args) {
     if (debugError) {
       args = args || [];
@@ -120,22 +109,6 @@ export var gsUtils = {
     var obj = {};
     Error.captureStackTrace(obj, gsUtils.getStackTrace);
     return obj.stack;
-  },
-
-  isDebugInfo: function () {
-    return debugInfo;
-  },
-
-  isDebugError: function () {
-    return debugError;
-  },
-
-  setDebugInfo: function (value) {
-    debugInfo = value;
-  },
-
-  setDebugError: function (value) {
-    debugError = value;
   },
 
   isDiscardedTab: function (tab) {
