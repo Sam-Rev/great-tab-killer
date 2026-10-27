@@ -48,7 +48,7 @@ No `WebSocket`, `EventSource`, or `sendBeacon` call was found in project JavaScr
 | Listener | Accepted actions / source | Sender validation | Effects |
 |---|---|---|---|
 | `js/tgs.js:1617` runtime `onMessage` | Internal function-dispatch requests, plus content-script `reportTabState` and `savePreviewData` | **No general sender-origin validation**; branches validate selected fields only | Tab state changes, suspend/unsuspend, preview persistence, settings/session operations, status/debug responses. Content-script-originated values must be treated as hostile. |
-| `js/tgs.js:1761` `onMessageExternal` | `suspend`, `unsuspend`; optional numeric `tabId`, otherwise active tab | No `sender.id` allowlist | Another extension can request suspension/restoration. Does not return tab URL or session contents. |
+| `js/tgs.js` (Phase 2 task 2.11) | The external `suspend`/`unsuspend` handler was removed; current source has no `onMessageExternal` listener. | Fixed in Phase 2; manifest has no `externally_connectable` entry. |
 | `js/contentscript.js:41` runtime listener | Extension-to-content actions: request info/battery/scroll; ignore forms; temporary whitelist | Runtime extension messaging only; no page `window` bridge | Reads page state and sends limited reports to extension. |
 | `js/suspended.js:154` runtime listener | `ping`, unsuspend, session id, title/URL/reason/theme/preview/scroll/command updates, localization and visibility | No sender check | Mutates the extension suspended page; several fields feed HTML sinks listed above. |
 | `js/offscreen.js:3` runtime listener | `tgs-download` with `content` and `filename` | No sender check | Creates a text Blob and triggers anchor download. Expected caller is the extension service worker backup feature. |

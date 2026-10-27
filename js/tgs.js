@@ -1675,68 +1675,8 @@ export var tgs = (function () {
     return false;
   }
 
-  function externalMessageRequestListener(request, sender, sendResponse) {
-    gsUtils.log("background", "external message request: ", request, sender);
-
-    if (!request.action || !["suspend", "unsuspend"].includes(request.action)) {
-      sendResponse("Error: unknown request.action: " + request.action);
-      return;
-    }
-
-    // wrap this in an anonymous async function so we can use await
-    (async function () {
-      let tab;
-      if (request.tabId) {
-        if (typeof request.tabId !== "number") {
-          sendResponse("Error: tabId must be an int");
-          return;
-        }
-        tab = await gsChrome.tabsGet(request.tabId);
-        if (!tab) {
-          sendResponse("Error: no tab found with id: " + request.tabId);
-          return;
-        }
-      } else {
-        tab = await new Promise((r) => {
-          getCurrentlyActiveTab(r);
-        });
-      }
-      if (!tab) {
-        sendResponse("Error: failed to find a target tab");
-        return;
-      }
-
-      if (request.action === "suspend") {
-        if (gsUtils.isSuspendedTab(tab, true)) {
-          sendResponse("Error: tab is already suspended");
-          return;
-        }
-
-        gsTabSuspendManager.queueTabForSuspension(tab, 1);
-        sendResponse();
-        return;
-      }
-
-      if (request.action === "unsuspend") {
-        if (!gsUtils.isSuspendedTab(tab)) {
-          sendResponse("Error: tab is not suspended");
-          return;
-        }
-
-        unsuspendTab(tab);
-        sendResponse();
-      }
-    })();
-    return true;
-  }
-
   function addMessageListeners() {
     chrome.runtime.onMessage.addListener(messageRequestListener);
-    //attach listener to runtime for external messages, to allow
-    //interoperability with other extensions in the manner of an API
-    chrome.runtime.onMessageExternal.addListener(
-      externalMessageRequestListener
-    );
   }
 
   function addChromeListeners() {
