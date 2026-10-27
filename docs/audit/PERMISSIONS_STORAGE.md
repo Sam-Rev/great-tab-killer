@@ -8,7 +8,7 @@ Date: 2026-10-27. Static source map for the current manifest and source tree. A 
 |---|---|
 | Required `tabs` | `chrome.tabs.*` queries, navigation, state, suspend/restore, history snapshots, backup and sampling: `js/tgs.js`, `js/helpers/gsChrome.js`, `js/helpers/gsSession.js`, `js/helpers/gsBackup.js`, `js/helpers/gsMemorySampler.js`, and UI modules. Many calls need this permission to read tab URL/title or manipulate tabs. |
 | Required `storage` | `chrome.storage.local/sync/session`: `js/helpers/gsStorage.js`, `js/serviceWorker.js`, `js/helpers/gsMemorySampler.js`, `js/tgs.js`; settings, migration/version markers, monitor cache, and startup state. |
-| Required `history` | `js/tgs.js:1888-1892` registers `chrome.history.onVisited` and calls `chrome.history.deleteUrl` to remove suspended entries from browser history. |
+| Required `history` | No current source call site after Phase 2 task 2.10 removed the browser-history cleanup listener. The extension session-history UI in `html/history.html` and `js/history*.js` uses IndexedDB, not the browser History API. Manifest permission remains pending Gate B/Phase 3. |
 | Required `unlimitedStorage` | No direct API call; permits larger extension-origin storage quotas used by IndexedDB (`js/helpers/gsIndexedDb.js`), particularly preview image data and session stores. Review against measured storage needs. |
 | Required `contextMenus` | `js/tgs.js:1421-1514` creates/removes suspension context-menu items and handles clicks at `1514+`. |
 | Required `cookies` | No remaining source call site after Phase 2 task 2.2 removed `gsChrome.cookiesGetAll/cookiesRemove` and the inherited `gsScrollPos*` migration. Permission removal remains pending Gate B/Phase 3. |
@@ -40,7 +40,7 @@ Manifest host access and content script matches cover `http://*/*`, `https://*/*
 | `chrome.storage.sync` setting keys | Current source defaults sync ON (`gsSyncSettings = true`); option values are written when sync is enabled. Owner decision: make it opt-in and OFF by default, with a privacy note in Options. | Chrome may sync enabled settings to the user's account. This is browser behavior. |
 | `chrome.storage.local` `schemaVersion` | Project-owned storage schema version, initialized to integer version 1 before settings initialization. | Updated only by explicit future schema steps; not a browsing-data store. |
 | `chrome.storage.local` `gsVersion` and related version keys | Extension software version/session recovery state, distinct from `schemaVersion`. | No time expiry. |
-| `chrome.storage.local` `gsNotice` / recovery / metrics keys | Notice status, extension recovery state, and session metrics. | No general TTL; key-specific updates/deletes. |
+| `chrome.storage.local` recovery / metrics keys | Extension recovery state and session metrics. Phase 2 removed the dormant notice system and its storage key. | No general TTL; key-specific updates/deletes. |
 | `chrome.storage.local` `gsMonitorMemCache` | Full tab URL → estimated bytes and timestamp. | Up to 800 entries; entries older than 7 days are removed only during cache update. No dedicated user wipe found. |
 | `chrome.storage.local` `gsMonitorUsed` | Boolean indicating whether resource monitor has been opened. | Persists; no explicit expiry. |
 | `chrome.storage.session` `gsStartupChecksCompletedVersion` | Version whose startup checks completed. | Browser session storage; not browsing content. |
