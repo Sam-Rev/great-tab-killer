@@ -235,14 +235,16 @@ Goal: a public, detailed, honest audit of the project as it stands. Every findin
 - [ ] **3.8 Validate the suspended-page URL parameters.** `uri` must parse via `new URL()` and have an allowed scheme (`http:`, `https:`, `file:`); reject others. Cover with tests.
 - [ ] **3.9 External messaging removed** (decision §5.3). Add a guard: the guard script fails if `onMessageExternal`, `onConnectExternal`, or `externally_connectable` appears anywhere.
 
-### Phase 4 — MV3 reliability (timers → alarms) and bug fixes
+### Phase 4 — MV3 reliability (durable queue and alarm reconciliation) and bug fixes
 
-- [ ] **4.1 Inventory timers.** List all `setTimeout/setInterval` in `tgs.js` and helpers; classify: (a) must survive worker restarts (suspension countdowns, session backups, monitor sampling) vs (b) short in-flight debouncing (OK to keep).
-- [ ] **4.2 Design.** Persist "last activity timestamp per tab" in `chrome.storage.session` (or `local` if it must survive browser restart). One recurring alarm (e.g. every 1 minute — **verify** the minimum period for the targeted Chrome version; Chrome ≥ 120 allows 30 s) checks tabs against the user's timeout and queues suspensions. Avoid one-alarm-per-tab.
+- [ ] **4.1 Inventory timers.** Inventory `setTimeout/setInterval` in `tgs.js` and helpers. Preserve the existing per-tab `chrome.alarms` suspension deadlines; classify only transient debouncing/retries and other work that must survive worker restarts.
+- [ ] **4.2 Durable queue state.** Keep per-tab suspension alarms. Persist queue and in-flight state so service-worker termination cannot lose pending work, then reconcile stored state with existing alarms during startup. Do not replace per-tab suspension alarms with a recurring timer.
 - [ ] **4.3 Fix `window.setTimeout`** in `tgs.js` (service worker context). Search for **all** `window.` / `document.` usage reachable from the service worker (`tgs.js`, `gsStorage.js`, `gsSession.js`, helpers imported by `serviceWorker.js`). Add a lint rule/test that the service worker module graph has no `window`/`document`/`localStorage`.
 - [ ] **4.4 Worker restart test.** Manually/automatically terminate the service worker (`chrome://serviceworker-internals` or DevTools) and confirm suspension countdowns still fire. Report honestly if only tested manually.
 - [ ] **4.5 Resolve every `TODO` in the code**: fix, convert to a GitHub issue, or delete with justification.
 - [ ] **4.6 Startup & upgrade logic.** Simplify `ensureStartupChecks` / session recovery now that migrations may be removed; ensure first-run, update, and browser-restart paths each have a test or documented manual check.
+
+**Correction from Phase 1 audit (A-22):** the initial timer proposal was based on an incomplete read. Source already uses per-tab `chrome.alarms` for suspension deadlines. Phase 4 covers durable queue/in-flight state and startup alarm reconciliation, not suspension-timer redesign.
 
 ### Phase 5 — Settings and shortcuts (owner item 4)
 
