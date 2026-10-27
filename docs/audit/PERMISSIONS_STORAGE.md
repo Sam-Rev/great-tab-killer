@@ -19,7 +19,7 @@ Date: 2026-10-27. Static source map for the current manifest and source tree. A 
 | Required `system.cpu` | `js/monitor.js:296-298` reads CPU samples for monitor estimates. |
 | Required `system.memory` | `js/monitor.js:281` reads system memory for monitor estimates. |
 | Optional `processes` | `js/monitor.js:66-109,852,1510-1515` reads process memory and subscribes to process updates when the user grants access; `js/helpers/debug.js:128` also has a process-updated diagnostic listener. |
-| Optional `management` | `js/monitor.js:1128,1290-1300,1374-1402` requests permission, enumerates extensions with `getAll`, and toggles them with `setEnabled`. |
+| Optional `management` | No current source call site after Phase 2 task 2.12 removed the monitor extension-list/toggle UI and `chrome.management` calls. The optional manifest entry remains pending Gate B/Phase 3. |
 
 ## Host access and content-script match patterns
 

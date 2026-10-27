@@ -215,7 +215,7 @@ Goal: a public, detailed, honest audit of the project as it stands. Every findin
 - [x] 2.9 Moved the Python memory lab and Node tests under `dev/`; fixed script and test paths. They remain developer tooling and are excluded from the extension tree. Evidence and commit: `docs/CLEANUP_LOG.md`.
 - [x] 2.10 History cleanup listener: remove `chrome.history.onVisited` + `deleteUrl` in `tgs.js` (decision §5.1). The listener was removed; extension session-history UI remains. Evidence and commit: `docs/CLEANUP_LOG.md`.
 - [x] 2.11 External messaging: remove `onMessageExternal`, `externalMessageRequestListener`, related strings/docs (decision §5.3). Removed the listener and handler; no internal caller depended on it. Evidence and commit: `docs/CLEANUP_LOG.md`.
-- [ ] 2.12 Extension-management UI/logic in the monitor: remove `chrome.management.*`, the extensions list/toggle UI, and related locale keys (decision §5.2).
+- [x] 2.12 Extension-management UI/logic in the monitor: remove `chrome.management.*`, the extensions list/toggle UI, and related locale keys (decision §5.2). Removed; the optional manifest permission remains until Phase 3. Evidence and commit: `docs/CLEANUP_LOG.md`.
 
 ### Phase 3 — Hardening: permissions, guards, pinned libs
 
