@@ -6,7 +6,7 @@ import {gsSession} from "./gsSession.js"
 
 export var gsIndexedDb = {
   DB_SERVER: 'tgs',
-  DB_VERSION: '3',
+  DB_VERSION: '1',
   DB_PREVIEWS: 'gsPreviews',
   DB_SUSPENDED_TABINFO: 'gsSuspendedTabInfo',
   DB_FAVICON_META: 'gsFaviconMeta',
@@ -522,38 +522,4 @@ export var gsIndexedDb = {
     }
   },
 
-  /**
-   * MIGRATIONS
-   */
-
-  performMigration: async function(oldVersion) {
-    try {
-      const gsDb = await gsIndexedDb.getDb();
-      const major = parseInt(oldVersion.split('.')[0] || 0);
-      const minor = parseInt(oldVersion.split('.')[1] || 0);
-
-      //perform migrated history fixup
-      if (major < 6 || (major === 6 && minor < 13)) {
-        // if (oldVersion < 6.13)
-
-        //fix up migrated saved session and newly saved session sessionIds
-        const savedSessions = await gsDb
-          .query(gsIndexedDb.DB_SAVED_SESSIONS)
-          .all()
-          .execute();
-        for (const session of savedSessions) {
-          if (session.id === 7777) {
-            session.sessionId = '_7777';
-            session.name = 'Recovered tabs';
-            session.date = new Date(session.date).toISOString();
-          } else {
-            session.sessionId = '_' + gsUtils.generateHashCode(session.name);
-          }
-          await gsDb.update(gsIndexedDb.DB_SAVED_SESSIONS, session);
-        }
-      }
-    } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
-    }
-  },
 };

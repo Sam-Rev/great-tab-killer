@@ -29,6 +29,8 @@ export var gsStorage = {
   USE_ALT_SCREEN_CAPTURE_LIB: 'useAlternateScreenCaptureLib',
 
   APP_VERSION: 'gsVersion',
+  STORAGE_SCHEMA_VERSION: 'schemaVersion',
+  CURRENT_SCHEMA_VERSION: 1,
   LAST_EXTENSION_RECOVERY: 'gsExtensionRecovery',
 
   SM_SESSION_METRICS: 'gsSessionMetrics',
@@ -37,6 +39,26 @@ export var gsStorage = {
   SM_TOTAL_TAB_COUNT: 'totalTabCount',
 
   noop: function() {},
+
+  initSchemaVersion: async function() {
+    const key = gsStorage.STORAGE_SCHEMA_VERSION;
+    const stored = await chrome.storage.local.get(key);
+    const version = stored[key];
+    if (version === undefined) {
+      await chrome.storage.local.set({
+        [key]: gsStorage.CURRENT_SCHEMA_VERSION,
+      });
+      return gsStorage.CURRENT_SCHEMA_VERSION;
+    }
+    if (
+      !Number.isInteger(version) ||
+      version < 1 ||
+      version > gsStorage.CURRENT_SCHEMA_VERSION
+    ) {
+      throw new Error(`Unsupported storage schema version: ${version}`);
+    }
+    return version;
+  },
 
   getSettingsDefaults: function() {
     const defaults = {};
@@ -70,8 +92,9 @@ export var gsStorage = {
    * LOCAL STORAGE FUNCTIONS
    */
 
-  //populate localstorage settings with sync settings where undefined
-  initSettingsAsPromised: function() {
+  // Initialize this project's schema before reading or writing its settings.
+  initSettingsAsPromised: async function() {
+    await gsStorage.initSchemaVersion();
     return new Promise(function(resolve) {
       var defaultSettings = gsStorage.getSettingsDefaults();
       var defaultKeys = Object.keys(defaultSettings);
@@ -92,11 +115,6 @@ export var gsStorage = {
         }
         if (!rawLocalSettings) {
           rawLocalSettings = {};
-        } else {
-          //if we have some rawLocalSettings but SYNC_SETTINGS is not defined
-          //then define it as FALSE (as opposed to default of TRUE)
-          rawLocalSettings[gsStorage.SYNC_SETTINGS] =
-            rawLocalSettings[gsStorage.SYNC_SETTINGS] || false;
         }
         gsUtils.log('gsStorage', 'localSettings on init: ', rawLocalSettings);
         var shouldSyncSettings = rawLocalSettings[gsStorage.SYNC_SETTINGS];
