@@ -29,7 +29,6 @@ export var gsStorage = {
   USE_ALT_SCREEN_CAPTURE_LIB: 'useAlternateScreenCaptureLib',
 
   APP_VERSION: 'gsVersion',
-  LAST_NOTICE: 'gsNotice',
   LAST_EXTENSION_RECOVERY: 'gsExtensionRecovery',
 
   SM_SESSION_METRICS: 'gsSessionMetrics',
@@ -339,40 +338,6 @@ export var gsStorage = {
       gsUtils.error(
         'gsStorage',
         'failed to save ' + gsStorage.APP_VERSION + ' to local storage',
-        e
-      );
-    }
-  },
-
-  fetchNoticeVersion: function() {
-    return new Promise(resolve => {
-      chrome.storage.local.get([gsStorage.LAST_NOTICE]).then((result) => {
-        var lastNoticeVersion;
-        try {
-          lastNoticeVersion = JSON.parse(
-            result[gsStorage.LAST_NOTICE]
-          );
-        } catch (e) {
-          gsUtils.error(
-            'gsStorage',
-            'Failed to parse ' + gsStorage.LAST_NOTICE + ': ',
-            result[gsStorage.LAST_NOTICE]
-          );
-        }
-        lastNoticeVersion = lastNoticeVersion || '0';
-        resolve(lastNoticeVersion + '');
-      });
-    });
-  },
-  setNoticeVersion: function(newVersion) {
-    try {
-      var obj = {};
-      obj[gsStorage.LAST_NOTICE] = JSON.stringify(newVersion);
-      chrome.storage.local.set(obj);
-    } catch (e) {
-      gsUtils.error(
-        'gsStorage',
-        'failed to save ' + gsStorage.LAST_NOTICE + ' to local storage',
         e
       );
     }

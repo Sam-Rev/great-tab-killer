@@ -38,7 +38,6 @@ export var tgs = (function () {
   const STATE_SCROLL_POS = "scrollPos";
 
   const focusDelay = 500;
-  const noticeCheckInterval = 1000 * 60 * 60 * 12; // every 12 hours
   const sessionMetricsCheckInterval = 15; // every 15 minutes
   const analyticsCheckInterval = 60 * 23.5; // every 23.5 hours
 
@@ -51,7 +50,6 @@ export var tgs = (function () {
   let _sessionSaveTimer;
   let _newTabFocusTimer;
   let _newWindowFocusTimer;
-  let _noticeToDisplay;
   let _isOnline = navigator.onLine;
   let _triggerHotkeyUpdate = false;
   let _suspensionToggleHotkey;
@@ -1182,13 +1180,6 @@ export var tgs = (function () {
   }
 
 
-  function requestNotice() {
-    return _noticeToDisplay;
-  }
-  function clearNotice() {
-    _noticeToDisplay = undefined;
-  }
-
   function isOnline() {
     return _isOnline;
   }
@@ -1695,13 +1686,6 @@ export var tgs = (function () {
         setTabStatePropForTabId(request.tabId, tgs.STATE_SCROLL_POS, request.value);
         sendResponse();
         return false;
-      case 'requestNotice':
-        sendResponse(requestNotice());
-        return false;
-      case 'clearNotice':
-        clearNotice();
-        sendResponse();
-        return false;
       case 'requestToggleTempWhitelistStateOfHighlightedTab':
         requestToggleTempWhitelistStateOfHighlightedTab(function(status) {
           sendResponse(status);
@@ -1868,13 +1852,6 @@ export var tgs = (function () {
     chrome.windows.onCreated.addListener(function (window) {
       gsUtils.log(window.id, "window created.");
       queueSessionTimer();
-
-      var noticeToDisplay = requestNotice();
-      if (noticeToDisplay) {
-        chrome.tabs.create({
-          url: chrome.runtime.getURL("html/notice.html"),
-        });
-      }
     });
     chrome.windows.onRemoved.addListener(function (windowId) {
       gsUtils.log(windowId, "window removed.");
@@ -1939,8 +1916,6 @@ export var tgs = (function () {
     initAsPromised,
     initialiseTabContentScript,
     startTimers,
-    requestNotice,
-    clearNotice,
     buildContextMenu,
     getActiveTabStatus,
     getDebugInfo,
