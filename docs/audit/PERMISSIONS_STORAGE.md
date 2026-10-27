@@ -11,7 +11,7 @@ Date: 2026-10-27. Static source map for the current manifest and source tree. A 
 | Required `history` | `js/tgs.js:1888-1892` registers `chrome.history.onVisited` and calls `chrome.history.deleteUrl` to remove suspended entries from browser history. |
 | Required `unlimitedStorage` | No direct API call; permits larger extension-origin storage quotas used by IndexedDB (`js/helpers/gsIndexedDb.js`), particularly preview image data and session stores. Review against measured storage needs. |
 | Required `contextMenus` | `js/tgs.js:1421-1514` creates/removes suspension context-menu items and handles clicks at `1514+`. |
-| Required `cookies` | `js/helpers/gsChrome.js:8-28` wraps `chrome.cookies.getAll/remove`; called only by the inherited `gsScrollPos*` migration at `js/helpers/gsIndexedDb.js:561-577`. |
+| Required `cookies` | No remaining source call site after Phase 2 task 2.2 removed `gsChrome.cookiesGetAll/cookiesRemove` and the inherited `gsScrollPos*` migration. Permission removal remains pending Gate B/Phase 3. |
 | Required `alarms` | Per-tab suspension deadlines and alarm handlers in `js/tgs.js:580,1898-1915`; backup schedule in `js/helpers/gsBackup.js:79-103`; sampler schedule in `js/helpers/gsMemorySampler.js:379-385`. |
 | Required `favicon` | `js/helpers/gsFavicon.js:100-104,183` builds `chrome://favicon`/`_favicon` URLs to obtain tab icons; monitor views also use `_favicon` (`js/monitor.js:354`, `js/monitor-lab.js:315`). |
 | Required `scripting` | `js/helpers/gsMessages.js:143-174` injects preview libraries/code; `js/helpers/gsTabCheckManager.js:511-531` injects tab checks; `js/helpers/gsMemorySampler.js:154` injects sampler code. |
