@@ -161,14 +161,6 @@ async function migrateForeignSuspendedTabs() {
   }
 }
 
-// Run migration once on fresh install
-chrome.runtime.onInstalled.addListener(function (details) {
-  if (details && details.reason === "install") {
-    migrateForeignSuspendedTabs();
-  }
-});
-
-
 // Session backup + memory sampling alarm handler
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (gsBackup.isBackupAlarm(alarm)) {
