@@ -6,7 +6,7 @@ Branch: `phase-2-cleanup`. Every source removal is recorded with its evidence an
 
 | Task | Candidate and call-graph evidence | Decision / protected behavior | Status / commit |
 |---|---|---|---|
-| 2.1 | `js/notice.js` sends `requestNotice`/`clearNotice`; `html/notice.html` is opened only from `tgs.js` when `_noticeToDisplay` is truthy. Repository-wide search found no assignment to `_noticeToDisplay`. `setNoticeVersion` is called only by notice UI and legacy update handling. | Remove the dormant notice UI, message cases, storage key/helpers and interval. Keep backup behavior out of scope. | Pending |
+| 2.1 | `js/notice.js` sent `requestNotice`/`clearNotice`; `html/notice.html` was opened only from `tgs.js` when `_noticeToDisplay` was truthy. Repository-wide search found no assignment to `_noticeToDisplay`. `setNoticeVersion` was called only by notice UI and legacy update handling. | Removed dormant notice UI, message cases, storage key/helpers and interval; backup behavior stayed out of scope. | Complete — source commit `d04aaa1` |
 | 2.2 | `gsChrome.cookiesGetAll/cookiesRemove` are called only by the `<6.31` cookie migration in `gsIndexedDb.performMigration()`. | Remove the cookie migration/wrappers; leave manifest `cookies` permission until Phase 3. | Pending |
 | 2.3 | `gsIndexedDb.performMigration()` is called only from `gsSession.handleUpdate()` and contains the inherited `<6.13` saved-session rewrite plus `<6.31` cookie cleanup. `gsStorage` also contains inherited settings merge/special-case migration branches; storage currently uses `gsSettings` and a version marker but has no project schema version. | Drop inherited format conversions and add explicit project `schemaVersion`; retain current-project session recovery and defaults. | Pending |
 | 2.4 | No HTML/manifest/module imports `js/helpers/debug.js`; profiler DOM IDs have no HTML owner. Its `getDebugInfo` request has no sender except that helper; its dispatcher/function/export are otherwise unreferenced. | Remove profiler helper and its dedicated debug-info message path; keep normal warning/error logging and monitor UI. | Pending |
@@ -21,4 +21,4 @@ Branch: `phase-2-cleanup`. Every source removal is recorded with its evidence an
 
 ## Completed removals
 
-No source removals have been committed yet. After each task commit, record the affected file/symbol, the verified evidence, and the exact source commit hash here.
+For each completed row, the exact source commit hash is recorded alongside the before-removal evidence. Continue appending hashes as scoped cleanup commits land.
