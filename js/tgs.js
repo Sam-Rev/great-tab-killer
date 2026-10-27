@@ -1791,16 +1791,7 @@ export var tgs = (function () {
       queueSessionTimer();
     });
 
-    //tidy up history items as they are created
-    //NOTE: This only affects tab history, and has no effect on chrome://history
-    //It is also impossible to remove a the first tab history entry for a tab
-    //Refer to: https://github.com/deanoemcke/thegreatsuspender/issues/717
-    chrome.history.onVisited.addListener(function (historyItem) {
-      if (gsUtils.isSuspendedUrl(historyItem.url)) {
-        //remove suspended tab history item
-        chrome.history.deleteUrl({ url: historyItem.url });
-      }
-    });
+
   }
 
 

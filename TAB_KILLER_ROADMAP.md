@@ -213,7 +213,7 @@ Goal: a public, detailed, honest audit of the project as it stands. Every findin
 - [x] 2.7 Stop unattended foreign-tab migration. Removed only the automatic `onInstalled` invocation of `migrateForeignSuspendedTabs()`; the helper remains intact and dormant for task 7.7 after task 3.8. Evidence and commit: `docs/CLEANUP_LOG.md`.
 - [x] 2.8 Unused locale keys (strings no longer referenced after removals). Write a small script to list keys unused in any `html`/`js` and remove them from all locale files in one commit. Completed with a conservative cross-file scanner; zero candidates remain after removal. Evidence and commit: `docs/CLEANUP_LOG.md`. Do **not** machine-translate new strings: new keys go to `en` and get fallback behavior in other locales.
 - [x] 2.9 Moved the Python memory lab and Node tests under `dev/`; fixed script and test paths. They remain developer tooling and are excluded from the extension tree. Evidence and commit: `docs/CLEANUP_LOG.md`.
-- [ ] 2.10 History cleanup listener: remove `chrome.history.onVisited` + `deleteUrl` in `tgs.js` (decision §5.1).
+- [x] 2.10 History cleanup listener: remove `chrome.history.onVisited` + `deleteUrl` in `tgs.js` (decision §5.1). The listener was removed; extension session-history UI remains. Evidence and commit: `docs/CLEANUP_LOG.md`.
 - [ ] 2.11 External messaging: remove `onMessageExternal`, `externalMessageRequestListener`, related strings/docs (decision §5.3).
 - [ ] 2.12 Extension-management UI/logic in the monitor: remove `chrome.management.*`, the extensions list/toggle UI, and related locale keys (decision §5.2).
 
