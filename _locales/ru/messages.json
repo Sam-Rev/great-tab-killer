@@ -515,27 +515,6 @@
   "js_monitor_precise_unavailable": {
     "message": "API процессов доступен только в Chrome Dev/Canary с разрешением «processes». В Stable и обычной Beta недоступен."
   },
-  "html_monitor_ext_title": {
-    "message": "Расширения"
-  },
-  "html_monitor_ext_grant": {
-    "message": "Показать расширения"
-  },
-  "html_monitor_col_extension": {
-    "message": "Расширение"
-  },
-  "html_monitor_col_impact": {
-    "message": "Нагрузка"
-  },
-  "html_monitor_col_pages": {
-    "message": "Страниц"
-  },
-  "js_monitor_pages_tooltip": {
-    "message": "На скольких из открытых сейчас страниц расширению разрешено запускать свои скрипты (по его host-разрешениям). Для расширений с автоматическими контент-скриптами это и есть места, где они реально работают. Ограничения по сайтам, заданные в chrome://extensions, другим расширениям не видны."
-  },
-  "html_monitor_ext_note": {
-    "message": "Память и CPU процессов расширений доступны через API Chrome Dev/Canary. Колонка «Нагрузка» — эвристика по разрешениям, а не замер потребления ресурсов."
-  },
   "js_monitor_ext_status_active": {
     "message": "Работает"
   },
@@ -556,18 +535,6 @@
   },
   "js_monitor_impact_tooltip": {
     "message": "Эвристическая оценка по разрешениям расширения: доступ ко всем сайтам, перехват запросов и т.д. Показывает потенциальную, а не текущую нагрузку."
-  },
-  "js_monitor_ext_action_enable": {
-    "message": "Включить расширение"
-  },
-  "js_monitor_ext_action_disable": {
-    "message": "Выключить расширение"
-  },
-  "js_monitor_ext_action_details": {
-    "message": "Открыть в chrome://extensions"
-  },
-  "js_monitor_ext_this": {
-    "message": "это расширение"
   },
   "js_monitor_status_active": {
     "message": "Активна"

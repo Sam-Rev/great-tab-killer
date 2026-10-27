@@ -515,27 +515,6 @@
   "js_monitor_precise_unavailable": {
     "message": "The processes API requires Chrome Dev/Canary and the processes permission. It is unavailable in Stable and regular Beta."
   },
-  "html_monitor_ext_title": {
-    "message": "Extensions"
-  },
-  "html_monitor_ext_grant": {
-    "message": "Show extensions"
-  },
-  "html_monitor_col_extension": {
-    "message": "Extension"
-  },
-  "html_monitor_col_impact": {
-    "message": "Load"
-  },
-  "html_monitor_col_pages": {
-    "message": "Pages"
-  },
-  "js_monitor_pages_tooltip": {
-    "message": "On how many of the currently open pages this extension is allowed to run its scripts (by its host permissions). For extensions with automatic content scripts this is where they actually run. Per-site restrictions set in chrome://extensions are not visible to other extensions."
-  },
-  "html_monitor_ext_note": {
-    "message": "Extension process memory and CPU are available through the Chrome Dev/Canary API. The Impact column is a permissions-based heuristic, not a resource usage measurement."
-  },
   "js_monitor_ext_status_active": {
     "message": "Running"
   },
@@ -556,18 +535,6 @@
   },
   "js_monitor_impact_tooltip": {
     "message": "Heuristic estimate based on the extension's permissions: access to all sites, request interception, etc. It shows potential, not current, load."
-  },
-  "js_monitor_ext_action_enable": {
-    "message": "Enable extension"
-  },
-  "js_monitor_ext_action_disable": {
-    "message": "Disable extension"
-  },
-  "js_monitor_ext_action_details": {
-    "message": "Open in chrome://extensions"
-  },
-  "js_monitor_ext_this": {
-    "message": "this extension"
   },
   "js_monitor_status_active": {
     "message": "Active"
