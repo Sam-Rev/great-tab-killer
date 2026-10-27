@@ -18,7 +18,6 @@ export var gsStorage = {
   IGNORE_CACHE: 'gsIgnoreCache',
   ADD_CONTEXT: 'gsAddContextMenu',
   SYNC_SETTINGS: 'gsSyncSettings',
-  NO_NAG: 'gsNoNag',
   THEME: 'gsTheme',
   LANGUAGE: 'gsLanguage',
   BACKUP_FREQUENCY: 'gsBackupFrequency',
@@ -79,7 +78,6 @@ export var gsStorage = {
     defaults[gsStorage.ADD_CONTEXT] = true;
     defaults[gsStorage.SYNC_SETTINGS] = true;
     defaults[gsStorage.SUSPEND_TIME] = '60';
-    defaults[gsStorage.NO_NAG] = false;
     defaults[gsStorage.WHITELIST] = '';
     defaults[gsStorage.THEME] = 'light';
     defaults[gsStorage.LANGUAGE] = 'auto';
@@ -129,16 +127,6 @@ export var gsStorage = {
                 ? rawLocalSettings[key]
                 : defaultSettings[key];
             }
-            continue;
-          }
-          // If donations are disabled locally, then ensure we disable them on synced profile
-          if (
-            key === gsStorage.NO_NAG &&
-            shouldSyncSettings &&
-            rawLocalSettings.hasOwnProperty(gsStorage.NO_NAG) &&
-            rawLocalSettings[gsStorage.NO_NAG]
-          ) {
-            mergedSettings[gsStorage.NO_NAG] = true;
             continue;
           }
           // if synced setting exists and local setting does not exist or
@@ -208,13 +196,6 @@ export var gsStorage = {
         var newValueBySettingKey = {};
         Object.keys(remoteSettings).forEach(function(key) {
           var remoteSetting = remoteSettings[key];
-
-          // If donations are disabled locally, then ensure we disable them on synced profile
-          if (key === gsStorage.NO_NAG) {
-            if (remoteSetting.newValue === false) {
-              return false; // don't process this key
-            }
-          }
 
           if (localSettings[key] !== remoteSetting.newValue) {
             gsUtils.log(

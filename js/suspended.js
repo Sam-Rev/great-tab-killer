@@ -102,11 +102,6 @@ function unsuspendTab(originalUrl) {
   document.location.replace(originalUrl);
 }
 
-function hideDonationPopup() {
-  document.getElementById("dudePopup").classList.remove("poppedup");
-  document.getElementById("donateBubble").classList.remove("fadeIn");
-}
-
 function cleanUrl(urlStr) {
   // remove scheme
   if (urlStr.indexOf("//") > 0) {
@@ -124,31 +119,6 @@ function cleanUrl(urlStr) {
   }
   return urlStr;
 }
-
-function donationPopupEvents(showNag, tabActive) {
-  const donationPopupFocusListener = async function (e) {
-    if (e && e.target && e.target.visibilityState === "hidden") {
-      return;
-    }
-    const options = await gsStorage.getSettings();
-    const showNag = showNag && !options[gsStorage.NO_NAG];
-    const dudeEl = document.getElementById("dudePopup");
-    const showingNag =
-      dudeEl !== null && dudeEl.classList.contains("poppedup");
-
-    if (showNag && !showingNag) {
-    } else if (!showNag && showingNag) {
-      hideDonationPopup();
-    }
-  };
-
-  window.addEventListener("visibilitychange", donationPopupFocusListener);
-  if (tabActive) {
-    donationPopupFocusListener();
-  }
-}
-
-
 
 
 chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListener(function(
@@ -324,8 +294,6 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
         }, 50);
         sendResponse();
         return true;
-      } else if (request.action === 'hideDonationPopup') {
-        hideDonationPopup();
       } else if (request.action === 'setTheme') {
       if (request.theme === "dark") {
         document.querySelector("body").classList.add("dark");
@@ -342,10 +310,6 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
           .getElementById("faviconWrap")
           .classList.remove("faviconWrapLowContrast");
       }
-      sendResponse();
-      return false;
-    } else if (request.action === 'donationPopupEvents') {
-      donationPopupEvents(request.showNag, request.tabActive);
       sendResponse();
       return false;
     }

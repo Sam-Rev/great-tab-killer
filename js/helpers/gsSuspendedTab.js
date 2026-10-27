@@ -11,7 +11,7 @@ import {tgs} from "../tgs.js"
 export var gsSuspendedTab = (function () {
   "use strict";
 
-  async function initTab(tab, { showNag, quickInit }) {
+  async function initTab(tab, { quickInit }) {
     const suspendedUrl = tab.url;
 
     // Set sessionId for subsequent checks
@@ -190,20 +190,6 @@ export var gsSuspendedTab = (function () {
     chrome.tabs.sendMessage(tab.id, {action: "setTheme", theme: theme, isLowContrastFavicon: isLowContrastFavicon}, function() {
       if (chrome.runtime.lastError) {
         gsUtils.warning(tab.id, "Tab not ready for message");
-      }
-    });
-  }
-
-  function queueDonationPopup(tabActive, tabId) {
-    const showNag = tgs.getTabStatePropForTabId(request.tabId, tgs.STATE_SHOW_NAG);
-
-    chrome.tabs.sendMessage(tab.id, {action: "donationPopupEvents", showNag: showNag, tabActive: tabActive}, function() {});
-  }
-
-  function hideDonationPopup() {
-    chrome.tabs.sendMessage(tab.id, {action: "hideDonationPopup"}, function() {
-      if (chrome.runtime.lastError) {
-        gsUtils.warning(tab.id, "Tab not ready for hideDonationPopup");
       }
     });
   }

@@ -33,7 +33,6 @@ export var tgs = (function () {
   const STATE_TEMP_WHITELIST_ON_RELOAD = "whitelistOnReload";
   const STATE_DISABLE_UNSUSPEND_ON_RELOAD = "disableUnsuspendOnReload";
   const STATE_UNLOADED_URL = "unloadedUrl";
-  const STATE_SHOW_NAG = "showNag";
   const STATE_SUSPEND_REASON = "suspendReason"; // 1=auto-suspend, 2=manual-suspend, 3=discarded
   const STATE_SCROLL_POS = "scrollPos";
 
@@ -673,16 +672,9 @@ export var tgs = (function () {
     });
   }
 
-  function checkForTriggerUrls(tab, url) {
-    // test for special case of a successful donation
-    if (url.indexOf("greatsuspender.github.io/thanks.html") > 0) {
-      gsStorage.setOptionAndSync(gsStorage.NO_NAG, true);
-      chrome.tabs.update(tab.id, {
-        url: chrome.runtime.getURL("html/thanks.html"),
-      });
-
-      // test for a save of keyboard shortcuts (chrome://extensions/shortcuts)
-    } else if (url === "chrome://extensions/shortcuts") {
+  function checkForTriggerUrls(url) {
+    // test for a save of keyboard shortcuts (chrome://extensions/shortcuts)
+    if (url === "chrome://extensions/shortcuts") {
       _triggerHotkeyUpdate = true;
     }
   }
@@ -849,7 +841,6 @@ export var tgs = (function () {
         tab.id,
         STATE_DISABLE_UNSUSPEND_ON_RELOAD
       );
-      let showNag = tgs.getTabStatePropForTabId(tab.id, tgs.STATE_SHOW_NAG);
       clearTabStateForTabId(tab.id);
 
       if (isCurrentFocusedTab(tab)) {
@@ -866,7 +857,7 @@ export var tgs = (function () {
       gsStorage.getOption(gsStorage.DISCARD_AFTER_SUSPEND).then((discardAfterSuspend) => {
         const quickInit = discardAfterSuspend && !tab.active;
         gsSuspendedTab
-          .initTab(tab, { quickInit, showNag })
+          .initTab(tab, { quickInit })
           .catch((error) => {
             gsUtils.warning(tab.id, error);
           })
@@ -1790,7 +1781,7 @@ export var tgs = (function () {
       // if url has changed
       if (changeInfo.url) {
         gsUtils.log(tabId, "tab url changed. changeInfo: ", changeInfo);
-        checkForTriggerUrls(tab, changeInfo.url);
+        checkForTriggerUrls(changeInfo.url);
         queueSessionTimer();
       }
 
@@ -1859,7 +1850,6 @@ export var tgs = (function () {
     STATE_DISABLE_UNSUSPEND_ON_RELOAD,
     STATE_SUSPEND_REASON,
     STATE_SCROLL_POS,
-    STATE_SHOW_NAG,
     getTabStatePropForTabId,
     setTabStatePropForTabId,
 
