@@ -28,7 +28,7 @@ Manifest host access and content script matches cover `http://*/*`, `https://*/*
 | Store | Data | Retention / deletion observed |
 |---|---|---|
 | `chrome.storage.local` `gsSettings` | Serialized extension options, including whitelist and backup frequency. | Persists until reset/extension removal; UI has reset behavior, but no unified wipe was verified. |
-| `chrome.storage.sync` setting keys | Synced option values when sync is enabled by current settings. | Chrome may sync to the user's account. Individual settings can be resaved locally. |
+| `chrome.storage.sync` setting keys | Current source defaults sync ON (`gsSyncSettings = true`); option values are written when sync is enabled. Owner decision: make it opt-in and OFF by default, with a privacy note in Options. | Chrome may sync enabled settings to the user's account. This is browser behavior. |
 | `chrome.storage.local` `gsVersion` and related version keys | Version/migration state. | No time expiry. |
 | `chrome.storage.local` `gsNotice` / recovery / metrics keys | Notice status, extension recovery state, and session metrics. | No general TTL; key-specific updates/deletes. |
 | `chrome.storage.local` `gsMonitorMemCache` | Full tab URL → estimated bytes and timestamp. | Up to 800 entries; entries older than 7 days are removed only during cache update. No dedicated user wipe found. |
@@ -40,7 +40,7 @@ Manifest host access and content script matches cover `http://*/*`, `https://*/*
 | IndexedDB `tgs.gsCurrentSessions` | Window/tab session snapshots including URLs/titles. | `trimDbItems()` caps at 5 records. |
 | IndexedDB `tgs.gsSavedSessions` | User-saved session names and tabs (including URLs/titles). | User-managed; clear/delete UI exists, no automatic TTL. |
 | Extension-page `localStorage` | Monitor sort and auto-refresh preferences; other uses were searched. | Browser storage behavior; no central wipe. Not service-worker accessible. |
-| Downloads `.txt` files | Grouped full URL list for all tabs returned by `chrome.tabs.query({})`; no titles or screenshots. | Backup default is weekly (`gsBackupFrequency` 10080); files are not cleaned up by extension. No explicit incognito exclusion. |
+| Downloads `.txt` files | Grouped full URL list for all tabs returned by `chrome.tabs.query({})`; no titles or screenshots. | Current source defaults to weekly (`gsBackupFrequency` 10080); files are not cleaned up by extension and no explicit incognito exclusion exists. Owner decision: default OFF and skip incognito; implementation is pending. |
 | Browser history | Suspended extension URLs encode original URL/title/position in fragment. | Current `history.onVisited` cleanup deletes suspended entries. Owner decision is to remove that cleanup in a later phase; current behavior therefore differs from target. |
 
 ### Incognito scope
