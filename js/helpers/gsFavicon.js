@@ -3,6 +3,7 @@
 
 import {gsUtils} from "./gsUtils.js"
 import {gsIndexedDb} from "./gsIndexedDb.js"
+import {isExtensionOriginUrl} from "./isExtensionOriginUrl.js"
 
 export var gsFavicon = (function () {
   "use strict";
@@ -292,8 +293,8 @@ export var gsFavicon = (function () {
     const timeout = 5 * 1000;
     return new Promise((resolve, reject) => {
       const faviconUrl = new URL(url);
-      const extensionOrigin = new URL(chrome.runtime.getURL("/")).origin;
-      if (faviconUrl.origin !== extensionOrigin) {
+      const extensionRootUrl = chrome.runtime.getURL("/");
+      if (!isExtensionOriginUrl(faviconUrl.href, extensionRootUrl)) {
         reject(new Error("Refusing to fetch a non-extension favicon URL"));
         return;
       }
