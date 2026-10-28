@@ -61,10 +61,10 @@ import {gsUtils} from "./helpers/gsUtils.js";
     if (document.getElementById("recoveryTabs").children.length === 0) {
       //if we have already clicked the restore button then redirect to success page
       if (restoreAttempted) {
-        document.getElementById("brand-placeholder-inprogress").style.display =
+        document.getElementById("brand-logo-inprogress").style.display =
           "none";
         document.getElementById("recovery-inprogress").style.display = "none";
-        document.getElementById("brand-placeholder-complete").style.display =
+        document.getElementById("brand-logo-complete").style.display =
           "inline-block";
         document.getElementById("recovery-complete").style.display =
           "inline-block";

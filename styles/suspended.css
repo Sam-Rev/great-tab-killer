@@ -170,6 +170,16 @@ body.img-preview-mode .gsTopBar {
   height: 180px;
   margin-bottom: 30px;
 }
+.suspendedMsg img.suspendedProductLogo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  filter: none;
+}
+.dark .suspendedMsg img.suspendedProductLogo {
+  filter: none;
+}
 .suspendedMsg-instr {
   font-size: 20px;
 }

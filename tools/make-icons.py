@@ -18,8 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets/source/Tab_Killer_logo_v2.png"
 MASTER = ROOT / "assets/source/Tab_Killer_logo_v2_master.png"
 IMAGES = ROOT / "images"
-ICON_SIZES = (16, 32, 48, 128)
-ACTION_SIZES = (16, 32)
+FULL_ICON_SIZES = (48, 128)
 BRAND_SIZE = 512
 PADDING_FRACTION = 0.05
 ORANGE = (255, 90, 0)
@@ -165,12 +164,8 @@ def generate_full() -> None:
     master, report = prepare_master(Image.open(SOURCE))
     save_clean_png(master, MASTER)
     print("Master preparation:", report)
-    for size in ICON_SIZES:
+    for size in FULL_ICON_SIZES:
         save_clean_png(_resize_rgba(master, size), IMAGES / f"icon-{size}x{size}.png")
-    grey = ImageOps.grayscale(master).convert("RGBA")
-    grey.putalpha(master.getchannel("A"))
-    for size in ACTION_SIZES:
-        save_clean_png(_resize_rgba(grey, size), IMAGES / f"icon-{size}x{size}_grey.png")
     save_clean_png(_resize_rgba(master, BRAND_SIZE), IMAGES / "tab-killer-logo.png")
 
 
@@ -185,6 +180,7 @@ def main() -> None:
         generate_simplified()
     else:
         generate_full()
+        generate_simplified()
 
 
 if __name__ == "__main__":

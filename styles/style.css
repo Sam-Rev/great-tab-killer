@@ -145,14 +145,14 @@ ul.unorderedList li {
 .splash:not(.welcome-message) {
   width: 900px;
 }
-.brand-placeholder {
+.brand-logo {
   width: 100%;
 }
-#brand-placeholder-inprogress {
+#brand-logo-inprogress {
   max-height: 220px;
   max-width: 137px;
 }
-#brand-placeholder-complete {
+#brand-logo-complete {
   max-height: 220px;
 }
 .btn {
@@ -217,6 +217,21 @@ ul.unorderedList li {
   grid-area: h;
   margin: 0 0 50px;
   font-size: 20px;
+}
+
+.pageBrandHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pageBrandMark {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex: none;
+}
+.pageBrandHeader h1 {
+  margin: 0;
 }
 .contentNav {
   grid-area: n;

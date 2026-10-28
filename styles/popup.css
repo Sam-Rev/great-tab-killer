@@ -46,6 +46,17 @@ a {
   background: #777;
   color: #fff;
 }
+#header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.popupBrand {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex: none;
+}
 #header.willSuspend {
   background: #3477db;
 }
