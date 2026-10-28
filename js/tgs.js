@@ -91,7 +91,7 @@ export var tgs = (function () {
         return Promise.resolve();
       }
       return new Promise(function (resolve) {
-        window.setTimeout(resolve, 100);
+        setTimeout(resolve, 100);
       }).then(function () {
         retries += 1;
         return backgroundScriptsReadyAsPromised(retries);

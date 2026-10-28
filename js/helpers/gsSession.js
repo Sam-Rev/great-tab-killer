@@ -8,6 +8,7 @@ import { gsUtils } from "./gsUtils.js"
 import { gsChrome } from "./gsChrome.js"
 import { gsTabCheckManager } from "./gsTabCheckManager.js"
 import { gsTabDiscardManager } from "./gsTabDiscardManager.js"
+import { excludeIncognitoTabs } from "./excludeIncognitoTabs.js"
 
 export var gsSession = (function () {
   "use strict";
@@ -99,9 +100,11 @@ export var gsSession = (function () {
 
   async function buildCurrentSession() {
     const currentWindows = await gsChrome.windowsGetAll();
-    const tabsExist = currentWindows.some(
-      (window) => window.tabs && window.tabs.length
-    );
+    for (const window of currentWindows) {
+      if (window.tabs) window.tabs = excludeIncognitoTabs(window.tabs);
+    }
+    const regularWindows = currentWindows.filter((window) => window.tabs && window.tabs.length);
+    const tabsExist = regularWindows.length > 0;
     if (!tabsExist) {
       gsUtils.warning(
         "gsSession",
@@ -111,7 +114,7 @@ export var gsSession = (function () {
     }
     const currentSession = {
       sessionId: getSessionId(),
-      windows: currentWindows,
+      windows: regularWindows,
       date: new Date().toISOString(),
     };
     return currentSession;
@@ -293,6 +296,9 @@ export var gsSession = (function () {
 
   async function handleNewInstall(curVersion) {
     gsStorage.setLastVersion(curVersion);
+
+    const { gsBackup } = await import("./gsBackup.js");
+    await gsBackup.showFirstRunNotice();
 
     // Try to determine if this is a new install for the computer or for the whole profile
     // If settings sync contains non-default options, then we can assume it's only

@@ -773,14 +773,16 @@ export var gsUtils = {
     //if backup frequency has changed then recreate the alarm
     if (gsUtils.contains(changedSettingKeys, gsStorage.BACKUP_FREQUENCY)) {
       const newFreq = newValueBySettingKey[gsStorage.BACKUP_FREQUENCY];
-      chrome.alarms.clear('tgs-session-backup', () => {
-        const minutes = parseInt(newFreq, 10);
-        if (minutes > 0) {
-          chrome.alarms.create('tgs-session-backup', {
-            delayInMinutes: minutes,
-            periodInMinutes: minutes,
-          });
-        }
+      chrome.storage.local.get('gsBackupEnabled', (stored) => {
+        chrome.alarms.clear('tgs-session-backup', () => {
+          const minutes = parseInt(newFreq, 10);
+          if (stored.gsBackupEnabled === true && minutes > 0) {
+            chrome.alarms.create('tgs-session-backup', {
+              delayInMinutes: minutes,
+              periodInMinutes: minutes,
+            });
+          }
+        });
       });
     }
   },

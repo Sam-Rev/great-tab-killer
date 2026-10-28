@@ -11,6 +11,8 @@ import {gsTabDiscardManager} from "./gsTabDiscardManager.js"
 import {gsTabCheckManager} from "./gsTabCheckManager.js"
 import {GsTabQueue } from "./gsTabQueue.js"
 import {tgs} from "../tgs.js"
+import {isSafePageUrl} from "./isSafePageUrl.js"
+import {isRegularTab} from "./excludeIncognitoTabs.js"
 
 export var gsTabSuspendManager = (function () {
   "use strict";
@@ -78,6 +80,11 @@ export var gsTabSuspendManager = (function () {
     reject,
     requeue
   ) {
+    if (!tab || typeof tab.url !== "string" || !tab.url) {
+      gsUtils.log(tab?.id, QUEUE_ID, "Skipping tab without a supported page URL.");
+      resolve(false);
+      return;
+    }
     if (executionProps.refetchTab || gsUtils.isSuspendedTab(tab)) {
       gsUtils.log(
         tab.id,
@@ -97,6 +104,12 @@ export var gsTabSuspendManager = (function () {
       tab = _tab;
     }
 
+    if (!tab || typeof tab.url !== "string" || !tab.url) {
+      gsUtils.log(tab?.id, QUEUE_ID, "Refetched tab has no page URL; skipping.");
+      resolve(false);
+      return;
+    }
+
     if (gsUtils.isSuspendedTab(tab)) {
       if (!executionProps.refetchTab) {
         gsUtils.log(
@@ -113,6 +126,12 @@ export var gsTabSuspendManager = (function () {
         );
         resolve(false);
       }
+      return;
+    }
+
+    if (!isSafePageUrl(tab.url)) {
+      gsUtils.log(tab.id, QUEUE_ID, "Skipping tab with an unsupported page URL.");
+      resolve(false);
       return;
     }
 
@@ -190,10 +209,23 @@ export var gsTabSuspendManager = (function () {
       return;
     }
 
+    // A second suspender or a navigation can replace the page while async
+    // checks run. Do not persist/suspend a stale or extension-owned URL.
+    const currentTab = await gsChrome.tabsGet(tab.id);
+    if (!currentTab || currentTab.url !== tab.url || !isSafePageUrl(currentTab.url)) {
+      gsUtils.log(tab.id, QUEUE_ID, "Tab changed to an unsupported page during suspension.");
+      resolve(false);
+      return;
+    }
+    tab = currentTab;
+    if (tab.incognito) screenCaptureMode = "0";
+
     // Temporarily change tab.url to append youtube timestamp
+    const sourceUrl = tab.url;
     const timestampedUrl = await generateUrlWithYouTubeTimestamp(tab);
 
     // NOTE: This does not actually change the tab url, just the current tab object
+    tab._suspensionSourceUrl = sourceUrl;
     tab.url = timestampedUrl;
     await saveSuspendData(tab);
 
@@ -249,6 +281,7 @@ export var gsTabSuspendManager = (function () {
       queuedTabDetails.executionProps.suspendedUrl
     );
     // NOTE: This does not actually change the tab url, just the current tab object
+    tab._suspensionSourceUrl = queuedTabDetails.tab._suspensionSourceUrl || queuedTabDetails.tab.url;
     tab.url = timestampedUrl;
 
     if (!previewUrl) {
@@ -258,7 +291,7 @@ export var gsTabSuspendManager = (function () {
         "savePreviewData reported an error: ",
         errorMsg
       );
-    } else {
+    } else if (isRegularTab(tab)) {
       await gsIndexedDb.addPreviewImage(tab.url, previewUrl);
     }
 
@@ -315,14 +348,7 @@ export var gsTabSuspendManager = (function () {
       gsTabCheckManager.unqueueTabCheck(tab);
 
       // If we want tabs to be discarded instead of suspending them
-      gsStorage.getOption(gsStorage.DISCARD_IN_PLACE_OF_SUSPEND).then((discardInPlaceOfSuspend) => {
-        if (discardInPlaceOfSuspend) {
-          clearAutoSuspendTimerForTabId(tab.id);
-          gsTabDiscardManager.queueTabForDiscard(tab);
-          resolve(true);
-          return;
-        }
-
+      gsStorage.getOption(gsStorage.DISCARD_IN_PLACE_OF_SUSPEND).then(async (discardInPlaceOfSuspend) => {
         if (gsUtils.isSuspendedTab(tab, true)) {
           gsUtils.log(tab.id, "Tab already suspended");
           resolve(false);
@@ -332,6 +358,27 @@ export var gsTabSuspendManager = (function () {
         if (!suspendedUrl) {
           gsUtils.log(tab.id, "executionProps.suspendedUrl not set!");
           suspendedUrl = gsUtils.generateSuspendedUrl(tab.url, tab.title, 0);
+        }
+
+        let currentTab;
+        try {
+          currentTab = await gsChrome.tabsGet(tab.id);
+        } catch (e) {
+          resolve(false);
+          return;
+        }
+        const expectedSourceUrl = tab._suspensionSourceUrl || gsUtils.getOriginalUrl(suspendedUrl);
+        if (!currentTab || currentTab.url !== expectedSourceUrl || !isSafePageUrl(currentTab.url)) {
+          gsUtils.log(tab.id, "Tab changed before suspension navigation; skipping.");
+          resolve(false);
+          return;
+        }
+
+        if (discardInPlaceOfSuspend) {
+          clearAutoSuspendTimerForTabId(tab.id);
+          gsTabDiscardManager.queueTabForDiscard(currentTab);
+          resolve(true);
+          return;
         }
 
         gsUtils.log(tab.id, "Suspending tab");
@@ -469,6 +516,7 @@ export var gsTabSuspendManager = (function () {
   }
 
   async function saveSuspendData(tab) {
+    if (!isRegularTab(tab) || !isSafePageUrl(tab.url)) return;
     const tabProperties = {
       date: new Date(),
       title: tab.title,

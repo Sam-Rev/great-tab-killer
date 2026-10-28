@@ -1,6 +1,8 @@
 /*global chrome */
 "use strict";
 
+import {excludeIncognitoTabs} from "./excludeIncognitoTabs.js";
+
 /**
  * Per-tab memory measurement shared by the resource monitor page and the
  * background sampling alarm in the service worker.
@@ -290,6 +292,7 @@ export const gsMemorySampler = {
   // a tab whose memory can be measured by script injection right now
   isMeasurableTab: function (tab) {
     return (
+      !tab.incognito &&
       gsMemorySampler.isInjectableUrl(tab.url) &&
       !tab.discarded &&
       !tab.frozen &&
@@ -303,6 +306,7 @@ export const gsMemorySampler = {
    * holds the individual components of the estimate (for tooltips).
    */
   measureTabs: async function (tabs) {
+    tabs = excludeIncognitoTabs(tabs);
     const measured = new Map();
     const aggByTabId = new Map();
 

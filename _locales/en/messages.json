@@ -299,6 +299,15 @@
   "html_options_other_enable_sync_warning": {
     "message": "Turning this on will overwrite settings on all other browsers logged into the same Chrome profile"
   },
+  "html_options_sync_privacy_note": {
+    "message": "Sync is off by default. If enabled, settings are stored in your browser profile's sync storage."
+  },
+  "html_options_backup_enable": {
+    "message": "Enable automatic session backups"
+  },
+  "html_options_backup_privacy_note": {
+    "message": "When enabled, a plain-text file containing open-tab URLs is saved to Downloads at the selected frequency. Incognito tabs are excluded."
+  },
   "html_options_other_language": {
     "message": "Interface language"
   },

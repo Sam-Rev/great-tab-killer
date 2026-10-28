@@ -299,14 +299,17 @@ export var gsFavicon = (function () {
         return;
       }
       fetch(faviconUrl.href)
-          .then(response => response.blob())
+          .then(response => {
+            if (!response.ok) throw new Error(`Favicon request failed: ${response.status}`);
+            return response.blob();
+          })
           .then(blob => {
 
             let canvas;
             let context;
             canvas = new OffscreenCanvas(16, 16);
             context = canvas.getContext("2d");
-            createImageBitmap(blob).then(imageBitmap => {
+            return createImageBitmap(blob).then(imageBitmap => {
               context.drawImage(imageBitmap,0,0)
               let imageData;
               try {
@@ -365,7 +368,7 @@ export var gsFavicon = (function () {
               const normalisedDataUrl = getFavIconDataUrl(canvas, context, imageData, normalisedDataArray);
               const transparentDataUrl = getFavIconDataUrl(canvas, context, imageData, transparentDataArray);
 
-              Promise.all([normalisedDataUrl, transparentDataUrl]).then((values) => {
+              return Promise.all([normalisedDataUrl, transparentDataUrl]).then((values) => {
                 const normalisedDataUrlResult = values[0];
                 const transparentDataUrlResult = values[1];
 
@@ -381,7 +384,8 @@ export var gsFavicon = (function () {
                 resolve(faviconMetaData);
               });
             });
-          });
+          })
+          .catch(reject);
     });
   }
 
