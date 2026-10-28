@@ -3,6 +3,7 @@
   "description": "__MSG_ext_extension_description__",
   "version": "0.1.0",
   "manifest_version": 3,
+  "minimum_chrome_version": "116",
   "options_page": "html/options.html",
   "icons": {
     "16": "images/icon-16x16.png",

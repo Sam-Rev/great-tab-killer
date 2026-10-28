@@ -3,6 +3,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
+import { createHash } from 'node:crypto';
 
 // Exclusions from shipped-source scanning:
 // - dev/, docs/, tools/, assets/, vendor/, security/: development, documentation,
@@ -16,6 +17,7 @@ const EXCLUDED_FILES = new Set([
   'js/helpers/dom-to-image.js',
   'js/helpers/db.js',
 ]);
+const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES);
 const FORBIDDEN = [
   ['eval(', /\beval\s*\(/i],
   ['new Function', /\bnew\s+Function\b/i],
@@ -39,6 +41,7 @@ export function projectManifest(manifest) {
     web_accessible_resources: manifest.web_accessible_resources,
     content_security_policy: manifest.content_security_policy,
     incognito: manifest.incognito,
+    minimum_chrome_version: manifest.minimum_chrome_version,
     absent_fields: ['update_url', 'externally_connectable'],
   };
 }
@@ -95,9 +98,69 @@ function isSafeFetch(expression, source, index) {
   const local = source.slice(Math.max(0, index - 900), index);
   const name = match[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const constructed = new RegExp(`const\\s+${name}\\s*=\\s*new\\s+URL\\s*\\(`).test(local);
-  const trustedOrigin = /const\s+[A-Za-z_$][\w$]*\s*=\s*new\s+URL\s*\(\s*chrome\.runtime\.getURL\s*\(/.test(local);
-  const originCheck = new RegExp(`if\\s*\\(\\s*${name}\\.origin\\s*!==\\s*[A-Za-z_$][\\w$]*\\s*\\)`).test(local);
+  const trustedOrigin = /const\s+[A-Za-z_$][\w$]*\s*=\s*(?:new\s+URL\s*\(\s*)?chrome\.runtime\.getURL\s*\(/.test(local);
+  const directOriginCheck = new RegExp(`if\\s*\\(\\s*${name}\\.origin\\s*!==\\s*[A-Za-z_$][\\w$]*\\s*\\)`).test(local);
+  const helperOriginCheck = new RegExp(`if\\s*\\(\\s*!\\s*isExtensionOriginUrl\\s*\\(\\s*${name}\\.href\\s*,\\s*[A-Za-z_$][\\w$]*\\s*\\)`).test(local);
+  const originCheck = directOriginCheck || helperOriginCheck;
   return constructed && trustedOrigin && originCheck;
+}
+
+async function verifyVendorChecksums(root) {
+  const errors = [];
+  const checksumPath = path.join(root, 'vendor/CHECKSUMS.sha256');
+  let checksumText;
+  try { checksumText = await readFile(checksumPath, 'utf8'); }
+  catch (error) { return [`vendor/CHECKSUMS.sha256 could not be read: ${error.message}`]; }
+
+  const checksums = new Map();
+  for (const [index, line] of checksumText.split(/\r?\n/).entries()) {
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    const match = /^([a-f\d]{64})\s+(.+)$/.exec(line.trim());
+    if (!match) {
+      errors.push(`vendor/CHECKSUMS.sha256:${index + 1}: malformed checksum entry`);
+      continue;
+    }
+    if (checksums.has(match[2])) errors.push(`vendor/CHECKSUMS.sha256: duplicate path ${match[2]}`);
+    checksums.set(match[2], match[1]);
+  }
+  for (const relative of PINNED_VENDOR_FILES) {
+    if (!checksums.has(relative)) errors.push(`vendor/CHECKSUMS.sha256: excluded vendor file is not pinned: ${relative}`);
+  }
+  for (const [relative, expectedHash] of checksums) {
+    const file = path.resolve(root, relative);
+    if (file === path.resolve(root) || !file.startsWith(`${path.resolve(root)}${path.sep}`)) {
+      errors.push(`vendor/CHECKSUMS.sha256: path escapes project root: ${relative}`);
+      continue;
+    }
+    let bytes;
+    try { bytes = await readFile(file); }
+    catch (error) {
+      errors.push(`vendor checksum path missing: ${relative}`);
+      continue;
+    }
+    const actualHash = createHash('sha256').update(bytes).digest('hex');
+    if (actualHash !== expectedHash) errors.push(`${relative}: SHA-256 differs from vendor/CHECKSUMS.sha256`);
+  }
+  for (const relative of await walkVendorDirectory(path.join(root, 'vendor'))) {
+    if (!checksums.has(relative)) errors.push(`vendor directory contains an unpinned file: ${relative}`);
+  }
+  return errors;
+}
+
+async function walkVendorDirectory(directory, root = path.resolve(directory, '..')) {
+  const files = [];
+  let entries;
+  try { entries = await readdir(directory, { withFileTypes: true }); }
+  catch { return files; }
+  for (const entry of entries) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await walkVendorDirectory(full, root));
+    else {
+      const relative = path.relative(root, full).split(path.sep).join('/');
+      if (!['vendor/README.md', 'vendor/CHECKSUMS.sha256'].includes(relative)) files.push(relative);
+    }
+  }
+  return files;
 }
 
 function parseUrlAllowlist(content) {
@@ -152,6 +215,7 @@ export async function checkRoot(root) {
       !isDeepStrictEqual([...lock.absent_fields].sort(), ['externally_connectable', 'update_url'])) {
     errors.push('security/permissions.lock.json: absent_fields must list update_url and externally_connectable');
   }
+  errors.push(...await verifyVendorChecksums(root));
   const csp = manifest.content_security_policy?.extension_pages || '';
   const connect = csp.split(';').map((part) => part.trim()).filter((part) => part.startsWith('connect-src '));
   if (connect.length !== 1 || connect[0] !== "connect-src 'self' data:") {

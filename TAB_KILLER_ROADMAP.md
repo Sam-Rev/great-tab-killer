@@ -148,10 +148,11 @@ These are starting facts. Phase 1 must confirm/extend them.
 10. **Primary browser → Brave.** Include Brave in the compatibility matrix and verify the stable extension ID through `brave://extensions`, developer-mode installation, and that Shields do not interfere with extension pages.
 
 ### Remaining open (agent: propose a default, ask the owner, do not guess)
-- a. `minimum_chrome_version` (suggest after testing; ≥ 120 if 30-second alarms are used — verify).
-- b. License header strategy (default: `LICENSE` + `NOTICE`, SPDX identifiers in new files only).
-- c. Product-name collision check for "The Great Tab Killer".
-- d. Keep `file://*/*` host access? Default: yes, documented as opt-in by Chrome's own "Allow access to file URLs" toggle.
+- a. License header strategy (default: `LICENSE` + `NOTICE`, SPDX identifiers in new files only).
+- b. Product-name collision check for "The Great Tab Killer".
+- c. Keep `file://*/*` host access? Default: yes, documented as opt-in by Chrome's own "Allow access to file URLs" toggle.
+
+**Resolved compatibility note (2026-10-28):** `minimum_chrome_version` is `116`, set by `chrome.runtime.getContexts()` after replacing `chrome.offscreen.hasDocument()`. Evidence: `docs/GATE_B_PROPOSAL.md` addendum.
 
 ---
 
@@ -230,14 +231,14 @@ Goal: a public, detailed, honest audit of the project as it stands. Every findin
   - any unapproved `http://` or `https://` URL literal appears in shipped JS (each exact allowlist exception has a one-line rationale);
   - any `<script src>`/`<link href>`/`<img src>` points to a remote origin;
   - `connect-src` in the CSP is anything other than `'self' data:`.
-  The guard excludes the three already-vendored helper libraries from first-party pattern scanning, as documented in `docs/GATE_B_PROPOSAL.md`; vendor checksum enforcement remains part of task 3.6 and is not started here.
+  The guard excludes the three already-vendored helper libraries from first-party pattern scanning; task 3.6 pins and verifies those exact paths.
 - [x] **3.4 Approval workflow.** `CONTRIBUTING.md` requires project-owner approval for changes under `security/`, including the lock and URL allowlist. The agent must **never** edit these files to make a failing guard pass without explicit owner approval in the conversation.
 - [ ] **3.5 Runtime check test.** An automated test that loads the extension (Playwright/Puppeteer with Chromium + `--load-extension`), blocks all network, exercises suspend/restore, and fails if any request leaves the `chrome-extension://` origin. (If the environment has no browser, document it as "not run" — do not claim it passed.)
-- [ ] **3.6 Pin vendored libs.** Move the libs to `vendor/` (or keep paths and add `vendor/README.md`), with: exact name, version, upstream URL, license, SHA-256. `vendor/CHECKSUMS.sha256` is verified by the guard script and CI. Acceptance: modifying one byte of a vendored lib fails CI.
+- [x] **3.6 Pin vendored libs.** Kept the existing paths and added `vendor/README.md` metadata and `vendor/CHECKSUMS.sha256` pins for `html2canvas.min.js`, `dom-to-image.js`, and `db.js`. The guard validates each hash and rejects unpinned files in `vendor/`. `db.js` identity, version, source and license remain explicitly UNVERIFIED.
 - [ ] **3.7 Safe DOM sinks.** Fix every data-driven `innerHTML` found in Phase 1 (e.g. `suspended.js` title/reason/url, `historyItems.js`, `popup.js`) to `textContent`/DOM construction or a strict sanitizer. Add tests with hostile titles/URLs (`<img src=x onerror=...>`, `javascript:`, very long strings).
 - [ ] **3.8 Validate the suspended-page URL parameters.** `uri` must parse via `new URL()` and have an allowed scheme (`http:`, `https:`, `file:`); reject others. Cover with tests.
 - [x] **3.9 External messaging removed** (decision §5.3). Source external messaging was removed in Phase 2; the Phase 3 guard rejects `onMessageExternal`, `onConnectExternal`, and `externally_connectable` in shipped source. `externally_connectable` is absent from the manifest lock.
-- [ ] **3.10 Privacy defaults.** Make settings sync opt-in and OFF by default with a clear Options privacy note. Make session backup OFF by default and show a one-time local first-run notice that explains the plain-text Downloads file and lets the user enable it and choose a frequency. Explicitly exclude incognito tabs from sampler data, backups, previews, and session persistence. Provide clear deletion controls and document all collection, storage, retention, and Downloads-file behavior in `PRIVACY.md`.
+- [ ] **3.10 Privacy defaults (next privacy task).** Make settings sync opt-in and OFF by default with a clear Options privacy note. Make session backup OFF by default and show a one-time local first-run notice that explains the plain-text Downloads file and lets the user enable it and choose a frequency. **Current source still defaults backup frequency to 10080 minutes (weekly) and registers its alarm at startup; this remains Open under A-11.** Explicitly exclude incognito tabs from sampler data, backups, previews, and session persistence. Provide clear deletion controls and document all collection, storage, retention, and Downloads-file behavior in `PRIVACY.md`.
 - [ ] **3.11 Narrow `web_accessible_resources`.** Use finding A-25 to remove entries that do not need to be web-accessible and narrow any proven need. Add web-origin fingerprint probes, suspended-page framing/hostile-hash tests, and regression checks for legitimate internal navigation, favicon, and script use. This task is subject to Gate B; do not edit the manifest before approval.
 
 ### Phase 4 — MV3 reliability (durable queue and alarm reconciliation) and bug fixes

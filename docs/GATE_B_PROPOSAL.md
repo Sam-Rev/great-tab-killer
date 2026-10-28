@@ -48,11 +48,11 @@ All other manifest fields remain unchanged, including version, host permissions,
 | `unlimitedStorage` | Raise extension-origin storage quotas for IndexedDB session, favicon, and preview records; `js/helpers/gsIndexedDb.js`. |
 | `contextMenus` | Create and handle tab-suspension and whitelist menu commands; `js/tgs.js:1360-1515`. |
 | `alarms` | Schedule per-tab suspension deadlines, session metrics, backup, and optional monitor sampling; `js/tgs.js`, `js/helpers/gsBackup.js`, `js/helpers/gsMemorySampler.js`. |
-| `favicon` | Read browser favicon cache through `chrome://favicon` and `/_favicon/` to retain original site icons; `js/helpers/gsFavicon.js:100-104,183`. |
+| `favicon` | Read browser favicon cache through `/_favicon/` to retain original site icons; `js/helpers/gsFavicon.js:100-103,145-155`. |
 | `scripting` | Inject tab checks, preview capture libraries, and opt-in monitor sampling; `js/helpers/gsTabCheckManager.js:511-531`, `js/helpers/gsMessages.js:143-174`, `js/helpers/gsMemorySampler.js:154`. |
-| `offscreen` | Create an offscreen document to turn a Blob into a downloadable plain-text backup; `js/helpers/gsBackup.js:54-72`. |
-| Optional `system.cpu` | When the user enables monitor access, estimate CPU activity from samples; `js/monitor.js:296-298`. |
-| Optional `system.memory` | When the user enables monitor access, read total/available physical memory; `js/monitor.js:281`. |
+| `offscreen` | Create an offscreen document to turn a Blob into a downloadable plain-text backup; `js/helpers/gsBackup.js:53-75`. |
+| Optional `system.cpu` | When the user enables system totals and grants the permission, read CPU samples; `js/monitor.js:171-173,196-243`. |
+| Optional `system.memory` | When the user enables system totals and grants the permission, read total/available physical memory; `js/monitor.js:156,196-243`. |
 
 ## Unchanged host access
 
@@ -64,16 +64,27 @@ Chrome's permission docs list `optional_permissions` as the runtime-granted fiel
 
 **Not verified:** loading the updated manifest in Chrome Stable or Brave, whether a particular Stable build accepts both optional `system.*` permissions at runtime, and the monitor's post-change permission flow.
 
-## Addendum: proposed minimum Chrome version (owner approval pending)
+## Addendum: minimum Chrome version
 
-**Proposed `minimum_chrome_version`: `150`.** Do not add this field to `manifest.json` until the owner approves it.
+**Applied `minimum_chrome_version`: `116`.** `manifest.json` and `security/permissions.lock.json` now agree; `tools/check-guards.mjs` compares this field. The highest required API version found is `chrome.runtime.getContexts()` (Chrome 116), used by backup creation in `js/helpers/gsBackup.js` and also feature-checked in `js/helpers/gsMemorySampler.js`.
 
-The limiting API member currently used is `chrome.offscreen.hasDocument()` in `js/helpers/gsBackup.js:59`, whose official API reference says Chrome 150+. The extension also uses `chrome.offscreen.createDocument()` and `closeDocument()` (Chrome 109+), `chrome.scripting` and `chrome.action` (Chrome 88+ MV3), and `chrome.storage.session` (Chrome 102+). Thus the direct `hasDocument()` call raises the effective minimum above the other identified APIs. `chrome.runtime.getContexts()` is used only behind a feature check in `js/helpers/gsMemorySampler.js:414`, so that optional path does not raise the minimum. The current source scan found no unguarded API with a documented minimum above Chrome 150.
+| API/member used | Evidence and effect |
+|---|---|
+| `chrome.runtime.getContexts()` | Chrome 116+; now used to detect the existing offscreen document before creating one. This sets the floor. [Runtime API](https://developer.chrome.com/docs/extensions/reference/api/runtime), [Offscreen API older-version guidance](https://developer.chrome.com/docs/extensions/reference/api/offscreen#before-chrome-116-check-if-an-offscreen-document-is-open) |
+| `chrome.offscreen.createDocument/closeDocument` | Offscreen API is Chrome 109+ MV3; below the 116 floor. [Offscreen API](https://developer.chrome.com/docs/extensions/reference/api/offscreen) |
+| `chrome.scripting` | Chrome 88+ MV3. [Scripting API](https://developer.chrome.com/docs/extensions/reference/api/scripting) |
+| `chrome.action` | Chrome 88+ MV3. [Action API](https://developer.chrome.com/docs/extensions/reference/api/action) |
+| `chrome.tabs` | The core Tabs API is available in the MV3 baseline; current calls use longstanding query/update/discard/events. The `tab.frozen` field (Chrome 132+) is optional and treated as false when absent, so it does not raise the floor. [Tabs API](https://developer.chrome.com/docs/extensions/reference/api/tabs) |
+| `chrome.storage.session` | Chrome 102+ MV3, and the service worker checks for its presence before using it. [Storage API](https://developer.chrome.com/docs/extensions/reference/api/storage) |
+| `chrome.system.cpu.getInfo` / `chrome.system.memory.getInfo` | Chrome 91+; both are optional and user-granted. [CPU API](https://developer.chrome.com/docs/extensions/reference/api/system/cpu), [Memory API](https://developer.chrome.com/docs/extensions/reference/api/system/memory) |
+| `chrome.alarms` | Current `create()` Promise support is Chrome 111+ and `get()` is Chrome 91+; both are below the floor. The project uses one-minute or longer delays/periods. A legacy 0.33-minute suspension setting is normalized to one minute. No sub-minute alarm is used, so Chrome 120's 30-second alarm change does not set the floor. [Alarms API](https://developer.chrome.com/docs/extensions/reference/api/alarms), [Chrome 120 alarm update](https://developer.chrome.com/blog/chrome-120-beta-whats-new-for-extensions/) |
+| `chrome.contextMenus` | Current create/remove/click-listener use predates MV3 88; no newer minimum is documented for the members used. [Context Menus API](https://developer.chrome.com/docs/extensions/reference/api/contextMenus) |
+| `chrome.permissions` | `contains()` and click-handler `request()` use callbacks; no later minimum than the MV3 88 baseline is documented. [Permissions API](https://developer.chrome.com/docs/extensions/reference/api/permissions) |
+| Favicon permission and `/_favicon/` | The official guide describes the permission and `runtime.getURL()` endpoint without a newer minimum; below the 116 floor. [Fetching favicons](https://developer.chrome.com/docs/extensions/how-to/ui/favicons) |
+| `chrome.commands`, `chrome.runtime` (except `getContexts`), `chrome.windows`, `chrome.storage.local/sync`, and remaining core APIs | The current members used have no later minimum documented than the general MV3 baseline, Chrome 88. [MV3 baseline](https://developer.chrome.com/docs/extensions/develop/migrate), [Extension API reference](https://developer.chrome.com/docs/extensions/reference/api) |
 
-Evidence: [Offscreen API availability and `hasDocument()`](https://developer.chrome.com/docs/extensions/reference/api/offscreen) (109+ API, `hasDocument()` 150+); [Scripting API](https://developer.chrome.com/docs/extensions/reference/api/scripting) (88+ MV3); [Action API](https://developer.chrome.com/docs/extensions/reference/api/action) (88+ MV3); [Storage API](https://developer.chrome.com/docs/extensions/reference/api/storage) (`storage.session` 102+); [Runtime API](https://developer.chrome.com/docs/extensions/reference/api/runtime) (`getContexts()` 116+).
-
-The version recommendation is documentation only. Manifest version, hosts, content-script matches, CSP, and WAR were left unchanged in Gate B. This is source/API-reference evidence, not a runtime compatibility test.
+The minimum-version review also confirmed the backup default is still weekly: `gsStorage.js` seeds `gsBackupFrequency` as `10080`, and service-worker startup calls `gsBackup.setupAlarm()`. That privacy fix remains open under A-11/task 3.10 by owner direction. This version floor is based on current source and Chrome documentation, not a browser run. Other Gate B manifest fields remain unchanged.
 
 ## Guard scan exclusions
 
-`tools/check-guards.mjs` excludes `dev/`, `docs/`, `tools/`, `assets/`, `vendor/`, and `security/` because they are development/documentation/policy inputs rather than shipped extension runtime source. It excludes the three vendored paths `js/helpers/html2canvas.min.js`, `js/helpers/dom-to-image.js`, and `js/helpers/db.js` from first-party source-pattern scans; these are third-party libraries reviewed separately in `vendor/README.md`. The screenshot libraries contain `XMLHttpRequest` paths, while `db.js` is an IndexedDB shim. No vendored files were edited.
+`tools/check-guards.mjs` excludes `dev/`, `docs/`, `tools/`, `assets/`, `vendor/`, and `security/` because they are development/documentation/policy inputs rather than shipped extension runtime source. It excludes the three vendored paths `js/helpers/html2canvas.min.js`, `js/helpers/dom-to-image.js`, and `js/helpers/db.js` from first-party source-pattern scans; all three are pinned in `vendor/CHECKSUMS.sha256`, verified by the guard, and reviewed in `vendor/README.md`. The screenshot libraries contain `XMLHttpRequest` paths; `db.js` remains of unverified provenance. Any unpinned file in `vendor/` fails the guard.

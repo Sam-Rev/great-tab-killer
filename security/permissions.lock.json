@@ -52,6 +52,7 @@
     "extension_pages": "script-src 'self'; object-src 'self'; child-src 'self'; connect-src 'self' data:; img-src 'self' data: chrome:; style-src 'self' 'unsafe-inline'; default-src 'self'"
   },
   "incognito": "split",
+  "minimum_chrome_version": "116",
   "absent_fields": [
     "update_url",
     "externally_connectable"

@@ -1,17 +1,16 @@
-# Vendored Libraries: Phase 1 Review
+# Vendored libraries: Phase 3 pinning
 
-Hashes below were calculated from the current checked-in files on 2026-10-27. Official npm release tarballs for the versioned libraries were downloaded to `/tmp` for comparison; no dependency was added to the repository.
+These checksums pin the vendored files at their current paths under `js/helpers/`. `tools/check-guards.mjs` verifies every hash, requires all three excluded source files to be listed, and fails if an unpinned file appears in `vendor/`. Do not edit a vendor file or checksum without owner approval.
 
-| File | Header identity | License | SHA-256 | Provenance / review |
+| File | Name / version | Source | License status | SHA-256 |
 |---|---|---|---|---|
-| `js/helpers/html2canvas.min.js` | `html2canvas 1.0.0-alpha.10` | MIT (header and package metadata) | `c2cd181c1c75e6add0fd6cd08c08831dec0cd32356697b7d1bfa0ebec577bb5c` | Header points to [html2canvas](https://html2canvas.hertzen.com). It is byte-different from official npm `1.0.0-alpha.10` `dist/html2canvas.min.js` (SHA-256 `745d277f4148a4bddc9805d16e31048935cc9885da561cae4329fe2c2006bb89`) because the checked-in file is expanded/formatted. **Certain:** Terser 5.39.0 with identical compression/mangling options produces identical normalized outputs (SHA-256 `9d948037534f3f5a78453d385bd54d6a487e61ecdd9d56f461d89b55ff6d1eb6`), so no token-level delta was observed. Both contain XHR/fetch resource-loading paths; no storage or extension messaging APIs were found. Runtime capture and resource requests remain unverified. Grep found no `eval` or `new Function` match. |
-| `js/helpers/dom-to-image.js` | `dom-to-image-2.6.0`; local comments say patched to expose `toCanvas` and fix a promise rejection | MIT (official project README and package metadata) | `274d6fba08b86c206235ca4b82c8717befcc50248e7078598f093e873d60c01c` | [Official upstream](https://github.com/tsayen/dom-to-image). Compared with official npm `2.6.0` `src/dom-to-image.js` (SHA-256 `4f0d3f817e9a14331eb1ee861d02452ff66317e7fb79dc85f68905558fc1f685`): differences match the documented `toCanvas` export/helper and `onerror` patch. Contains XHR for resource inlining; no `eval` or `new Function` match. |
-| `js/helpers/db.js` | **UNVERIFIED**: no upstream name/version header present; bundled API is an IndexedDB wrapper | **UNVERIFIED** from this file's header (no license/version header found) | `1a5288a8c7a700a52cd4a6451c7ee1f7560721b05b939b040ebe4597f5c7ff19` | Project-local provenance/version must be recovered from upstream repository history or owner records. No `eval`, `new Function`, XHR, fetch, WebSocket, EventSource, or sendBeacon match in scan. |
+| `js/helpers/html2canvas.min.js` | html2canvas `1.0.0-alpha.10` | [npm package](https://www.npmjs.com/package/html2canvas/v/1.0.0-alpha.10); official project: [html2canvas](https://html2canvas.hertzen.com) | MIT, confirmed from header and package metadata | `c2cd181c1c75e6add0fd6cd08c08831dec0cd32356697b7d1bfa0ebec577bb5c` |
+| `js/helpers/dom-to-image.js` | dom-to-image `2.6.0`, locally patched | [upstream repository](https://github.com/tsayen/dom-to-image), version 2.6.0 | MIT, confirmed from upstream README and package metadata | `274d6fba08b86c206235ca4b82c8717befcc50248e7078598f093e873d60c01c` |
+| `js/helpers/db.js` | IndexedDB wrapper; name/version **UNVERIFIED** | **UNVERIFIED**; provenance must be recovered from repository history or owner records | **UNVERIFIED**; no license/version header was found | `1a5288a8c7a700a52cd4a6451c7ee1f7560721b05b939b040ebe4597f5c7ff19` |
 
-The official dom-to-image repository identifies its project and MIT license; the local version banner identifies 2.6.0. Its upstream README describes embedding external page images and fonts for rendering. The checked-in fork's `XMLHttpRequest` resource-inliner therefore has network behavior bounded by the page/resource origin and browser security policy; no fixed remote service endpoint was found.
+The previous Phase 1 comparison found html2canvas's normalized Terser output identical to the official same-version artifact; runtime equivalence remains unverified. The dom-to-image local changes match its documented `toCanvas` export/helper and error handling patch. Both screenshot libraries contain `XMLHttpRequest` paths for image capture, so the guard excludes only these three hash-pinned paths from first-party forbidden-pattern scanning. The hash check still runs on every guard invocation.
 
-## Owner follow-up
+## Remaining vendor follow-up
 
-- Recover and verify the provenance/license for `db.js`.
-- Browser-test html2canvas capture and resource requests; identical Terser-normalized outputs establish no token delta in this comparison but do not verify runtime behavior.
-- Recover and verify the provenance/license for `db.js`.
+- Recover and verify the identity, version, source and license for `db.js`.
+- Browser-test screenshot capture and its resource behavior; not run as part of Phase 3.6.
