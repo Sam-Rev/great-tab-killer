@@ -28,6 +28,19 @@ The owner reports one Brave test session, but did not specify browser version or
 | Chrome Stable, N-2 | Not tested | Not tested | Not tested | |
 | Edge, current | Not tested | Not tested | Not tested | |
 
+## Gate B manual checks still required
+
+Run these in Brave with the unpacked extension after the Gate B changes:
+
+- Install or reload the extension and confirm it loads with zero warnings.
+- Open `chrome-extension://odolpeeackiejlhdfpakabidhggghnlo/html/monitor.html`.
+- Confirm no system-permission prompt appears on page load; click **Enable system totals** and confirm the prompt appears only then.
+- Deny the prompt and confirm the tab estimates and monitor controls continue working in estimate mode with the neutral optional-permission message.
+- Confirm background sampling is unchecked by default and the sampler alarm is absent until enabled; disable it and confirm the alarm is cleared.
+- Confirm no errors appear in the extension Errors page or service worker console.
+
+These Gate B checks were not run in this environment.
+
 ## Not tested
 
 - Browser/PC restart and recovery; incognito; pinned tabs; audio tabs; pause shortcut; Tab Groups.

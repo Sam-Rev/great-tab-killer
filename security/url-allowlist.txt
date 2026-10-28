@@ -1,0 +1,6 @@
+# Exact shipped-JS URL literals with one-line reasons; this is not a network destination allowlist.
+http://www.w3.org/2000/svg	SVG namespace identifier used to create SVG elements; it is not fetched.
+http://chromeDefaultFavicon	Synthetic pageUrl marker passed to the local chrome://favicon extension endpoint.
+https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA	Historical Chromium API note in a source comment only.
+https://bugs.chromium.org/p/chromium/issues/detail?id=649947	Historical Chromium bug reference in a source comment only.
+https://www.youtube.com/watch	URL prefix used to recognize YouTube watch tabs; it is not fetched.

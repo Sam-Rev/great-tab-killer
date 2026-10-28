@@ -1,0 +1,59 @@
+{
+  "permissions": [
+    "tabs",
+    "storage",
+    "unlimitedStorage",
+    "contextMenus",
+    "alarms",
+    "favicon",
+    "scripting",
+    "offscreen"
+  ],
+  "optional_permissions": [
+    "system.cpu",
+    "system.memory"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "file://*/*"
+  ],
+  "content_scripts_matches": [
+    [
+      "http://*/*",
+      "https://*/*",
+      "file://*/*"
+    ]
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "html/suspended.html",
+        "/images/*",
+        "js/*.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    },
+    {
+      "resources": [
+        "_favicon/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
+      "extension_ids": [
+        "*"
+      ]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; child-src 'self'; connect-src 'self' data:; img-src 'self' data: chrome:; style-src 'self' 'unsafe-inline'; default-src 'self'"
+  },
+  "incognito": "split",
+  "absent_fields": [
+    "update_url",
+    "externally_connectable"
+  ]
+}
