@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TGS Memory Lab</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #6b7385; --line: #e3e6ec;
+  --accent: #2f6fde; --good: #1f9254; --bad: #c8382f; --warn: #b7791f;
+  --c1: #2f6fde; --c2: #e0692a; --c3: #8e44ad; --c4: #1f9a8a; --c5: #c8382f; --c6: #7f8c8d;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c; --panel: #1c2027; --text: #e6e9ef; --muted: #8d95a5; --line: #2c323c;
+    --accent: #6b9cf0; --good: #3fbf7f; --bad: #ef6b62; --warn: #e0a84a;
+    --c1: #6b9cf0; --c2: #f08a52; --c3: #b77fd6; --c4: #3cc2ae; --c5: #ef6b62; --c6: #a0a8b3;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--panel); border-bottom: 1px solid var(--line); padding: 10px 20px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+header h1 { font-size: 16px; margin: 0; }
+nav { display: flex; gap: 4px; flex-wrap: wrap; }
+nav button { background: none; border: 0; padding: 6px 12px; border-radius: 6px; color: var(--muted); font: inherit; cursor: pointer; }
+nav button.on { background: var(--bg); color: var(--text); font-weight: 600; }
+.spacer { flex: 1; }
+main { padding: 16px 20px 60px; max-width: 1400px; margin: 0 auto; }
+section[hidden] { display: none; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.panel h2 { font-size: 14px; margin: 0 0 10px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.card .k { color: var(--muted); font-size: 12px; }
+.card .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.card .s { color: var(--muted); font-size: 12px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+.p1 { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); }
+.p2 { background: color-mix(in srgb, var(--warn) 22%, transparent); color: var(--warn); }
+.p4 { background: color-mix(in srgb, var(--bad) 20%, transparent); color: var(--bad); }
+select, input, textarea, button.btn { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+textarea { width: 100%; min-height: 160px; font: 12px/1.4 ui-monospace, Menlo, monospace; }
+input[type=number] { width: 80px; }
+button.btn { cursor: pointer; background: var(--panel); }
+button.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+button.btn.danger { color: var(--bad); }
+button.btn:disabled { opacity: .5; cursor: default; }
+.seg button { border-radius: 0; margin-left: -1px; }
+.seg button:first-child { border-radius: 6px 0 0 6px; }
+.seg button:last-child { border-radius: 0 6px 6px 0; }
+.seg button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: 220px; }
+.chart .legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 4px; }
+.chart .legend i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); white-space: nowrap; z-index: 3; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: 12px; }
+td.num, th.num { text-align: right; }
+.scroll { overflow-x: auto; }
+.good { color: var(--good); } .bad { color: var(--bad); } .muted { color: var(--muted); }
+.small { font-size: 12px; }
+.log { background: var(--bg); border-radius: 6px; padding: 8px; font: 12px/1.45 ui-monospace, Menlo, monospace; max-height: 260px; overflow: auto; white-space: pre-wrap; }
+.progress { height: 6px; background: var(--bg); border-radius: 99px; overflow: hidden; }
+.progress > div { height: 100%; background: var(--accent); transition: width .5s; }
+.variants label { display: block; padding: 4px 0; }
+.help p, .help li { max-width: 820px; }
+.help dt { font-weight: 600; margin-top: 10px; }
+.help dd { margin: 2px 0 0 0; color: var(--muted); max-width: 820px; }
+details summary { cursor: pointer; color: var(--muted); }
+.err { color: var(--bad); }
+</style>
+</head>
+<body>
+<header>
+  <h1>TGS Memory Lab</h1>
+  <nav id="nav">
+    <button data-tab="monitor" class="on">Мониторинг</button>
+    <button data-tab="manual">A/B вручную</button>
+    <button data-tab="bench">Автотест</button>
+    <button data-tab="results">Результаты</button>
+    <button data-tab="help">Как читать</button>
+  </nav>
+  <div class="spacer"></div>
+  <label class="row small">Браузер <select id="inst"></select></label>
+  <span id="pressure" class="badge"></span>
+</header>
+
+<main>
+<!-- ============ MONITOR ============ -->
+<section id="tab-monitor">
+  <div class="cards" id="cards"></div>
+  <div class="panel row">
+    <div class="seg row" id="range" style="gap:0">
+      <button class="btn" data-s="300">5 мин</button>
+      <button class="btn on" data-s="900">15 мин</button>
+      <button class="btn" data-s="3600">1 час</button>
+      <button class="btn" data-s="14400">4 часа</button>
+    </div>
+    <div class="spacer"></div>
+    <input id="markLabel" placeholder="что сделали (напр. «усыпил всё»)" style="width:280px">
+    <button class="btn" id="markBtn">Поставить метку</button>
+  </div>
+  <div class="grid">
+    <div class="panel"><h2>Память Chrome (phys_footprint), МБ</h2><div class="chart" id="chMem"></div></div>
+    <div class="panel"><h2>Процессор Chrome</h2><div class="chart" id="chCpu"></div></div>
+    <div class="panel"><h2>Система: swap и сжатая память, МБ</h2><div class="chart" id="chSwap"></div></div>
+    <div class="panel"><h2>Система: подкачка (то, что даёт «тормоза»), стр/с</h2><div class="chart" id="chPaging"></div></div>
+  </div>
+  <div class="panel">
+    <h2>Процессы выбранного браузера</h2>
+    <div class="scroll"><table id="procs"></table></div>
+    <p class="small muted">Память процесса = phys_footprint (как «Память» в Мониторинге системы). RSS — только то, что сейчас в RAM; разница — сжатое и вытесненное в swap.</p>
+  </div>
+</section>
+
+<!-- ============ MANUAL ============ -->
+<section id="tab-manual" hidden>
+  <div class="panel">
+    <h2>Ручной A/B на вашем обычном Chrome</h2>
+    <ol class="small">
+      <li>Выберите браузер вверху справа. Ничего не трогайте и нажмите <b>«Записать A»</b>: идёт усреднение в течение окна.</li>
+      <li>Сделайте действие (например, «усыпить все вкладки» через TGS).</li>
+      <li>Нажмите <b>«Записать B»</b>: сначала ожидание стабилизации, потом такое же окно замера.</li>
+    </ol>
+    <p class="small muted">Пока идёт окно — не работайте в браузере: любое действие попадёт в замер. Для честного сравнения методов лучше «Автотест»: там одинаковые вкладки и чистый Chrome.</p>
+    <div class="row">
+      <input id="mLabel" placeholder="что проверяем" style="width:260px">
+      <label>окно <input id="mWindow" type="number" value="30"> с</label>
+      <label>стабилизация перед B <input id="mSettle" type="number" value="60"> с</label>
+      <button class="btn primary" id="mA">Записать A</button>
+      <button class="btn primary" id="mB" disabled>Записать B</button>
+      <button class="btn" id="mReset">Сбросить</button>
+    </div>
+    <div id="mStatus" class="small" style="margin-top:10px"></div>
+    <div id="mResult" class="scroll" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- ============ BENCH ============ -->
+<section id="tab-bench" hidden>
+  <div class="grid">
+    <div class="panel">
+      <h2>Что сравнить</h2>
+      <div class="variants" id="variants"></div>
+      <p class="small muted">Каждый прогон — отдельный чистый Chrome с временным профилем и этим расширением из репозитория. Ваш Chrome не затрагивается, но во время теста откроется ещё одно окно Chrome: не закрывайте его и не кликайте в нём.</p>
+      <div class="row">
+        <label>повторов <input id="bRepeats" type="number" value="2" min="1"></label>
+        <label>загрузка <input id="bLoad" type="number" value="60"> с</label>
+        <label>стабилизация <input id="bSettle" type="number" value="60"> с</label>
+        <label>окно <input id="bWindow" type="number" value="45"> с</label>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input id="bLabel" placeholder="подпись, напр. «до оптимизации suspended.html»" style="flex:1;min-width:240px">
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" id="bStart">Запустить</button>
+        <button class="btn danger" id="bStop" disabled>Остановить</button>
+        <span id="bEta" class="small muted"></span>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Страницы для теста (одна на строку)</h2>
+      <textarea id="bUrls"></textarea>
+      <p class="small muted">Больше вкладок — заметнее разница и меньше доля шума. 20–30 страниц — хороший баланс.</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Ход теста</h2>
+    <div class="row small"><span id="bPhase" class="muted">не запущен</span><div class="spacer"></div><span id="bCount"></span></div>
+    <div class="progress" style="margin:8px 0"><div id="bBar" style="width:0"></div></div>
+    <div class="log" id="bLog"></div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section id="tab-results" hidden>
+  <div id="results"></div>
+</section>
+
+<!-- ============ HELP ============ -->
+<section id="tab-help" hidden>
+  <div class="panel help">
+    <h2>Откуда цифры</h2>
+    <p>Все значения берутся из ядра macOS (<code>proc_pid_rusage</code>, <code>sysctl</code>, <code>vm_stat</code>), а не из Chrome и не из расширения. Это те же источники, что у «Мониторинга системы».</p>
+    <dl>
+      <dt>Память Chrome (phys_footprint)</dt>
+      <dd>Сумма «Памяти» всех процессов этого экземпляра Chrome, включая сжатую и вытесненную в swap. Общие страницы не задваиваются. Главная метрика «сколько Chrome отнимает у системы».</dd>
+      <dt>вкладки / расширения / GPU / browser / служебные</dt>
+      <dd>Разбивка по типам процессов. «Расширения» — процессы расширений: именно там живут все усыплённые вкладки TGS (suspended.html), поэтому их вес растёт с числом усыплённых вкладок.</dd>
+      <dt>CPU Chrome, %</dt>
+      <dd>Процессорное время всех процессов за интервал. 100% = одно ядро полностью. Точная сумма, а не мгновенная оценка.</dd>
+      <dt>Пробуждения CPU, /с</dt>
+      <dd>Сколько раз процессы будили процессор. Таймеры фоновых страниц. Влияет на батарею и на «Энергопотребление» в Мониторинге системы.</dd>
+      <dt>Энергия (индекс)</dt>
+      <dd>Счётчик энергии ядра. Абсолютные единицы не задокументированы — сравнивайте только между собой на одной машине.</dd>
+      <dt>Swap, сжатая память, свободно %, давление</dt>
+      <dd>Состояние всей системы. Они зависят от всего, что работает на Mac, поэтому шумные. Сами по себе не доказывают эффект, но показывают итог для системы.</dd>
+      <dt>Чтение из swap и распаковки, стр/с</dt>
+      <dd>Это и есть ощущаемые «тормоза»: система достаёт данные с диска или распаковывает их. Чем меньше, тем отзывчивее Mac.</dd>
+    </dl>
+    <h2 style="margin-top:18px">Как читать результаты автотеста</h2>
+    <ul>
+      <li><b>Δ</b> — «после минус до» внутри одного прогона (медиана по повторам). Отрицательное по памяти и CPU — хорошо.</li>
+      <li><b>Чистый эффект</b> — Δ варианта минус Δ контроля. Контроль ничего не делает и показывает, насколько цифры «плывут» сами (догрузка страниц, сборка мусора). Сравнивайте варианты по этой цифре.</li>
+      <li><b>Разброс</b> — минимум и максимум Δ по повторам. Если разброс больше разницы между вариантами — разницы нет, нужно больше повторов или вкладок.</li>
+      <li><b>«Закрыть вкладки»</b> — предел: лучше этого никакое усыпление не сделает. Хороший метод должен приближаться к нему.</li>
+      <li>Сверяйте состояние вкладок после действия (раскройте прогон): если TGS усыпил не все вкладки, результат занижен.</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<script>
+'use strict';
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = (v, d = 1) => v == null || isNaN(v) ? '—' : (Math.abs(v) >= 100 ? Math.round(v).toLocaleString('ru') : (+v).toFixed(d));
+const fmtSigned = (v, d = 1) => v == null || isNaN(v) ? '—' : (v > 0 ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v), d);
+const mb = (v) => v == null ? '—' : v >= 1024 ? (v / 1024).toFixed(2) + ' ГБ' : Math.round(v) + ' МБ';
+const PRESSURE = {1: ['норма', 'p1'], 2: ['давление: предупреждение', 'p2'], 4: ['давление: критическое', 'p4']};
+const TYPE_NAMES = {browser: 'browser', renderer: 'вкладка', extension: 'расширение', gpu: 'GPU', utility: 'служебный', other: 'прочее'};
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+const st = {
+  samples: [], lastT: 0, inst: null, instManual: false, range: 900,
+  marks: [], meta: null, resultsVersion: -1, results: null, server: null,
+};
+
+// ---------------- tabs ----------------
+$('#nav').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  $$('#nav button').forEach(x => x.classList.toggle('on', x === b));
+  $$('main > section').forEach(s => s.hidden = s.id !== 'tab-' + b.dataset.tab);
+  renderAll();
+});
+$('#range').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  st.range = +b.dataset.s;
+  $$('#range button').forEach(x => x.classList.toggle('on', x === b));
+  renderMonitor();
+});
+$('#inst').addEventListener('change', (e) => { st.inst = e.target.value; st.instManual = true; renderAll(); });
+
+async function api(path, body) {
+  const r = await fetch(path, body ? {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)} : {});
+  const j = await r.json();
+  if (j.error) throw new Error(j.error);
+  return j;
+}
+
+// ---------------- chart ----------------
+function niceMax(v) {
+  if (!(v > 0)) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v)));
+  for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p;
+  return 10 * p;
+}
+function chart(el, series, opts = {}) {
+  const W = el.clientWidth || 600, H = 220, L = 52, R = 10, T = 10, B = 22;
+  const t1 = opts.t1, t0 = opts.t0;
+  let max = 0;
+  series.forEach(s => s.pts.forEach(p => { if (p[1] != null && p[1] > max) max = p[1]; }));
+  max = niceMax(max * 1.05);
+  const x = t => L + (t - t0) / (t1 - t0) * (W - L - R);
+  const y = v => T + (1 - v / max) * (H - T - B);
+  let g = '';
+  for (let i = 0; i <= 4; i++) {
+    const v = max * i / 4, yy = y(v);
+    g += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${css('--line')}"/>`;
+    g += `<text x="${L - 6}" y="${yy + 4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${fmt(v, max < 10 ? 1 : 0)}</text>`;
+  }
+  const span = t1 - t0, stepS = span <= 600 ? 60 : span <= 1800 ? 300 : span <= 7200 ? 900 : 3600;
+  for (let t = Math.ceil(t0 / stepS) * stepS; t <= t1; t += stepS) {
+    const d = new Date(t * 1000);
+    g += `<text x="${x(t)}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${d.toTimeString().slice(0, 5)}</text>`;
+  }
+  (opts.marks || []).filter(m => m.t >= t0 && m.t <= t1).forEach(m => {
+    g += `<line x1="${x(m.t)}" x2="${x(m.t)}" y1="${T}" y2="${H - B}" stroke="${css('--warn')}" stroke-dasharray="3 3"><title>${esc(m.label)}</title></line>`;
+    g += `<text x="${x(m.t) + 3}" y="${T + 10}" font-size="10" fill="${css('--warn')}">${esc(m.label.slice(0, 24))}</text>`;
+  });
+  series.forEach(s => {
+    let d = '', pen = false, prevT = null;
+    s.pts.forEach(([t, v]) => {
+      // break the line on gaps (browser restarted, sampler paused)
+      if (v == null || (prevT != null && t - prevT > 10)) pen = false;
+      if (v != null) { d += (pen ? 'L' : 'M') + x(t).toFixed(1) + ' ' + y(v).toFixed(1); pen = true; }
+      prevT = t;
+    });
+    g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.6}" stroke-linejoin="round"/>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}<line class="cursor" y1="${T}" y2="${H - B}" stroke="${css('--muted')}" opacity="0"/></svg>
+    <div class="legend">${series.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join('')}</div>`;
+  const svg = $('svg', el);
+  svg.onmousemove = (e) => {
+    const r = svg.getBoundingClientRect();
+    const t = t0 + ((e.clientX - r.left) / r.width * W - L) / (W - L - R) * (t1 - t0);
+    let html = '', best = null;
+    series.forEach(s => {
+      let p = null, bd = Infinity;
+      for (const q of s.pts) { const d = Math.abs(q[0] - t); if (d < bd) { bd = d; p = q; } }
+      if (p && bd < 15) { best = p[0]; html += `<div><span style="color:${s.color}">●</span> ${esc(s.name)}: <b>${fmt(p[1])}</b> ${opts.unit || ''}</div>`; }
+    });
+    let tip = $('.tip', el);
+    if (!html) { if (tip) tip.remove(); return; }
+    if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; el.appendChild(tip); }
+    tip.innerHTML = `<div class="muted">${new Date(best * 1000).toTimeString().slice(0, 8)}</div>` + html;
+    const px = e.clientX - r.left;
+    tip.style.left = Math.min(px + 12, r.width - tip.offsetWidth - 4) + 'px';
+    tip.style.top = '8px';
+    const c = $('.cursor', svg); c.setAttribute('x1', x(best)); c.setAttribute('x2', x(best)); c.setAttribute('opacity', '.5');
+  };
+  svg.onmouseleave = () => { const tip = $('.tip', el); if (tip) tip.remove(); $('.cursor', svg).setAttribute('opacity', '0'); };
+}
+
+// ---------------- monitor ----------------
+function instSeries(key, field) {
+  return st.samples.filter(s => s.t >= st.now - st.range).map(s => [s.t, s.inst[key] ? s.inst[key][field] ?? null : null]);
+}
+function sysSeries(field) {
+  return st.samples.filter(s => s.t >= st.now - st.range).map(s => [s.t, s.sys[field] ?? null]);
+}
+function card(k, v, s = '') {
+  return `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+}
+function renderMonitor() {
+  if ($('#tab-monitor').hidden) return;
+  const last = st.samples[st.samples.length - 1];
+  if (!last) return;
+  const i = last.inst[st.inst];
+  const s = last.sys;
+  let html = '';
+  if (i) {
+    html += card('Chrome: вся память', mb(i.fp), `${i.nprocs} процессов`);
+    html += card('вкладки', mb(i.fp_renderer), `${i.n_renderer} процессов`);
+    html += card('расширения', mb(i.fp_extension), `${i.n_extension} процессов`);
+    html += card('GPU', mb(i.fp_gpu));
+    html += card('CPU Chrome', fmt(i.cpu_pct) + '%', '100% = одно ядро');
+    html += card('Пробуждения CPU', fmt(i.wakeups_ps, 0) + '/с');
+  } else {
+    html += card('Chrome', 'не найден', 'запустите браузер');
+  }
+  html += card('Свободно памяти', (s.free_pct ?? '—') + '%', 'всего ' + mb(s.total));
+  html += card('Swap занят', mb(s.swap_used));
+  html += card('Сжатая память', mb(s.compressor));
+  html += card('Чтение из swap', fmt(s.swapins_ps, 0) + ' стр/с', 'распаковки ' + fmt(s.decompressions_ps, 0) + '/с');
+  $('#cards').innerHTML = html;
+
+  const o = {t0: st.now - st.range, t1: st.now, marks: st.marks};
+  chart($('#chMem'), [
+    {name: 'всего', color: css('--c1'), pts: instSeries(st.inst, 'fp'), width: 2.2},
+    {name: 'вкладки', color: css('--c2'), pts: instSeries(st.inst, 'fp_renderer')},
+    {name: 'расширения', color: css('--c3'), pts: instSeries(st.inst, 'fp_extension')},
+    {name: 'GPU', color: css('--c4'), pts: instSeries(st.inst, 'fp_gpu')},
+    {name: 'browser', color: css('--c6'), pts: instSeries(st.inst, 'fp_browser')},
+  ], {...o, unit: 'МБ'});
+  chart($('#chCpu'), [
+    {name: 'CPU, %', color: css('--c1'), pts: instSeries(st.inst, 'cpu_pct'), width: 2},
+    {name: 'пробуждения / 10 в с', color: css('--c2'), pts: instSeries(st.inst, 'wakeups_ps').map(([t, v]) => [t, v == null ? null : v / 10])},
+  ], o);
+  chart($('#chSwap'), [
+    {name: 'swap занят', color: css('--c5'), pts: sysSeries('swap_used'), width: 2},
+    {name: 'сжатая память', color: css('--c3'), pts: sysSeries('compressor')},
+  ], {...o, unit: 'МБ'});
+  chart($('#chPaging'), [
+    {name: 'чтение из swap', color: css('--c5'), pts: sysSeries('swapins_ps'), width: 2},
+    {name: 'запись в swap', color: css('--c2'), pts: sysSeries('swapouts_ps')},
+    {name: 'распаковки / 100', color: css('--c3'), pts: sysSeries('decompressions_ps').map(([t, v]) => [t, v == null ? null : v / 100])},
+  ], o);
+
+  const rows = st.procs || [];
+  $('#procs').innerHTML = `<tr><th>PID</th><th>Тип</th><th class="num">Память</th><th class="num">RSS</th><th class="num">CPU, %</th></tr>` +
+    rows.map(r => `<tr><td>${r.pid}</td><td>${TYPE_NAMES[r.type] || r.type}</td><td class="num">${mb(r.fp)}</td><td class="num muted">${mb(r.rss)}</td><td class="num">${fmt(r.cpu)}</td></tr>`).join('');
+}
+
+$('#markBtn').onclick = async () => {
+  await api('/api/mark', {label: $('#markLabel').value || 'метка'});
+  $('#markLabel').value = '';
+};
+
+// ---------------- manual A/B ----------------
+$('#mA').onclick = () => manualStart('A');
+$('#mB').onclick = () => manualStart('B');
+$('#mReset').onclick = () => api('/api/manual/reset', {});
+async function manualStart(phase) {
+  try {
+    await api('/api/manual', {phase, inst: st.inst, window: +$('#mWindow').value, settle: phase === 'B' ? +$('#mSettle').value : 0, label: $('#mLabel').value});
+  } catch (e) { $('#mStatus').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+}
+function renderManual() {
+  const m = st.server && st.server.manual; if (!m) return;
+  const now = st.now;
+  let status = '';
+  if (m.running && m.settle_ends) status = `Стабилизация… ${Math.max(0, Math.round(m.settle_ends - now))} с. Не трогайте браузер.`;
+  else if (m.running) status = `Идёт замер ${m.running}… ${Math.max(0, Math.round(m.phase_ends - now))} с. Не трогайте браузер.`;
+  else if (m.A && !m.B) status = 'A записан. Сделайте действие и нажмите «Записать B».';
+  else if (!m.A) status = 'Готов к замеру A.';
+  $('#mStatus').textContent = status;
+  $('#mA').disabled = !!m.running;
+  $('#mB').disabled = !!m.running || !m.A;
+  $('#mResult').innerHTML = m.A ? abTable(m.A, m.B) : '';
+}
+function better(key, d) {
+  if (d == null || Math.abs(d) < 1e-9) return '';
+  const higherBetter = key === 'sys_free_pct';
+  return (higherBetter ? d > 0 : d < 0) ? 'good' : 'bad';
+}
+function abTable(A, B) {
+  const ms = st.meta ? st.meta.metrics : [];
+  return `<table><tr><th>Метрика</th><th class="num">A (до)</th><th class="num">B (после)</th><th class="num">Δ</th><th class="num">Δ %</th></tr>` +
+    ms.map(([k, label, unit]) => {
+      const a = A[k], b = B ? B[k] : null, d = (a != null && b != null) ? b - a : null;
+      const pct = d != null && a ? d / Math.abs(a) * 100 : null;
+      return `<tr><td>${esc(label)}${unit ? ', ' + unit : ''}</td><td class="num">${fmt(a)}</td><td class="num">${fmt(b)}</td>
+        <td class="num ${better(k, d)}">${fmtSigned(d)}</td><td class="num ${better(k, d)}">${pct == null ? '—' : fmtSigned(pct, 0) + '%'}</td></tr>`;
+    }).join('') + `</table><p class="small muted">Сэмплов: A ${A.n}${B ? ', B ' + B.n : ''}.</p>`;
+}
+
+// ---------------- bench ----------------
+function initBenchForm() {
+  const defaults = ['control', 'tgs', 'tgs_discard', 'discard'];
+  $('#variants').innerHTML = st.meta.variants.map(([k, name]) =>
+    `<label><input type="checkbox" value="${k}" ${defaults.includes(k) ? 'checked' : ''}> ${esc(name)}</label>`).join('');
+  $('#bUrls').value = st.meta.urls.join('\n');
+  ['#variants', '#bRepeats', '#bLoad', '#bSettle', '#bWindow'].forEach(s => $(s).addEventListener('input', benchEta));
+  benchEta();
+}
+function benchCfg() {
+  return {
+    variants: $$('#variants input:checked').map(x => x.value),
+    repeats: +$('#bRepeats').value, load_wait: +$('#bLoad').value,
+    settle: +$('#bSettle').value, window: +$('#bWindow').value,
+    label: $('#bLabel').value,
+    urls: $('#bUrls').value.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#')),
+  };
+}
+function benchEta() {
+  const c = benchCfg();
+  const per = c.load_wait + c.settle + 2 * c.window + 35;
+  $('#bEta').textContent = `≈ ${Math.round(c.variants.length * c.repeats * per / 60)} мин`;
+}
+$('#bStart').onclick = async () => {
+  const c = benchCfg();
+  if (!c.variants.length) return alert('Выберите хотя бы один вариант');
+  try { await api('/api/bench/start', c); } catch (e) { $('#bPhase').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+};
+$('#bStop').onclick = () => api('/api/bench/stop', {});
+function renderBench() {
+  const b = st.server && st.server.bench;
+  $('#bStart').disabled = !!(b && b.running);
+  $('#bStop').disabled = !(b && b.running);
+  if (!b) return;
+  const left = b.phase_ends ? Math.max(0, Math.round(b.phase_ends - st.now)) : null;
+  $('#bPhase').textContent = b.running ? (b.phase || '…') + (left != null ? ` — ${left} с` : '') : 'завершён';
+  $('#bCount').textContent = b.run_total ? `прогон ${b.run_index} из ${b.run_total}` : '';
+  $('#bBar').style.width = b.run_total ? (Math.max(0, b.run_index - (b.running ? 1 : 0)) / b.run_total * 100) + '%' : '0';
+  const log = $('#bLog'), atBottom = log.scrollTop + log.clientHeight >= log.scrollHeight - 5;
+  log.textContent = b.log.join('\n');
+  if (atBottom) log.scrollTop = log.scrollHeight;
+}
+
+// ---------------- results ----------------
+function renderResults() {
+  if (!st.results || $('#tab-results').hidden) return;
+  const ms = st.meta.metrics, names = Object.fromEntries(st.meta.variants);
+  let html = '';
+  const sessions = st.results.sessions || [];
+  if (!sessions.length && !(st.results.manual || []).length) html = '<div class="panel muted">Пока нет результатов. Запустите автотест или ручной A/B.</div>';
+  sessions.forEach(s => {
+    const sum = s.summary || {};
+    const vs = st.meta.variants.map(v => v[0]).filter(v => sum[v]);
+    const c = s.config || {};
+    const date = new Date(s.started * 1000).toLocaleString('ru');
+    html += `<div class="panel"><div class="row"><h2 style="margin:0">${esc(s.label || 'Автотест')}</h2>
+      <span class="small muted">${date} · ${(c.urls || []).length} вкладок · ${c.repeats} повт. · окно ${c.window} с${s.aborted ? ' · <span class="err">прерван</span>' : ''}${!s.finished ? ' · идёт…' : ''}</span>
+      <div class="spacer"></div><button class="btn danger small" data-del="sessions" data-id="${s.id}">Удалить</button></div>`;
+    if (!vs.length) { html += '<p class="muted small">Нет завершённых прогонов.</p></div>'; return; }
+    html += `<div class="scroll"><table><tr><th>Метрика</th>${vs.map(v => `<th class="num">${esc(names[v])}<div class="muted small">n=${sum[v].n}</div></th>`).join('')}</tr>`;
+    ms.forEach(([k, label, unit]) => {
+      html += `<tr><td>${esc(label)}${unit ? ', ' + unit : ''}</td>`;
+      vs.forEach(v => {
+        const row = sum[v], d = row.delta[k], net = row.net[k];
+        const runs = s.runs.filter(r => r.variant === v && r.delta && r.delta[k] != null).map(r => r.delta[k]);
+        const spread = runs.length > 1 ? `<div class="muted small">разброс ${fmtSigned(Math.min(...runs))}…${fmtSigned(Math.max(...runs))}</div>` : '';
+        const main = v === 'control' || net == null ? d : net;
+        html += `<td class="num"><b class="${v === 'control' ? '' : better(k, main)}">${fmtSigned(main)}</b>
+          <div class="muted small">${fmt(row.A[k])} → ${fmt(row.B[k])}</div>${spread}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += `</table></div><p class="small muted">Крупно: ${sum.control ? 'чистый эффект (Δ варианта − Δ контроля)' : 'Δ (после − до); контроля нет, дрейф не вычтен'}. Мелко: медиана «до → после».</p>`;
+    html += `<details><summary>Прогоны (${s.runs.length})</summary><div class="scroll"><table class="small"><tr><th>Вариант</th><th>Повтор</th><th>До действия</th><th>Действие</th><th>После</th><th class="num">Δ память</th><th class="num">Δ CPU</th></tr>` +
+      s.runs.map(r => `<tr><td>${esc(names[r.variant])}</td><td>${r.rep + 1}</td><td>${tabState(r.state_before)}</td>
+        <td>${r.error ? `<span class="err">${esc(r.error)}</span>` : esc(JSON.stringify(r.apply || {}))}</td><td>${tabState(r.state_after)}</td>
+        <td class="num">${r.delta ? fmtSigned(r.delta.fp) : '—'}</td><td class="num">${r.delta ? fmtSigned(r.delta.cpu_pct) : '—'}</td></tr>`).join('') +
+      `</table></div></details></div>`;
+  });
+  (st.results.manual || []).forEach(m => {
+    html += `<div class="panel"><div class="row"><h2 style="margin:0">Ручной: ${esc(m.label)}</h2><span class="small muted">${new Date(m.time * 1000).toLocaleString('ru')}</span>
+      <div class="spacer"></div><button class="btn danger small" data-del="manual" data-id="${m.id}">Удалить</button></div>
+      <details><summary>Таблица</summary><div class="scroll">${abTable(m.A, m.B)}</div></details></div>`;
+  });
+  $('#results').innerHTML = html;
+}
+function tabState(s) {
+  if (!s) return '—';
+  return `вкладок ${s.tabs}, усыплено ${s.suspended}, discard ${s.discarded}, заморожено ${s.frozen}`;
+}
+$('#results').addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-del]'); if (!b) return;
+  if (b.dataset.armed) { await api('/api/results/delete', {kind: b.dataset.del, id: b.dataset.id}); return; }
+  b.dataset.armed = '1'; b.textContent = 'Точно удалить?';
+  setTimeout(() => { delete b.dataset.armed; b.textContent = 'Удалить'; }, 3000);
+});
+
+// ---------------- polling ----------------
+function updateInstances(list) {
+  const sel = $('#inst');
+  const benchPid = st.server.bench_pid ? String(st.server.bench_pid) : null;
+  if (!st.instManual || !list.some(x => x.key === st.inst)) {
+    if (benchPid && list.some(x => x.key === benchPid)) st.inst = benchPid;
+    else if (list.length) st.inst = list.slice().sort((a, b) => b.fp - a.fp)[0].key;
+    if (st.instManual && !list.some(x => x.key === st.inst)) st.instManual = false;
+  }
+  const html = list.map(x => `<option value="${x.key}" ${x.key === st.inst ? 'selected' : ''}>${esc(x.app)} — ${esc(x.label)}${x.key === benchPid ? ' (автотест)' : ''} — ${mb(x.fp)}</option>`).join('') || '<option>Chrome не найден</option>';
+  if (sel.innerHTML !== html) sel.innerHTML = html;
+}
+async function poll() {
+  try {
+    const r = await api(`/api/state?since=${st.lastT}&inst=${st.inst || ''}`);
+    st.server = r; st.now = r.now; st.marks = r.marks; st.procs = r.procs;
+    if (r.samples.length) {
+      st.samples.push(...r.samples);
+      st.lastT = r.samples[r.samples.length - 1].t;
+      const cutoff = st.now - 4 * 3600;
+      while (st.samples.length && st.samples[0].t < cutoff) st.samples.shift();
+    }
+    updateInstances(r.instances);
+    const last = st.samples[st.samples.length - 1];
+    if (last) {
+      const [txt, cls] = PRESSURE[last.sys.pressure] || ['давление: ?', 'p2'];
+      const p = $('#pressure'); p.textContent = txt; p.className = 'badge ' + cls;
+    }
+    if (r.results_version !== st.resultsVersion) {
+      st.resultsVersion = r.results_version;
+      st.results = await api('/api/results');
+    }
+    renderAll();
+  } catch (e) {
+    $('#pressure').textContent = 'нет связи с mem_watch.py'; $('#pressure').className = 'badge p4';
+  }
+  setTimeout(poll, 2000);
+}
+function renderAll() { renderMonitor(); renderManual(); renderBench(); renderResults(); }
+
+(async () => {
+  st.meta = await api('/api/meta');
+  initBenchForm();
+  poll();
+})();
+window.addEventListener('resize', () => renderMonitor());
+</script>
+</body>
+</html>

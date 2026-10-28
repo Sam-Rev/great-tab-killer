@@ -1,0 +1,632 @@
+{
+  "ext_extension_name": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_extension_description": {
+    "message": "Sett inaktive Chrome-faner på pause for å spare RAM. Den beste Tab Suspender — fryser automatisk ubrukte faner og gjenoppretter dem med ett klikk."
+  },
+  "ext_default_title": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_cmd_toggle_tab_suspension_description": {
+    "message": "Suspender/Gjenopprett aktiv fane"
+  },
+  "ext_cmd_toggle_tab_pause_description": {
+    "message": "Sett på pause/Gjenoppta suspensjon av aktiv fane"
+  },
+  "ext_cmd_suspend_selected_tabs_description": {
+    "message": "Suspender valgte faner"
+  },
+  "ext_cmd_unsuspend_selected_tabs_description": {
+    "message": "Gjenopprett valgte faner"
+  },
+  "ext_cmd_soft_suspend_active_window_description": {
+    "message": "Suspender alle andre faner i aktivt vindu"
+  },
+  "ext_cmd_force_suspend_active_window_description": {
+    "message": "Tving suspensjon av alle andre faner i aktivt vindu"
+  },
+  "ext_cmd_unsuspend_active_window_description": {
+    "message": "Gjenopprett alle faner i aktivt vindu"
+  },
+  "ext_cmd_soft_suspend_all_windows_description": {
+    "message": "Suspender alle faner i alle vinduer"
+  },
+  "ext_cmd_force_suspend_all_windows_description": {
+    "message": "Tving suspensjon av alle faner i alle vinduer"
+  },
+  "ext_cmd_unsuspend_all_windows_description": {
+    "message": "Gjenopprett alle faner i alle vinduer"
+  },
+  "js_context_open_link_in_suspended_tab": {
+    "message": "Åpne lenke i ny suspendert fane"
+  },
+  "js_context_toggle_suspend_state": {
+    "message": "Suspender/Gjenopprett denne fanen"
+  },
+  "js_context_toggle_pause_suspension": {
+    "message": "Sett på pause/Gjenoppta suspensjon av denne fanen"
+  },
+  "js_context_never_suspend_domain": {
+    "message": "Aldri suspender dette domenet"
+  },
+  "js_context_never_suspend_page": {
+    "message": "Aldri suspender denne URL-en"
+  },
+  "js_context_suspend_selected_tabs": {
+    "message": "Suspender valgte faner"
+  },
+  "js_context_unsuspend_selected_tabs": {
+    "message": "Gjenopprett valgte faner"
+  },
+  "js_context_soft_suspend_other_tabs_in_window": {
+    "message": "Suspender alle andre faner i dette vinduet"
+  },
+  "js_context_force_suspend_other_tabs_in_window": {
+    "message": "Tving suspensjon av alle andre faner i dette vinduet"
+  },
+  "js_context_unsuspend_all_tabs_in_window": {
+    "message": "Gjenopprett alle faner i dette vinduet"
+  },
+  "js_context_soft_suspend_all_tabs": {
+    "message": "Suspender alle faner i alle vinduer"
+  },
+  "js_context_force_suspend_all_tabs": {
+    "message": "Tving suspensjon av alle faner i alle vinduer"
+  },
+  "js_context_unsuspend_all_tabs": {
+    "message": "Gjenopprett alle faner i alle vinduer"
+  },
+  "html_about_title": {
+    "message": "Om"
+  },
+  "html_history_title": {
+    "message": "Øktbehandling"
+  },
+  "html_history_current_session": {
+    "message": "Gjeldende økt"
+  },
+  "html_history_recent_sessions": {
+    "message": "Nylige økter"
+  },
+  "html_history_saved_sessions": {
+    "message": "Lagrede økter"
+  },
+  "html_history_import_session": {
+    "message": "Importer økt"
+  },
+  "html_options_title": {
+    "message": "Innstillinger"
+  },
+  "html_options_suspend_title": {
+    "message": "Automatisk suspensjon av faner"
+  },
+  "html_options_suspended_title": {
+    "message": "Suspenderte faner"
+  },
+  "html_options_other_title": {
+    "message": "Annet"
+  },
+  "html_options_suspend_automatically_after": {
+    "message": "Suspender faner automatisk etter"
+  },
+  "html_options_suspend_never": {
+    "message": "Aldri"
+  },
+  "html_options_suspend_minute": {
+    "message": "min"
+  },
+  "html_options_suspend_minutes": {
+    "message": "min"
+  },
+  "html_options_suspend_hour": {
+    "message": "time"
+  },
+  "html_options_suspend_hours": {
+    "message": "timer"
+  },
+  "html_options_suspend_day": {
+    "message": "dag"
+  },
+  "html_options_suspend_days": {
+    "message": "dager"
+  },
+  "html_options_suspend_week": {
+    "message": "uke"
+  },
+  "html_options_suspend_weeks": {
+    "message": "uker"
+  },
+  "html_options_suspend_no_pinned": {
+    "message": "Aldri suspender festede faner"
+  },
+  "html_options_suspend_no_forms": {
+    "message": "Aldri suspender faner med ulagrede skjemaer"
+  },
+  "html_options_suspend_no_audio": {
+    "message": "Aldri suspender faner som spiller av lyd"
+  },
+  "html_options_suspend_only_connected": {
+    "message": "Aldri suspender faner uten internettforbindelse"
+  },
+  "html_options_suspend_only_on_battery": {
+    "message": "Aldri suspender faner ved tilkoblet strøm"
+  },
+  "html_options_suspend_no_active_tabs": {
+    "message": "Aldri suspender aktiv fane i hvert vindu"
+  },
+  "html_options_suspend_automatically_unsuspend": {
+    "message": "Gjenopprett fanen automatisk når den vises"
+  },
+  "html_options_suspend_discard_after_suspend": {
+    "message": "Bruk Chromes innebygde minnesparing ved suspensjon"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1a": {
+    "message": "Reduserer minnebruken til en suspendert fane ytterligere ved å bruke"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1b": {
+    "message": "Chromes innebygde 'forkast fane'-funksjon. Dette kan gi opptil"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1c": {
+    "message": "500 % minnesparing ved mange åpne faner."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2a": {
+    "message": "Dette kan imidlertid gi en liten forsinkelse ved valg"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2b": {
+    "message": "av en suspendert fane."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3a": {
+    "message": "Mer informasjon om Chrome-forkasting finnes her:"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3b": {
+    "message": ""
+  },
+  "html_options_suspend_theme": {
+    "message": "Tema"
+  },
+  "html_options_suspend_theme_light": {
+    "message": "Lyst"
+  },
+  "html_options_suspend_theme_dark": {
+    "message": "Mørkt"
+  },
+  "html_options_suspend_screen_capturing": {
+    "message": "Skjermopptak"
+  },
+  "html_options_suspend_screen_capturing_disabled": {
+    "message": "Deaktivert"
+  },
+  "html_options_suspend_screen_capturing_screen_only": {
+    "message": "Ta bare øverste del av skjermen"
+  },
+  "html_options_suspend_screen_capturing_entire_page": {
+    "message": "Ta hele siden"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1a": {
+    "message": "På en suspendert fane kan utvidelsen vise et forhåndsvisningsbilde av hvordan fanen"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1b": {
+    "message": "så ut rett før den ble suspendert."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2a": {
+    "message": "Skjermopptak er eksperimentelt og kan gi høy CPU-belastning"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2b": {
+    "message": "og noe økt minnebruk."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3a": {
+    "message": "Hvis du opplever merkelig oppførsel (trege faner eller Chrome"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3b": {
+    "message": "som krasjer uventet), prøv å deaktivere denne funksjonen."
+  },
+  "html_options_suspend_force_screen_capture": {
+    "message": "Aktiver skjermopptak i høy kvalitet"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line1": {
+    "message": "Når deaktivert har skjermopptak følgende begrensninger for ytelse:"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line2": {
+    "message": "- Skjermopptak i lav kvalitet"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line4": {
+    "message": "- Tar ikke skjermbilde hvis generering tar mer enn 1 minutt"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line5": {
+    "message": "- Maks høyde på skjermopptak begrenset til 5000 px"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line6": {
+    "message": "Aktivering av høy kvalitet kan øke CPU-belastningen betydelig"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line7": {
+    "message": "og minnebruken."
+  },
+  "html_options_whitelist_title": {
+    "message": "Aldri suspender faner med URL-er fra følgende liste:"
+  },
+  "html_options_whitelist_tooltip_line1": {
+    "message": "Legg til URL-en til hver side du vil hviteliste på en ny linje. For eksempel:"
+  },
+  "html_options_whitelist_tooltip_line2": {
+    "message": "For å hviteliste flere sider på én linje, spesifiser del av URL-en:"
+  },
+  "html_options_whitelist_tooltip_line3": {
+    "message": "Du kan også bruke regulære uttrykk ved å omslutte teksten med skråstreker:"
+  },
+  "html_options_whitelist_test": {
+    "message": "Test hvitelisten"
+  },
+  "html_options_other_enable_context_menu": {
+    "message": "Legg til The Great Tab Killer i høyreklikk-menyen"
+  },
+  "html_options_other_enable_context_menu_tooltip_line1": {
+    "message": "Legger til kontroller for denne utvidelsen i høyreklikk-menyen på en nettside."
+  },
+  "html_options_other_enable_context_menu_tooltip_line2": {
+    "message": "Gir deg tilgang til avanserte suspensjonshandlinger som ikke er tilgjengelige"
+  },
+  "html_options_other_enable_context_menu_tooltip_line3": {
+    "message": "andre steder i utvidelsen."
+  },
+  "html_options_other_enable_sync": {
+    "message": "Synkroniser innstillinger med Chrome-profilen din"
+  },
+  "html_options_other_enable_sync_tooltip_line1a": {
+    "message": "Utvidelsesinnstillinger synkroniseres på tvers av alle Chrome-nettlesere som er"
+  },
+  "html_options_other_enable_sync_tooltip_line1b": {
+    "message": "logget inn med samme profil."
+  },
+  "html_options_other_enable_sync_tooltip_line2": {
+    "message": "Dette synkroniserer også innstillinger i inkognitomodus."
+  },
+  "html_options_other_enable_sync_warning": {
+    "message": "Å slå dette på vil overskrive innstillinger på alle andre nettlesere med samme Chrome-profil"
+  },
+  "html_options_other_language": {
+    "message": "Grensesnittspråk"
+  },
+  "html_options_other_backup_frequency": {
+    "message": "Sesjonssikkerhetskopi"
+  },
+  "html_options_other_backup_frequency_tooltip": {
+    "message": "Lagres også før oppdateringer."
+  },
+  "html_options_other_backup_never": {
+    "message": "Aldri"
+  },
+  "html_options_other_backup_every_minute": {
+    "message": "Hvert minutt"
+  },
+  "html_options_other_backup_hourly": {
+    "message": "Hver time"
+  },
+  "html_options_other_backup_daily": {
+    "message": "Daglig"
+  },
+  "html_options_other_backup_weekly": {
+    "message": "Ukentlig"
+  },
+  "html_options_other_backup_monthly": {
+    "message": "Månedlig"
+  },
+  "html_options_other_language_system": {
+    "message": "Systemspråk"
+  },
+  "html_options_suspend_on_low_memory": {
+    "message": "Suspender umiddelbart når systemminnet er svært lavt"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line1": {
+    "message": "Dette alternativet overstyrer Chromes automatiske fanefjernfunksjon."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line2": {
+    "message": "Hvis aktivert, tvinges en fane til å suspendere i stedet for å bli forkastet av Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line3": {
+    "message": "Vanligvis forkaster Chrome bare faner når systemminnet er svært lavt."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line4": {
+    "message": "Merk: dette kan føre til at faner suspenderes tidligere enn angitt tid"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line5": {
+    "message": "i alternativene for automatisk fanesuspensjon."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line6": {
+    "message": "Mer informasjon om Chrome-forkasting finnes her:"
+  },
+  "html_options_suspend_on_low_memory_tooltip_discarding_link": {
+    "message": ""
+  },
+  "html_popup_unsuspend_tab": {
+    "message": "Gjenopprett denne fanen"
+  },
+  "html_popup_suspend_tab": {
+    "message": "Suspender denne fanen nå"
+  },
+  "html_popup_never_suspend_domain": {
+    "message": "Aldri suspender dette domenet"
+  },
+  "html_popup_never_suspend_page": {
+    "message": "Aldri suspender denne URL-en"
+  },
+  "html_popup_suspend_other_tabs": {
+    "message": "Suspender alle andre faner"
+  },
+  "html_popup_unsuspend_all_tabs": {
+    "message": "Gjenopprett alle faner"
+  },
+  "html_popup_suspend_selected_tabs": {
+    "message": "Suspender valgte faner"
+  },
+  "html_popup_unsuspend_selected_tabs": {
+    "message": "Gjenopprett valgte faner"
+  },
+  "html_popup_settings": {
+    "message": "Innstillinger"
+  },
+  "html_restoring_title": {
+    "message": "Gjenoppretter vindu"
+  },
+  "html_restoring_heading": {
+    "message": "Gjenoppretter faner"
+  },
+  "html_restoring_detail": {
+    "message": "Vent mens jeg gjenoppretter dette vinduet..."
+  },
+  "html_recovery_title": {
+    "message": "Gjenoppretting"
+  },
+  "html_recovery_ruh_roh": {
+    "message": "Oi sann!"
+  },
+  "html_recovery_description_line1": {
+    "message": "Det ser ut til at du gjenoppretter etter en utvidelseskrasj."
+  },
+  "html_recovery_description_line2": {
+    "message": "Dine suspenderte faner kan ha krasjet eller forsvunnet."
+  },
+  "html_recovery_restore_tabs_automatically": {
+    "message": "Gjenopprett faner automatisk"
+  },
+  "html_recovery_go_to_session_manager": {
+    "message": "Gå til øktbehandler"
+  },
+  "html_recovery_important_message": {
+    "message": "Skjermopptak er aktivert. Hvis utvidelsen krasjer gjentatte ganger, anbefales det å deaktivere dette."
+  },
+  "html_recovery_disable_screen_capturing": {
+    "message": "Deaktiver skjermopptak"
+  },
+  "html_recovery_tabs_to_restore": {
+    "message": "Faner å gjenopprette"
+  },
+  "html_shortcuts_title": {
+    "message": "Tastatursnarveier"
+  },
+  "html_shortcuts_keyboard_shortcuts": {
+    "message": "Tastatursnarveier"
+  },
+  "html_shortcuts_context_menu_note": {
+    "message": "Merk: disse handlingene er også tilgjengelige via høyreklikk-menyen."
+  },
+  "html_shortcuts_remap_keys": {
+    "message": "Endre snarveier"
+  },
+  "html_sidebar_general_settings": {
+    "message": "Innstillinger"
+  },
+  "html_sidebar_session_management": {
+    "message": "Øktbehandling"
+  },
+  "html_sidebar_shortcuts": {
+    "message": "Tastatursnarveier"
+  },
+  "html_sidebar_support": {
+    "message": "Om"
+  },
+  "html_sidebar_changelog": {
+    "message": "Hva er nytt"
+  },
+  "html_success_great_success": {
+    "message": "Suksess!"
+  },
+  "html_success_all_tabs_restored": {
+    "message": "Alle fanene dine er gjenopprettet."
+  },
+  "html_success_goto_advanced_prefix": {
+    "message": "For avansert øktbehandling, besøk"
+  },
+  "html_success_goto_advanced_suffix": {
+    "message": "siden"
+  },
+  "html_session_manager": {
+    "message": "øktbehandling"
+  },
+  "html_suspended_title": {
+    "message": "Suspendert fane"
+  },
+  "html_suspended_click_to_reload": {
+    "message": "Oppdater eller klikk for å laste på nytt"
+  },
+  "html_suspended_toast_not_connected": {
+    "message": "Du er ikke koblet til internett"
+  },
+  "html_suspended_toast_reload_disabled": {
+    "message": "Automatisk innlasting av faner er midlertidig deaktivert."
+  },
+  "html_permissions_title": {
+    "message": "Tillatelser"
+  },
+  "html_permissions_heading": {
+    "message": "Gi meg tilgang til lokale fil-URL-er"
+  },
+  "html_permissions_info": {
+    "message": "Denne utvidelsen har ikke tillatelse til å suspendere URL-er som begynner med \"file\".\nFor å endre dette, aktiver \"Tillat tilgang til fil-URL-er\" i utvidelsesinnstillingene."
+  },
+  "html_permissions_backup": {
+    "message": "Merk: endring av dette alternativet vil midlertidig fjerne suspenderte faner.\nOvervei å lagre en sikkerhetskopi av gjeldende fanøkt."
+  },
+  "html_update_title": {
+    "message": "Oppdatering"
+  },
+  "html_update_heading2": {
+    "message": "er i ferd med å bli bedre"
+  },
+  "html_update_info": {
+    "message": "En ny versjon av The Great Tab Killer er klar til å installeres.\nMerk: under oppdateringen forsvinner suspenderte faner midlertidig."
+  },
+  "html_update_info_withbackup": {
+    "message": "Vurder å lagre en sikkerhetskopi av gjeldende fanøkt."
+  },
+  "html_update_info_nobackup_prefix": {
+    "message": "Det anbefales sterkt å eksportere en kopi av gjeldende økt fra "
+  },
+  "html_update_info_nobackup_suffix": {
+    "message": " før du fortsetter med oppdateringen."
+  },
+  "html_welcome_text_line1": {
+    "message": "Takk for at du prøver"
+  },
+  "html_welcome_text_line2": {
+    "message": "Jeg sørger for at datamaskinen din kjører jevnt ved å suspendere faner du ikke bruker."
+  },
+  "html_welcome_text_line3": {
+    "message": "Du kan finjustere innstillingene nedenfor."
+  },
+  "js_popup_normal": {
+    "message": "Fanen suspenderes automatisk."
+  },
+  "js_popup_normal_pause": {
+    "message": "Ikke nå"
+  },
+  "js_popup_special": {
+    "message": "Fanen kan ikke suspenderes"
+  },
+  "js_popup_suspended": {
+    "message": "Fane suspendert"
+  },
+  "js_popup_whitelisted": {
+    "message": "Nettsted på hvitelisten."
+  },
+  "js_popup_whitelisted_remove": {
+    "message": "Fjern fra hvitelisten"
+  },
+  "js_popup_audible": {
+    "message": "Fanen spiller av lyd."
+  },
+  "js_popup_form_input": {
+    "message": "Fanen mottar skjemainput."
+  },
+  "js_popup_form_input_unpause": {
+    "message": "Gjenoppta"
+  },
+  "js_popup_pinned": {
+    "message": "Fanen er festet"
+  },
+  "js_popup_temp_whitelist": {
+    "message": "Fanesuspensjon satt på pause."
+  },
+  "js_popup_temp_whitelist_unpause": {
+    "message": "Gjenoppta"
+  },
+  "js_popup_never": {
+    "message": "Automatisk fanesuspensjon deaktivert."
+  },
+  "js_popup_no_connectivity": {
+    "message": "Ingen nettverkstilkobling"
+  },
+  "js_popup_charging": {
+    "message": "Koblet til strømkilde"
+  },
+  "js_popup_blockedFile": {
+    "message": "Lokale filer kan ikke suspenderes."
+  },
+  "js_popup_blockedFile_enable": {
+    "message": "Aktiver"
+  },
+  "js_popup_unknown": {
+    "message": "Venter på at fanen skal laste..."
+  },
+  "js_popup_initialising": {
+    "message": "Venter på at utvidelsen skal initialiseres..."
+  },
+  "js_popup_error": {
+    "message": "Automatisk suspensjon ikke tilgjengelig for denne fanen"
+  },
+  "js_history_delete": {
+    "message": "slett"
+  },
+  "js_history_export": {
+    "message": "eksporter"
+  },
+  "js_history_reload": {
+    "message": "åpne og last"
+  },
+  "js_history_resuspend": {
+    "message": "åpne og suspender"
+  },
+  "js_history_save": {
+    "message": "lagre"
+  },
+  "js_history_window": {
+    "message": "Vindu"
+  },
+  "js_history_tab": {
+    "message": "Fane"
+  },
+  "js_history_plural": {
+    "message": "r"
+  },
+  "js_history_enter_name_for_session": {
+    "message": "Skriv inn et navn for denne økten"
+  },
+  "js_history_confirm_delete": {
+    "message": "Er du sikker på at du vil slette denne økten?"
+  },
+  "js_history_confirm_session_overwrite": {
+    "message": "Det finnes allerede en lagret økt med dette navnet. Overskriv eksisterende økt?"
+  },
+  "js_history_import_fail": {
+    "message": "Klarte ikke å laste filen. Kontroller at den er ren tekst med én URL per linje."
+  },
+  "js_suspended_hotkey_to_reload": {
+    "message": "Angi tastatursnarveier"
+  },
+  "js_suspended_low_memory": {
+    "message": "Fane suspendert på grunn av lavt systemminne"
+  },
+  "js_options_incognito_warning": {
+    "message": "Du er i inkognitomodus. Noen funksjoner er ikke tilgjengelige."
+  },
+  "js_options_whitelist_no_matches": {
+    "message": "Ingen åpne faner samsvarer med gjeldende hviteliste."
+  },
+  "js_options_whitelist_matches_heading": {
+    "message": "Åpne faner på hvitelisten:"
+  },
+  "js_options_whitelist_matches_overflow_prefix": {
+    "message": "og"
+  },
+  "js_options_whitelist_matches_overflow_suffix": {
+    "message": "til."
+  },
+  "js_permissions_button_export": {
+    "message": "Lagre sikkerhetskopi"
+  },
+  "js_permissions_button_set": {
+    "message": "Åpne utvidelsesinnstillinger"
+  },
+  "js_update_button_export": {
+    "message": "Lagre sikkerhetskopi"
+  },
+  "js_update_button_reload": {
+    "message": "Oppdater utvidelsen nå"
+  },
+  "js_shortcuts_not_set": {
+    "message": "ikke angitt"
+  },
+  "js_session_save_point": {
+    "message": "Automatisk lagringspunkt for v"
+  }
+}

@@ -1,0 +1,632 @@
+{
+  "ext_extension_name": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_extension_description": {
+    "message": "Suspenda separadores inativos do Chrome para libertar RAM. O melhor Tab Suspender — suspende separadores não utilizados automaticamente e restaura-os num clique."
+  },
+  "ext_default_title": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_cmd_toggle_tab_suspension_description": {
+    "message": "Suspender/Reativar o separador ativo"
+  },
+  "ext_cmd_toggle_tab_pause_description": {
+    "message": "Pausar/Retomar a suspensão do separador ativo"
+  },
+  "ext_cmd_suspend_selected_tabs_description": {
+    "message": "Suspender os separadores selecionados"
+  },
+  "ext_cmd_unsuspend_selected_tabs_description": {
+    "message": "Reativar os separadores selecionados"
+  },
+  "ext_cmd_soft_suspend_active_window_description": {
+    "message": "Suspender todos os outros separadores na janela ativa"
+  },
+  "ext_cmd_force_suspend_active_window_description": {
+    "message": "Forçar a suspensão de todos os outros separadores na janela ativa"
+  },
+  "ext_cmd_unsuspend_active_window_description": {
+    "message": "Reativar todos os separadores na janela ativa"
+  },
+  "ext_cmd_soft_suspend_all_windows_description": {
+    "message": "Suspender todos os separadores em todas as janelas"
+  },
+  "ext_cmd_force_suspend_all_windows_description": {
+    "message": "Forçar a suspensão de todos os separadores em todas as janelas"
+  },
+  "ext_cmd_unsuspend_all_windows_description": {
+    "message": "Reativar todos os separadores em todas as janelas"
+  },
+  "js_context_open_link_in_suspended_tab": {
+    "message": "Abrir ligação em novo separador suspenso"
+  },
+  "js_context_toggle_suspend_state": {
+    "message": "Suspender/Reativar este separador"
+  },
+  "js_context_toggle_pause_suspension": {
+    "message": "Pausar/Retomar a suspensão deste separador"
+  },
+  "js_context_never_suspend_domain": {
+    "message": "Nunca suspender este domínio"
+  },
+  "js_context_never_suspend_page": {
+    "message": "Nunca suspender este URL"
+  },
+  "js_context_suspend_selected_tabs": {
+    "message": "Suspender os separadores selecionados"
+  },
+  "js_context_unsuspend_selected_tabs": {
+    "message": "Reativar os separadores selecionados"
+  },
+  "js_context_soft_suspend_other_tabs_in_window": {
+    "message": "Suspender todos os outros separadores nesta janela"
+  },
+  "js_context_force_suspend_other_tabs_in_window": {
+    "message": "Forçar a suspensão de todos os outros separadores nesta janela"
+  },
+  "js_context_unsuspend_all_tabs_in_window": {
+    "message": "Reativar todos os separadores nesta janela"
+  },
+  "js_context_soft_suspend_all_tabs": {
+    "message": "Suspender todos os separadores em todas as janelas"
+  },
+  "js_context_force_suspend_all_tabs": {
+    "message": "Forçar a suspensão de todos os separadores em todas as janelas"
+  },
+  "js_context_unsuspend_all_tabs": {
+    "message": "Reativar todos os separadores em todas as janelas"
+  },
+  "html_about_title": {
+    "message": "Sobre"
+  },
+  "html_history_title": {
+    "message": "Gerenciamento de sessões"
+  },
+  "html_history_current_session": {
+    "message": "Sessão atual"
+  },
+  "html_history_recent_sessions": {
+    "message": "Sessões recentes"
+  },
+  "html_history_saved_sessions": {
+    "message": "Sessões salvas"
+  },
+  "html_history_import_session": {
+    "message": "Importar sessão"
+  },
+  "html_options_title": {
+    "message": "Configurações"
+  },
+  "html_options_suspend_title": {
+    "message": "Suspensão automática de separadores"
+  },
+  "html_options_suspended_title": {
+    "message": "Separadores suspensos"
+  },
+  "html_options_other_title": {
+    "message": "Outros"
+  },
+  "html_options_suspend_automatically_after": {
+    "message": "Suspender separadores automaticamente após"
+  },
+  "html_options_suspend_never": {
+    "message": "Nunca"
+  },
+  "html_options_suspend_minute": {
+    "message": "min"
+  },
+  "html_options_suspend_minutes": {
+    "message": "mins"
+  },
+  "html_options_suspend_hour": {
+    "message": "hora"
+  },
+  "html_options_suspend_hours": {
+    "message": "horas"
+  },
+  "html_options_suspend_day": {
+    "message": "dia"
+  },
+  "html_options_suspend_days": {
+    "message": "dias"
+  },
+  "html_options_suspend_week": {
+    "message": "semana"
+  },
+  "html_options_suspend_weeks": {
+    "message": "semanas"
+  },
+  "html_options_suspend_no_pinned": {
+    "message": "Nunca suspender separadores fixos"
+  },
+  "html_options_suspend_no_forms": {
+    "message": "Nunca suspender separadores com formulários não guardados"
+  },
+  "html_options_suspend_no_audio": {
+    "message": "Nunca suspender separadores a reproduzir áudio"
+  },
+  "html_options_suspend_only_connected": {
+    "message": "Nunca suspender separadores sem ligação à internet"
+  },
+  "html_options_suspend_only_on_battery": {
+    "message": "Nunca suspender separadores com fonte de alimentação ligada"
+  },
+  "html_options_suspend_no_active_tabs": {
+    "message": "Nunca suspender o separador ativo em cada janela"
+  },
+  "html_options_suspend_automatically_unsuspend": {
+    "message": "Reativar automaticamente o separador quando visualizado"
+  },
+  "html_options_suspend_discard_after_suspend": {
+    "message": "Aplicar poupança de memória integrada do Chrome ao suspender"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1a": {
+    "message": "Reduz ainda mais o uso de memória de uma aba suspensa, utilizando"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1b": {
+    "message": "a funcionalidade de 'descarte de abas' integrada ao Chrome. Isso pode resultar em até"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1c": {
+    "message": "500% de economia de memória ao trabalhar com grande número de abas."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2a": {
+    "message": "No entanto, causará um leve atraso de renderização ao selecionar"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2b": {
+    "message": "uma aba suspensa."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3a": {
+    "message": "Para mais informações sobre o descarte de abas do Chrome, consulte:"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3b": {
+    "message": ""
+  },
+  "html_options_suspend_theme": {
+    "message": "Tema"
+  },
+  "html_options_suspend_theme_light": {
+    "message": "Claro"
+  },
+  "html_options_suspend_theme_dark": {
+    "message": "Escuro"
+  },
+  "html_options_suspend_screen_capturing": {
+    "message": "Captura de tela"
+  },
+  "html_options_suspend_screen_capturing_disabled": {
+    "message": "Desativado"
+  },
+  "html_options_suspend_screen_capturing_screen_only": {
+    "message": "Capturar apenas o topo da tela"
+  },
+  "html_options_suspend_screen_capturing_entire_page": {
+    "message": "Capturar a página inteira"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1a": {
+    "message": "Em uma aba suspensa, a extensão pode exibir uma pré-visualização de como a aba estava"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1b": {
+    "message": "logo antes de ser suspensa."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2a": {
+    "message": "A captura de tela é experimental e pode causar uso elevado de CPU"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2b": {
+    "message": "além de um leve aumento no uso de memória."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3a": {
+    "message": "Se notar comportamento estranho (abas lentas para suspender ou Chrome"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3b": {
+    "message": "travando inesperadamente), tente desativar esta função."
+  },
+  "html_options_suspend_force_screen_capture": {
+    "message": "Ativar modo de captura de tela de alta qualidade"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line1": {
+    "message": "Quando desativado, as capturas de tela têm as seguintes limitações para melhorar o desempenho:"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line2": {
+    "message": "- Captura de tela de baixa qualidade"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line4": {
+    "message": "- Não capturará a tela se a geração da imagem levar mais de 1 minuto"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line5": {
+    "message": "- Altura máxima da captura limitada a 5000 px"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line6": {
+    "message": "Ativar o modo de alta qualidade pode aumentar significativamente a carga da CPU"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line7": {
+    "message": "e o uso de memória."
+  },
+  "html_options_whitelist_title": {
+    "message": "Nunca suspender separadores com URLs da seguinte lista:"
+  },
+  "html_options_whitelist_tooltip_line1": {
+    "message": "Adicione a URL de cada página que deseja incluir na lista branca em uma nova linha. Por exemplo:"
+  },
+  "html_options_whitelist_tooltip_line2": {
+    "message": "Para incluir vários sites em uma linha, especifique parte da URL:"
+  },
+  "html_options_whitelist_tooltip_line3": {
+    "message": "Você também pode usar expressões regulares colocando o texto entre barras:"
+  },
+  "html_options_whitelist_test": {
+    "message": "Testar lista branca"
+  },
+  "html_options_other_enable_context_menu": {
+    "message": "Adicionar The Great Tab Killer ao menu de contexto (botão direito)"
+  },
+  "html_options_other_enable_context_menu_tooltip_line1": {
+    "message": "Adiciona controles desta extensão ao menu de contexto de uma página web."
+  },
+  "html_options_other_enable_context_menu_tooltip_line2": {
+    "message": "Dará acesso a ações avançadas de suspensão não disponíveis"
+  },
+  "html_options_other_enable_context_menu_tooltip_line3": {
+    "message": "em outras partes da extensão."
+  },
+  "html_options_other_enable_sync": {
+    "message": "Sincronizar configurações com seu perfil do Chrome"
+  },
+  "html_options_other_enable_sync_tooltip_line1a": {
+    "message": "As configurações da extensão serão sincronizadas em todos os navegadores Chrome"
+  },
+  "html_options_other_enable_sync_tooltip_line1b": {
+    "message": "conectados com o mesmo perfil."
+  },
+  "html_options_other_enable_sync_tooltip_line2": {
+    "message": "Isso também sincronizará as configurações no modo anônimo."
+  },
+  "html_options_other_enable_sync_warning": {
+    "message": "Ativar isso substituirá as configurações em todos os outros navegadores conectados ao mesmo perfil do Chrome"
+  },
+  "html_options_other_language": {
+    "message": "Idioma da interface"
+  },
+  "html_options_other_backup_frequency": {
+    "message": "Cópia de segurança"
+  },
+  "html_options_other_backup_frequency_tooltip": {
+    "message": "Também guardado antes das actualizações."
+  },
+  "html_options_other_backup_never": {
+    "message": "Nunca"
+  },
+  "html_options_other_backup_every_minute": {
+    "message": "Cada minuto"
+  },
+  "html_options_other_backup_hourly": {
+    "message": "A cada hora"
+  },
+  "html_options_other_backup_daily": {
+    "message": "Diariamente"
+  },
+  "html_options_other_backup_weekly": {
+    "message": "Semanalmente"
+  },
+  "html_options_other_backup_monthly": {
+    "message": "Mensalmente"
+  },
+  "html_options_other_language_system": {
+    "message": "Idioma do sistema"
+  },
+  "html_options_suspend_on_low_memory": {
+    "message": "Suspender imediatamente quando a memória do sistema estiver muito baixa"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line1": {
+    "message": "Esta opção substituirá a funcionalidade de descarte automático de abas do Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line2": {
+    "message": "Se ativada, forçará a suspensão de uma aba em vez do descarte pelo Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line3": {
+    "message": "Normalmente, o Chrome descarta abas apenas quando a memória do sistema está muito baixa."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line4": {
+    "message": "Atenção: isso pode fazer com que as abas sejam suspensas antes do tempo"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line5": {
+    "message": "especificado nas opções de suspensão automática."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line6": {
+    "message": "Para mais informações sobre o descarte do Chrome, consulte:"
+  },
+  "html_options_suspend_on_low_memory_tooltip_discarding_link": {
+    "message": ""
+  },
+  "html_popup_unsuspend_tab": {
+    "message": "Reativar este separador"
+  },
+  "html_popup_suspend_tab": {
+    "message": "Suspender este separador agora"
+  },
+  "html_popup_never_suspend_domain": {
+    "message": "Nunca suspender este domínio"
+  },
+  "html_popup_never_suspend_page": {
+    "message": "Nunca suspender este URL"
+  },
+  "html_popup_suspend_other_tabs": {
+    "message": "Suspender todos os outros separadores"
+  },
+  "html_popup_unsuspend_all_tabs": {
+    "message": "Reativar todos os separadores"
+  },
+  "html_popup_suspend_selected_tabs": {
+    "message": "Suspender os separadores selecionados"
+  },
+  "html_popup_unsuspend_selected_tabs": {
+    "message": "Reativar os separadores selecionados"
+  },
+  "html_popup_settings": {
+    "message": "Configurações"
+  },
+  "html_restoring_title": {
+    "message": "Restaurando janela"
+  },
+  "html_restoring_heading": {
+    "message": "Restaurando abas"
+  },
+  "html_restoring_detail": {
+    "message": "Aguarde enquanto restauro esta janela..."
+  },
+  "html_recovery_title": {
+    "message": "Recuperação"
+  },
+  "html_recovery_ruh_roh": {
+    "message": "Opa!"
+  },
+  "html_recovery_description_line1": {
+    "message": "Parece que você está se recuperando de uma falha da extensão."
+  },
+  "html_recovery_description_line2": {
+    "message": "Suas abas suspensas podem ter falhado ou desaparecido."
+  },
+  "html_recovery_restore_tabs_automatically": {
+    "message": "Restaurar abas automaticamente"
+  },
+  "html_recovery_go_to_session_manager": {
+    "message": "Ir para o gerenciador de sessões"
+  },
+  "html_recovery_important_message": {
+    "message": "A captura de tela está ativada. Se a extensão continuar falhando, recomenda-se desativar esta opção."
+  },
+  "html_recovery_disable_screen_capturing": {
+    "message": "Desativar captura de tela"
+  },
+  "html_recovery_tabs_to_restore": {
+    "message": "Abas para restaurar"
+  },
+  "html_shortcuts_title": {
+    "message": "Atalhos de teclado"
+  },
+  "html_shortcuts_keyboard_shortcuts": {
+    "message": "Atalhos de teclado"
+  },
+  "html_shortcuts_context_menu_note": {
+    "message": "Nota: estas ações também estão disponíveis pelo menu de contexto (botão direito)."
+  },
+  "html_shortcuts_remap_keys": {
+    "message": "Alterar atalhos"
+  },
+  "html_sidebar_general_settings": {
+    "message": "Configurações"
+  },
+  "html_sidebar_session_management": {
+    "message": "Gestão de sessões"
+  },
+  "html_sidebar_shortcuts": {
+    "message": "Atalhos de teclado"
+  },
+  "html_sidebar_support": {
+    "message": "Sobre"
+  },
+  "html_sidebar_changelog": {
+    "message": "O que há de novo"
+  },
+  "html_success_great_success": {
+    "message": "Sucesso!"
+  },
+  "html_success_all_tabs_restored": {
+    "message": "Todas as suas abas foram restauradas."
+  },
+  "html_success_goto_advanced_prefix": {
+    "message": "Para gerenciamento avançado de sessões, visite a"
+  },
+  "html_success_goto_advanced_suffix": {
+    "message": "página"
+  },
+  "html_session_manager": {
+    "message": "gestão de sessões"
+  },
+  "html_suspended_title": {
+    "message": "Separador suspenso"
+  },
+  "html_suspended_click_to_reload": {
+    "message": "Atualizar ou clicar para recarregar"
+  },
+  "html_suspended_toast_not_connected": {
+    "message": "Você não está conectado à internet"
+  },
+  "html_suspended_toast_reload_disabled": {
+    "message": "O recarregamento automático de abas está temporariamente desativado."
+  },
+  "html_permissions_title": {
+    "message": "Permissões"
+  },
+  "html_permissions_heading": {
+    "message": "Por favor, me conceda acesso a URLs de arquivos locais"
+  },
+  "html_permissions_info": {
+    "message": "Esta extensão não tem permissão para suspender URLs que começam com \"file\".\nPara alterar isso, ative \"Permitir acesso a URLs de arquivo\" nas configurações da extensão."
+  },
+  "html_permissions_backup": {
+    "message": "Atenção: alterar esta opção fará com que suas abas suspensas desapareçam brevemente.\nPor precaução, pode ser um bom momento para salvar um backup da sessão atual."
+  },
+  "html_update_title": {
+    "message": "Atualização"
+  },
+  "html_update_heading2": {
+    "message": "está prestes a melhorar"
+  },
+  "html_update_info": {
+    "message": "Uma nova versão do The Great Tab Killer está pronta para ser instalada.\nAtenção: durante a atualização suas abas suspensas desaparecerão brevemente."
+  },
+  "html_update_info_withbackup": {
+    "message": "Por precaução, pode ser um bom momento para salvar um backup da sessão atual."
+  },
+  "html_update_info_nobackup_prefix": {
+    "message": "É altamente recomendável exportar uma cópia da sessão atual de "
+  },
+  "html_update_info_nobackup_suffix": {
+    "message": " antes de continuar com a atualização."
+  },
+  "html_welcome_text_line1": {
+    "message": "Obrigado por experimentar"
+  },
+  "html_welcome_text_line2": {
+    "message": "Faço seu computador funcionar melhor suspendendo as abas que você não está usando."
+  },
+  "html_welcome_text_line3": {
+    "message": "Você pode ajustar as configurações abaixo."
+  },
+  "js_popup_normal": {
+    "message": "A aba será suspensa automaticamente."
+  },
+  "js_popup_normal_pause": {
+    "message": "Agora não"
+  },
+  "js_popup_special": {
+    "message": "A aba não pode ser suspensa"
+  },
+  "js_popup_suspended": {
+    "message": "Separador suspenso"
+  },
+  "js_popup_whitelisted": {
+    "message": "Site na lista branca."
+  },
+  "js_popup_whitelisted_remove": {
+    "message": "Remover da lista branca"
+  },
+  "js_popup_audible": {
+    "message": "A aba está reproduzindo áudio."
+  },
+  "js_popup_form_input": {
+    "message": "A aba está recebendo entradas de formulário."
+  },
+  "js_popup_form_input_unpause": {
+    "message": "Retomar"
+  },
+  "js_popup_pinned": {
+    "message": "A aba foi fixada"
+  },
+  "js_popup_temp_whitelist": {
+    "message": "Suspensão da aba pausada."
+  },
+  "js_popup_temp_whitelist_unpause": {
+    "message": "Retomar"
+  },
+  "js_popup_never": {
+    "message": "Suspensão automática de abas desativada."
+  },
+  "js_popup_no_connectivity": {
+    "message": "Sem conexão de rede"
+  },
+  "js_popup_charging": {
+    "message": "Conectado a uma fonte de energia"
+  },
+  "js_popup_blockedFile": {
+    "message": "Arquivos locais não podem ser suspensos."
+  },
+  "js_popup_blockedFile_enable": {
+    "message": "Ativar"
+  },
+  "js_popup_unknown": {
+    "message": "Aguardando o carregamento da aba..."
+  },
+  "js_popup_initialising": {
+    "message": "Aguardando a inicialização da extensão..."
+  },
+  "js_popup_error": {
+    "message": "Suspensão automática indisponível para esta aba"
+  },
+  "js_history_delete": {
+    "message": "excluir"
+  },
+  "js_history_export": {
+    "message": "exportar"
+  },
+  "js_history_reload": {
+    "message": "abrir e carregar"
+  },
+  "js_history_resuspend": {
+    "message": "abrir e suspender"
+  },
+  "js_history_save": {
+    "message": "salvar"
+  },
+  "js_history_window": {
+    "message": "Janela"
+  },
+  "js_history_tab": {
+    "message": "Separador"
+  },
+  "js_history_plural": {
+    "message": "s"
+  },
+  "js_history_enter_name_for_session": {
+    "message": "Digite um nome para esta sessão"
+  },
+  "js_history_confirm_delete": {
+    "message": "Tem certeza que deseja excluir esta sessão?"
+  },
+  "js_history_confirm_session_overwrite": {
+    "message": "Já existe uma sessão salva com este nome. Substituir a sessão existente?"
+  },
+  "js_history_import_fail": {
+    "message": "Falha ao carregar o arquivo. Certifique-se de que é texto simples com uma URL por linha."
+  },
+  "js_suspended_hotkey_to_reload": {
+    "message": "Configurar atalhos de teclado"
+  },
+  "js_suspended_low_memory": {
+    "message": "Separador suspenso devido a memória insuficiente"
+  },
+  "js_options_incognito_warning": {
+    "message": "Você está no modo anônimo. Alguns recursos não estarão disponíveis."
+  },
+  "js_options_whitelist_no_matches": {
+    "message": "Não há abas abertas que correspondam à lista branca atual."
+  },
+  "js_options_whitelist_matches_heading": {
+    "message": "Abas abertas na lista branca:"
+  },
+  "js_options_whitelist_matches_overflow_prefix": {
+    "message": "e"
+  },
+  "js_options_whitelist_matches_overflow_suffix": {
+    "message": "mais."
+  },
+  "js_permissions_button_export": {
+    "message": "Salvar backup"
+  },
+  "js_permissions_button_set": {
+    "message": "Abrir configurações da extensão"
+  },
+  "js_update_button_export": {
+    "message": "Salvar backup"
+  },
+  "js_update_button_reload": {
+    "message": "Atualizar extensão agora"
+  },
+  "js_shortcuts_not_set": {
+    "message": "não definido"
+  },
+  "js_session_save_point": {
+    "message": "Ponto de salvamento automático para v"
+  }
+}

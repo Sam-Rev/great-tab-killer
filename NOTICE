@@ -1,0 +1,18 @@
+# Notices and attributions
+
+The Great Tab Killer is derived from the GPL-2.0 project The Great Suspender and the GPL-2.0 project The Great Suspender Reloaded. The original project is attributed to Dean Oemcke. The Reloaded project is maintained under the GitHub account `tim-dim-ext`. Original notices and license terms remain applicable to the derived code.
+
+## Bundled third-party components
+
+| Component | Version | License | Verification and source |
+|---|---:|---|---|
+| html2canvas | 1.0.0-alpha.10 | MIT | Version from the bundled file header; license checked in the upstream tagged source: https://github.com/niklasvh/html2canvas/tree/1.0.0-alpha.10 |
+| dom-to-image | 2.6.0 (patched local copy) | MIT | Version and local patches from the bundled file header; license checked in upstream tag 2.6.0: https://github.com/tsayen/dom-to-image/tree/2.6.0 |
+| db.js | 0.15.0 | MIT (declared in upstream package metadata) | Version and author checked in upstream package metadata: https://github.com/aaronpowell/db.js/blob/0.15.0/package.json. The upstream tag has no separate LICENSE file; full license text verification is UNVERIFIED. |
+| Fontello icon font | UNVERIFIED | UNVERIFIED | `font/fontello.woff` and `font/fontello.woff2`; source configuration and license have not been identified. |
+
+The bundled dependency versions and file hashes must be pinned by the supply-chain inventory before release. The `db.js` and Fontello license evidence remains incomplete and must be resolved before the first release.
+
+## Owner-provided project assets
+
+- `assets/source/Tab_Killer_logo.png` (original) and generated files in `images/` are owner-provided project artwork. License terms are to be confirmed by the owner.

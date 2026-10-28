@@ -1,0 +1,632 @@
+{
+  "ext_extension_name": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_extension_description": {
+    "message": "Jäädytä Chrome-välilehdet automaattisesti, kun et käytä niitä, ja vapauta RAM-muistia. Paras Tab Suspender — nopeuttaa selainta ja säästää muistia."
+  },
+  "ext_default_title": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_cmd_toggle_tab_suspension_description": {
+    "message": "Keskeytä/Jatka aktiivinen välilehti"
+  },
+  "ext_cmd_toggle_tab_pause_description": {
+    "message": "Keskeytä/Jatka aktiivisen välilehden keskeytys"
+  },
+  "ext_cmd_suspend_selected_tabs_description": {
+    "message": "Keskeytä valitut välilehdet"
+  },
+  "ext_cmd_unsuspend_selected_tabs_description": {
+    "message": "Jatka valittuja välilehtiä"
+  },
+  "ext_cmd_soft_suspend_active_window_description": {
+    "message": "Keskeytä kaikki muut välilehdet aktiivisessa ikkunassa"
+  },
+  "ext_cmd_force_suspend_active_window_description": {
+    "message": "Pakota kaikkien muiden välilehtien keskeytys aktiivisessa ikkunassa"
+  },
+  "ext_cmd_unsuspend_active_window_description": {
+    "message": "Jatka kaikkia välilehtiä aktiivisessa ikkunassa"
+  },
+  "ext_cmd_soft_suspend_all_windows_description": {
+    "message": "Keskeytä kaikki välilehdet kaikissa ikkunoissa"
+  },
+  "ext_cmd_force_suspend_all_windows_description": {
+    "message": "Pakota kaikkien välilehtien keskeytys kaikissa ikkunoissa"
+  },
+  "ext_cmd_unsuspend_all_windows_description": {
+    "message": "Jatka kaikkia välilehtiä kaikissa ikkunoissa"
+  },
+  "js_context_open_link_in_suspended_tab": {
+    "message": "Avaa linkki uudessa keskeytetyssä välilehdessä"
+  },
+  "js_context_toggle_suspend_state": {
+    "message": "Keskeytä/Jatka tämä välilehti"
+  },
+  "js_context_toggle_pause_suspension": {
+    "message": "Keskeytä/Jatka tämän välilehden keskeytys"
+  },
+  "js_context_never_suspend_domain": {
+    "message": "Älä koskaan keskeytä tätä verkkotunnusta"
+  },
+  "js_context_never_suspend_page": {
+    "message": "Älä koskaan keskeytä tätä URL-osoitetta"
+  },
+  "js_context_suspend_selected_tabs": {
+    "message": "Keskeytä valitut välilehdet"
+  },
+  "js_context_unsuspend_selected_tabs": {
+    "message": "Jatka valittuja välilehtiä"
+  },
+  "js_context_soft_suspend_other_tabs_in_window": {
+    "message": "Keskeytä kaikki muut välilehdet tässä ikkunassa"
+  },
+  "js_context_force_suspend_other_tabs_in_window": {
+    "message": "Pakota kaikkien muiden välilehtien keskeytys tässä ikkunassa"
+  },
+  "js_context_unsuspend_all_tabs_in_window": {
+    "message": "Jatka kaikkia välilehtiä tässä ikkunassa"
+  },
+  "js_context_soft_suspend_all_tabs": {
+    "message": "Keskeytä kaikki välilehdet kaikissa ikkunoissa"
+  },
+  "js_context_force_suspend_all_tabs": {
+    "message": "Pakota kaikkien välilehtien keskeytys kaikissa ikkunoissa"
+  },
+  "js_context_unsuspend_all_tabs": {
+    "message": "Jatka kaikkia välilehtiä kaikissa ikkunoissa"
+  },
+  "html_about_title": {
+    "message": "Tietoja"
+  },
+  "html_history_title": {
+    "message": "Istunnonhallinta"
+  },
+  "html_history_current_session": {
+    "message": "Nykyinen istunto"
+  },
+  "html_history_recent_sessions": {
+    "message": "Viimeisimmät istunnot"
+  },
+  "html_history_saved_sessions": {
+    "message": "Tallennetut istunnot"
+  },
+  "html_history_import_session": {
+    "message": "Tuo istunto"
+  },
+  "html_options_title": {
+    "message": "Asetukset"
+  },
+  "html_options_suspend_title": {
+    "message": "Automaattinen välilehtien keskeytys"
+  },
+  "html_options_suspended_title": {
+    "message": "Keskeytetyt välilehdet"
+  },
+  "html_options_other_title": {
+    "message": "Muut"
+  },
+  "html_options_suspend_automatically_after": {
+    "message": "Keskeytä välilehdet automaattisesti"
+  },
+  "html_options_suspend_never": {
+    "message": "Ei koskaan"
+  },
+  "html_options_suspend_minute": {
+    "message": "min"
+  },
+  "html_options_suspend_minutes": {
+    "message": "min"
+  },
+  "html_options_suspend_hour": {
+    "message": "tunti"
+  },
+  "html_options_suspend_hours": {
+    "message": "tuntia"
+  },
+  "html_options_suspend_day": {
+    "message": "päivä"
+  },
+  "html_options_suspend_days": {
+    "message": "päivää"
+  },
+  "html_options_suspend_week": {
+    "message": "viikko"
+  },
+  "html_options_suspend_weeks": {
+    "message": "viikkoa"
+  },
+  "html_options_suspend_no_pinned": {
+    "message": "Älä koskaan keskeytä kiinnitettyjä välilehtiä"
+  },
+  "html_options_suspend_no_forms": {
+    "message": "Älä keskeytä välilehtiä, joissa on tallentamattomia lomakkeita"
+  },
+  "html_options_suspend_no_audio": {
+    "message": "Älä keskeytä välilehtiä, jotka toistavat ääntä"
+  },
+  "html_options_suspend_only_connected": {
+    "message": "Älä keskeytä välilehtiä offline-tilassa"
+  },
+  "html_options_suspend_only_on_battery": {
+    "message": "Älä keskeytä välilehtiä kun laite on kytketty virtalähteeseen"
+  },
+  "html_options_suspend_no_active_tabs": {
+    "message": "Älä koskaan keskeytä aktiivista välilehteä kussakin ikkunassa"
+  },
+  "html_options_suspend_automatically_unsuspend": {
+    "message": "Jatka välilehti automaattisesti kun se avataan"
+  },
+  "html_options_suspend_discard_after_suspend": {
+    "message": "Käytä Chromen sisäänrakennettua muistinsäästöä keskeytyksen yhteydessä"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1a": {
+    "message": "Vähentää keskeytetyn välilehden muistinkäyttöä entisestään hyödyntämällä"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1b": {
+    "message": "Chromen sisäänrakennettua 'välilehden hylkäys'-toimintoa. Tämä voi säästää jopa"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1c": {
+    "message": "500 % muistia kun avoimia välilehtiä on paljon."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2a": {
+    "message": "Tämä voi kuitenkin aiheuttaa lievän renderöintiviiveen kun valitaan"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2b": {
+    "message": "keskeytetty välilehti."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3a": {
+    "message": "Lisätietoja Chromen välilehtien hylkäyksestä:"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3b": {
+    "message": ""
+  },
+  "html_options_suspend_theme": {
+    "message": "Teema"
+  },
+  "html_options_suspend_theme_light": {
+    "message": "Vaalea"
+  },
+  "html_options_suspend_theme_dark": {
+    "message": "Tumma"
+  },
+  "html_options_suspend_screen_capturing": {
+    "message": "Kuvakaappaus"
+  },
+  "html_options_suspend_screen_capturing_disabled": {
+    "message": "Pois käytöstä"
+  },
+  "html_options_suspend_screen_capturing_screen_only": {
+    "message": "Kaappaa vain näytön yläosa"
+  },
+  "html_options_suspend_screen_capturing_entire_page": {
+    "message": "Kaappaa koko sivu"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1a": {
+    "message": "Keskeytetyllä välilehdellä laajennus voi näyttää esikatselukuvan siitä, miltä välilehti"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1b": {
+    "message": "näytti juuri ennen keskeytystä."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2a": {
+    "message": "Kuvakaappaus on kokeellinen ominaisuus ja voi aiheuttaa merkittävää suorittimen käyttöä"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2b": {
+    "message": "sekä lievää muistinkäytön lisääntymistä."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3a": {
+    "message": "Jos havaitset outoa käyttäytymistä (hitaat keskeytykset tai Chrome"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3b": {
+    "message": "kaatuu odottamatta), kokeile poistaa tämä ominaisuus käytöstä."
+  },
+  "html_options_suspend_force_screen_capture": {
+    "message": "Ota käyttöön korkealaatuinen kuvakaappaus"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line1": {
+    "message": "Kun pois käytöstä, kuvakaappauksilla on seuraavat suorituskykyä parantavat rajoitukset:"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line2": {
+    "message": "- Matalalaatuinen kuvakaappaus"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line4": {
+    "message": "- Ei kaappaa jos kuvan luominen kestää yli 1 minuutin"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line5": {
+    "message": "- Kuvakaappauksen enimmäiskorkeus rajoitettu 5000 pikseliin"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line6": {
+    "message": "Korkealaatuisen tilan käyttöönotto voi lisätä huomattavasti suorittimen kuormitusta"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line7": {
+    "message": "ja muistinkäyttöä."
+  },
+  "html_options_whitelist_title": {
+    "message": "Älä koskaan keskeytä välilehtiä, joiden URL on seuraavassa luettelossa:"
+  },
+  "html_options_whitelist_tooltip_line1": {
+    "message": "Lisää jokaisen sallittavan sivun URL omalle rivilleen. Esimerkiksi:"
+  },
+  "html_options_whitelist_tooltip_line2": {
+    "message": "Voit sallia useita sivustoja yhdellä rivillä määrittämällä osan URL:sta:"
+  },
+  "html_options_whitelist_tooltip_line3": {
+    "message": "Voit myös käyttää säännöllisiä lausekkeita sulkemalla teksti kauttaviivoihin:"
+  },
+  "html_options_whitelist_test": {
+    "message": "Testaa sallittujen lista"
+  },
+  "html_options_other_enable_context_menu": {
+    "message": "Lisää The Great Tab Killer hiiren oikealla näkyvään valikkoon"
+  },
+  "html_options_other_enable_context_menu_tooltip_line1": {
+    "message": "Lisää laajennuksen ohjaimet verkkosivun pikavalikkovaihtoehdoksi."
+  },
+  "html_options_other_enable_context_menu_tooltip_line2": {
+    "message": "Antaa pääsyn edistyneisiin keskeytystoimintoihin, jotka eivät ole"
+  },
+  "html_options_other_enable_context_menu_tooltip_line3": {
+    "message": "muualla laajennuksessa saatavilla."
+  },
+  "html_options_other_enable_sync": {
+    "message": "Synkronoi asetukset Chrome-profiilisi kanssa"
+  },
+  "html_options_other_enable_sync_tooltip_line1a": {
+    "message": "Laajennuksen asetukset synkronoidaan kaikkiin Chrome-selaimiin, jotka ovat"
+  },
+  "html_options_other_enable_sync_tooltip_line1b": {
+    "message": "kirjautuneena samalla profiililla."
+  },
+  "html_options_other_enable_sync_tooltip_line2": {
+    "message": "Tämä synkronoi myös asetukset yksityisessä tilassa."
+  },
+  "html_options_other_enable_sync_warning": {
+    "message": "Tämän ottaminen käyttöön ylikirjoittaa asetukset kaikissa muissa saman Chrome-profiilin selaimissa"
+  },
+  "html_options_other_language": {
+    "message": "Käyttöliittymän kieli"
+  },
+  "html_options_other_backup_frequency": {
+    "message": "Istunnon varmuuskopio"
+  },
+  "html_options_other_backup_frequency_tooltip": {
+    "message": "Tallennetaan myös ennen päivitystä."
+  },
+  "html_options_other_backup_never": {
+    "message": "Ei koskaan"
+  },
+  "html_options_other_backup_every_minute": {
+    "message": "Joka minuutti"
+  },
+  "html_options_other_backup_hourly": {
+    "message": "Joka tunti"
+  },
+  "html_options_other_backup_daily": {
+    "message": "Joka päivä"
+  },
+  "html_options_other_backup_weekly": {
+    "message": "Joka viikko"
+  },
+  "html_options_other_backup_monthly": {
+    "message": "Joka kuukausi"
+  },
+  "html_options_other_language_system": {
+    "message": "Järjestelmän kieli"
+  },
+  "html_options_suspend_on_low_memory": {
+    "message": "Keskeytä välittömästi kun järjestelmämuisti on hyvin vähissä"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line1": {
+    "message": "Tämä asetus korvaa Chromen automaattisen välilehden hylkäystoiminnon."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line2": {
+    "message": "Jos käytössä, välilehti pakotetaan keskeytystilaan Chromen hylkäämisen sijaan."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line3": {
+    "message": "Yleensä Chrome hylkää välilehtiä vain kun järjestelmämuisti on hyvin vähissä."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line4": {
+    "message": "Huomio: tämä voi aiheuttaa välilehtien keskeytymisen ennen asetettua aikaa"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line5": {
+    "message": "automaattisen keskeytyksen asetuksissa."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line6": {
+    "message": "Lisätietoja Chromen hylkäyksestä:"
+  },
+  "html_options_suspend_on_low_memory_tooltip_discarding_link": {
+    "message": ""
+  },
+  "html_popup_unsuspend_tab": {
+    "message": "Jatka tätä välilehteä"
+  },
+  "html_popup_suspend_tab": {
+    "message": "Keskeytä tämä välilehti nyt"
+  },
+  "html_popup_never_suspend_domain": {
+    "message": "Älä koskaan keskeytä tätä verkkotunnusta"
+  },
+  "html_popup_never_suspend_page": {
+    "message": "Älä koskaan keskeytä tätä URL-osoitetta"
+  },
+  "html_popup_suspend_other_tabs": {
+    "message": "Keskeytä kaikki muut välilehdet"
+  },
+  "html_popup_unsuspend_all_tabs": {
+    "message": "Jatka kaikkia välilehtiä"
+  },
+  "html_popup_suspend_selected_tabs": {
+    "message": "Keskeytä valitut välilehdet"
+  },
+  "html_popup_unsuspend_selected_tabs": {
+    "message": "Jatka valittuja välilehtiä"
+  },
+  "html_popup_settings": {
+    "message": "Asetukset"
+  },
+  "html_restoring_title": {
+    "message": "Palautetaan ikkuna"
+  },
+  "html_restoring_heading": {
+    "message": "Palautetaan välilehtiä"
+  },
+  "html_restoring_detail": {
+    "message": "Odota kun palautetaan tätä ikkunaa..."
+  },
+  "html_recovery_title": {
+    "message": "Palautus"
+  },
+  "html_recovery_ruh_roh": {
+    "message": "Oho!"
+  },
+  "html_recovery_description_line1": {
+    "message": "Näyttää siltä, että olet toipumassa laajennuksen kaatumisesta."
+  },
+  "html_recovery_description_line2": {
+    "message": "Keskeytetyt välilehtesi ovat saattaneet kaatua tai kadota."
+  },
+  "html_recovery_restore_tabs_automatically": {
+    "message": "Palauta välilehdet automaattisesti"
+  },
+  "html_recovery_go_to_session_manager": {
+    "message": "Siirry istunnonhallintaan"
+  },
+  "html_recovery_important_message": {
+    "message": "Kuvakaappaus on käytössä. Jos laajennus kaatuu toistuvasti, ominaisuuden poistaminen käytöstä on suositeltavaa."
+  },
+  "html_recovery_disable_screen_capturing": {
+    "message": "Poista kuvakaappaus käytöstä"
+  },
+  "html_recovery_tabs_to_restore": {
+    "message": "Palautettavat välilehdet"
+  },
+  "html_shortcuts_title": {
+    "message": "Pikanäppäimet"
+  },
+  "html_shortcuts_keyboard_shortcuts": {
+    "message": "Pikanäppäimet"
+  },
+  "html_shortcuts_context_menu_note": {
+    "message": "Huomio: nämä toiminnot ovat saatavilla myös pikavalikosta (hiiren oikealla)."
+  },
+  "html_shortcuts_remap_keys": {
+    "message": "Muuta pikanäppäimiä"
+  },
+  "html_sidebar_general_settings": {
+    "message": "Asetukset"
+  },
+  "html_sidebar_session_management": {
+    "message": "Istunnonhallinta"
+  },
+  "html_sidebar_shortcuts": {
+    "message": "Pikanäppäimet"
+  },
+  "html_sidebar_support": {
+    "message": "Tietoja"
+  },
+  "html_sidebar_changelog": {
+    "message": "Mitä uutta"
+  },
+  "html_success_great_success": {
+    "message": "Onnistui!"
+  },
+  "html_success_all_tabs_restored": {
+    "message": "Kaikki välilehtesi on palautettu."
+  },
+  "html_success_goto_advanced_prefix": {
+    "message": "Edistyneeseen istunnonhallintaan siirry"
+  },
+  "html_success_goto_advanced_suffix": {
+    "message": "sivulle"
+  },
+  "html_session_manager": {
+    "message": "istunnonhallinta"
+  },
+  "html_suspended_title": {
+    "message": "Keskeytetty välilehti"
+  },
+  "html_suspended_click_to_reload": {
+    "message": "Päivitä tai napsauta ladataksesi uudelleen"
+  },
+  "html_suspended_toast_not_connected": {
+    "message": "Et ole yhteydessä internetiin"
+  },
+  "html_suspended_toast_reload_disabled": {
+    "message": "Välilehtien automaattinen lataaminen on tilapäisesti poistettu käytöstä."
+  },
+  "html_permissions_title": {
+    "message": "Käyttöoikeudet"
+  },
+  "html_permissions_heading": {
+    "message": "Anna minulle pääsy paikallisiin tiedosto-URL-osoitteisiin"
+  },
+  "html_permissions_info": {
+    "message": "Tällä laajennuksella ei ole lupaa keskeyttää URL-osoitteita, jotka alkavat sanalla \"file\".\nMuuttaaksesi tätä, ota käyttöön \"Salli pääsy tiedosto-URL-osoitteisiin\" laajennuksen asetuksista."
+  },
+  "html_permissions_backup": {
+    "message": "Huomio: tämän asetuksen muuttaminen saa keskeytetyt välilehdet katoamaan hetkeksi.\nHarkitse nykyisen välilehtisession varmuuskopion tallentamista."
+  },
+  "html_update_title": {
+    "message": "Päivitys"
+  },
+  "html_update_heading2": {
+    "message": "on tulossa paremmaksi"
+  },
+  "html_update_info": {
+    "message": "Uusi versio The Great Tab Killerista on valmis asennettavaksi.\nHuomio: päivityksen aikana keskeytetyt välilehdet katoavat hetkeksi."
+  },
+  "html_update_info_withbackup": {
+    "message": "Harkitse nykyisen välilehtisession varmuuskopion tallentamista."
+  },
+  "html_update_info_nobackup_prefix": {
+    "message": "On erittäin suositeltavaa viedä kopio nykyisestä istunnosta "
+  },
+  "html_update_info_nobackup_suffix": {
+    "message": " ennen päivityksen jatkamista."
+  },
+  "html_welcome_text_line1": {
+    "message": "Kiitos kokeilemisesta"
+  },
+  "html_welcome_text_line2": {
+    "message": "Pidän tietokoneesi toiminnassa sujuvasti keskeyttämällä välilehdet, joita et käytä."
+  },
+  "html_welcome_text_line3": {
+    "message": "Voit säätää asetuksia alla."
+  },
+  "js_popup_normal": {
+    "message": "Välilehti keskeytetään automaattisesti."
+  },
+  "js_popup_normal_pause": {
+    "message": "Ei nyt"
+  },
+  "js_popup_special": {
+    "message": "Välilehteä ei voi keskeyttää"
+  },
+  "js_popup_suspended": {
+    "message": "Välilehti keskeytetty"
+  },
+  "js_popup_whitelisted": {
+    "message": "Sivusto sallittujen listalla."
+  },
+  "js_popup_whitelisted_remove": {
+    "message": "Poista sallittujen listalta"
+  },
+  "js_popup_audible": {
+    "message": "Välilehti toistaa ääntä."
+  },
+  "js_popup_form_input": {
+    "message": "Välilehti vastaanottaa lomakesyötettä."
+  },
+  "js_popup_form_input_unpause": {
+    "message": "Jatka"
+  },
+  "js_popup_pinned": {
+    "message": "Välilehti on kiinnitetty"
+  },
+  "js_popup_temp_whitelist": {
+    "message": "Välilehden keskeytys tauolla."
+  },
+  "js_popup_temp_whitelist_unpause": {
+    "message": "Jatka"
+  },
+  "js_popup_never": {
+    "message": "Automaattinen välilehtien keskeytys poistettu käytöstä."
+  },
+  "js_popup_no_connectivity": {
+    "message": "Ei verkkoyhteyttä"
+  },
+  "js_popup_charging": {
+    "message": "Kytketty virtalähteeseen"
+  },
+  "js_popup_blockedFile": {
+    "message": "Paikallisia tiedostoja ei voi keskeyttää."
+  },
+  "js_popup_blockedFile_enable": {
+    "message": "Ota käyttöön"
+  },
+  "js_popup_unknown": {
+    "message": "Odotetaan välilehden latautumista..."
+  },
+  "js_popup_initialising": {
+    "message": "Odotetaan laajennuksen alustamista..."
+  },
+  "js_popup_error": {
+    "message": "Automaattinen keskeytys ei ole käytettävissä tälle välilehdelle"
+  },
+  "js_history_delete": {
+    "message": "poista"
+  },
+  "js_history_export": {
+    "message": "vie"
+  },
+  "js_history_reload": {
+    "message": "avaa ja lataa"
+  },
+  "js_history_resuspend": {
+    "message": "avaa ja keskeytä"
+  },
+  "js_history_save": {
+    "message": "tallenna"
+  },
+  "js_history_window": {
+    "message": "Ikkuna"
+  },
+  "js_history_tab": {
+    "message": "Välilehti"
+  },
+  "js_history_plural": {
+    "message": "ä"
+  },
+  "js_history_enter_name_for_session": {
+    "message": "Anna istunnolle nimi"
+  },
+  "js_history_confirm_delete": {
+    "message": "Haluatko varmasti poistaa tämän istunnon?"
+  },
+  "js_history_confirm_session_overwrite": {
+    "message": "Tällä nimellä on jo tallennettu istunto. Korvataanko olemassa oleva istunto?"
+  },
+  "js_history_import_fail": {
+    "message": "Tiedoston lataaminen epäonnistui. Varmista, että se on pelkkää tekstiä ja sisältää yhden URL:n per rivi."
+  },
+  "js_suspended_hotkey_to_reload": {
+    "message": "Aseta pikanäppäimet"
+  },
+  "js_suspended_low_memory": {
+    "message": "Välilehti keskeytetty alhaisen järjestelmämuistin vuoksi"
+  },
+  "js_options_incognito_warning": {
+    "message": "Olet yksityisessä tilassa. Jotkin ominaisuudet eivät ole käytettävissä."
+  },
+  "js_options_whitelist_no_matches": {
+    "message": "Yhtään avointa välilehteä ei vastaa nykyistä sallittujen listaa."
+  },
+  "js_options_whitelist_matches_heading": {
+    "message": "Avoimet välilehdet sallittujen listalla:"
+  },
+  "js_options_whitelist_matches_overflow_prefix": {
+    "message": "ja"
+  },
+  "js_options_whitelist_matches_overflow_suffix": {
+    "message": "lisää."
+  },
+  "js_permissions_button_export": {
+    "message": "Tallenna varmuuskopio"
+  },
+  "js_permissions_button_set": {
+    "message": "Avaa laajennuksen asetukset"
+  },
+  "js_update_button_export": {
+    "message": "Tallenna varmuuskopio"
+  },
+  "js_update_button_reload": {
+    "message": "Päivitä laajennus nyt"
+  },
+  "js_shortcuts_not_set": {
+    "message": "ei asetettu"
+  },
+  "js_session_save_point": {
+    "message": "Automaattinen tallennuspiste versiolle v"
+  }
+}

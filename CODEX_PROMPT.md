@@ -56,7 +56,7 @@ The owner will use it personally and publish it on GitHub for anyone to use and 
 
 **Step 0 — Intake (no code changes).**
 - If this folder is not a git repository, run `git init`, commit the files exactly as received (message: `chore: import upstream baseline`), and tag `upstream-baseline`.
-- Read `AGENTS.md` and the roadmap. Reply (in Moroccan Darija per `AGENTS.md`) with: a 10-line summary of what you understood; anything in the roadmap you think is wrong or risky; your environment limits (network? browser? Node/Python versions?) and what that means for verification. Then wait for the owner's go.
+- Read `AGENTS.md` and the roadmap. Reply in English with a concise intake of the project scope, any material roadmap risks, and environment limits (network, browser, Node/Python versions) that affect verification. Keep it within 25 lines, link to the roadmap instead of restating it, then wait for the owner's go.
 
 **Phases.** Execute roadmap phases in this order: **0 → 1 → (Gate A) → 2 → 3 → 4 → 5 → 6 → 7 → 8**, with **Phase 9** tasks done in parallel and closed before release. One branch per phase, small commits, update roadmap checkboxes and the status log after each task.
 
@@ -93,7 +93,7 @@ The owner will use it personally and publish it on GitHub for anyone to use and 
 
 ## 8. Report format (after every task or phase)
 
-Write the report in Moroccan Darija (Arabic script, English technical terms) following `AGENTS.md`:
+Keep reports in English and about 25 lines maximum. Link to changed files instead of re-listing their contents. Do not restate earlier reports or unchanged roadmap items. Use this six-part format only when something changed:
 
 1. **Done** — what changed (files, commits).
 2. **Verified** — exactly how (commands run, results).
@@ -101,6 +101,8 @@ Write the report in Moroccan Darija (Arabic script, English technical terms) fol
 4. **Findings & risks** — with Certain / Likely / Guess labels.
 5. **Decisions needed from the owner** — numbered, one precise question each, with your recommended default.
 6. **Next step** — the next task or the gate you are waiting on.
+
+When nothing changed, give a concise status without the six-part format.
 
 ## 9. Start now
 

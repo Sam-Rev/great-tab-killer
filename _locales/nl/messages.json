@@ -1,0 +1,632 @@
+{
+  "ext_extension_name": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_extension_description": {
+    "message": "Zet inactieve Chrome-tabbladen in slaapstand om RAM te besparen. De beste Tab Suspender — bevriest automatisch ongebruikte tabbladen en herstelt ze direct."
+  },
+  "ext_default_title": {
+    "message": "The Great Tab Killer"
+  },
+  "ext_cmd_toggle_tab_suspension_description": {
+    "message": "Actief tabblad opschorten/hervatten"
+  },
+  "ext_cmd_toggle_tab_pause_description": {
+    "message": "Opschorting van actief tabblad pauzeren/hervatten"
+  },
+  "ext_cmd_suspend_selected_tabs_description": {
+    "message": "Geselecteerde tabbladen opschorten"
+  },
+  "ext_cmd_unsuspend_selected_tabs_description": {
+    "message": "Geselecteerde tabbladen hervatten"
+  },
+  "ext_cmd_soft_suspend_active_window_description": {
+    "message": "Alle andere tabbladen in actief venster opschorten"
+  },
+  "ext_cmd_force_suspend_active_window_description": {
+    "message": "Alle andere tabbladen in actief venster geforceerd opschorten"
+  },
+  "ext_cmd_unsuspend_active_window_description": {
+    "message": "Alle tabbladen in actief venster hervatten"
+  },
+  "ext_cmd_soft_suspend_all_windows_description": {
+    "message": "Alle tabbladen in alle vensters opschorten"
+  },
+  "ext_cmd_force_suspend_all_windows_description": {
+    "message": "Alle tabbladen in alle vensters geforceerd opschorten"
+  },
+  "ext_cmd_unsuspend_all_windows_description": {
+    "message": "Alle tabbladen in alle vensters hervatten"
+  },
+  "js_context_open_link_in_suspended_tab": {
+    "message": "Link openen in nieuw opgeschort tabblad"
+  },
+  "js_context_toggle_suspend_state": {
+    "message": "Dit tabblad opschorten/hervatten"
+  },
+  "js_context_toggle_pause_suspension": {
+    "message": "Opschorting van dit tabblad pauzeren/hervatten"
+  },
+  "js_context_never_suspend_domain": {
+    "message": "Dit domein nooit opschorten"
+  },
+  "js_context_never_suspend_page": {
+    "message": "Deze URL nooit opschorten"
+  },
+  "js_context_suspend_selected_tabs": {
+    "message": "Geselecteerde tabbladen opschorten"
+  },
+  "js_context_unsuspend_selected_tabs": {
+    "message": "Geselecteerde tabbladen hervatten"
+  },
+  "js_context_soft_suspend_other_tabs_in_window": {
+    "message": "Alle andere tabbladen in dit venster opschorten"
+  },
+  "js_context_force_suspend_other_tabs_in_window": {
+    "message": "Alle andere tabbladen in dit venster geforceerd opschorten"
+  },
+  "js_context_unsuspend_all_tabs_in_window": {
+    "message": "Alle tabbladen in dit venster hervatten"
+  },
+  "js_context_soft_suspend_all_tabs": {
+    "message": "Alle tabbladen in alle vensters opschorten"
+  },
+  "js_context_force_suspend_all_tabs": {
+    "message": "Alle tabbladen in alle vensters geforceerd opschorten"
+  },
+  "js_context_unsuspend_all_tabs": {
+    "message": "Alle tabbladen in alle vensters hervatten"
+  },
+  "html_about_title": {
+    "message": "Over"
+  },
+  "html_history_title": {
+    "message": "Sessiebeheer"
+  },
+  "html_history_current_session": {
+    "message": "Huidige sessie"
+  },
+  "html_history_recent_sessions": {
+    "message": "Recente sessies"
+  },
+  "html_history_saved_sessions": {
+    "message": "Opgeslagen sessies"
+  },
+  "html_history_import_session": {
+    "message": "Sessie importeren"
+  },
+  "html_options_title": {
+    "message": "Instellingen"
+  },
+  "html_options_suspend_title": {
+    "message": "Automatisch tabbladen opschorten"
+  },
+  "html_options_suspended_title": {
+    "message": "Opgeschorte tabbladen"
+  },
+  "html_options_other_title": {
+    "message": "Overige"
+  },
+  "html_options_suspend_automatically_after": {
+    "message": "Tabbladen automatisch opschorten na"
+  },
+  "html_options_suspend_never": {
+    "message": "Nooit"
+  },
+  "html_options_suspend_minute": {
+    "message": "min"
+  },
+  "html_options_suspend_minutes": {
+    "message": "min"
+  },
+  "html_options_suspend_hour": {
+    "message": "uur"
+  },
+  "html_options_suspend_hours": {
+    "message": "uur"
+  },
+  "html_options_suspend_day": {
+    "message": "dag"
+  },
+  "html_options_suspend_days": {
+    "message": "dagen"
+  },
+  "html_options_suspend_week": {
+    "message": "week"
+  },
+  "html_options_suspend_weeks": {
+    "message": "weken"
+  },
+  "html_options_suspend_no_pinned": {
+    "message": "Vastgezette tabbladen nooit opschorten"
+  },
+  "html_options_suspend_no_forms": {
+    "message": "Tabbladen met niet-opgeslagen formulieren nooit opschorten"
+  },
+  "html_options_suspend_no_audio": {
+    "message": "Tabbladen met audio nooit opschorten"
+  },
+  "html_options_suspend_only_connected": {
+    "message": "Tabbladen nooit opschorten zonder internetverbinding"
+  },
+  "html_options_suspend_only_on_battery": {
+    "message": "Tabbladen nooit opschorten bij aangesloten voeding"
+  },
+  "html_options_suspend_no_active_tabs": {
+    "message": "Actief tabblad in elk venster nooit opschorten"
+  },
+  "html_options_suspend_automatically_unsuspend": {
+    "message": "Tabblad automatisch hervatten bij weergave"
+  },
+  "html_options_suspend_discard_after_suspend": {
+    "message": "Ingebouwde geheugenoptimalisatie van Chrome toepassen bij opschorten"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1a": {
+    "message": "Vermindert het geheugengebruik van een opgeschort tabblad nog verder door gebruik te maken van"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1b": {
+    "message": "de ingebouwde 'tabblad verwijderen'-functionaliteit van Chrome. Dit kan resulteren in tot"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line1c": {
+    "message": "500% geheugenbesparingen bij grote aantallen tabbladen."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2a": {
+    "message": "Dit veroorzaakt echter een kleine vertraging bij het selecteren"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line2b": {
+    "message": "van een opgeschort tabblad."
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3a": {
+    "message": "Meer informatie over Chrome tabblad verwijderen:"
+  },
+  "html_options_suspend_discard_after_suspend_tooltip_line3b": {
+    "message": ""
+  },
+  "html_options_suspend_theme": {
+    "message": "Thema"
+  },
+  "html_options_suspend_theme_light": {
+    "message": "Licht"
+  },
+  "html_options_suspend_theme_dark": {
+    "message": "Donker"
+  },
+  "html_options_suspend_screen_capturing": {
+    "message": "Schermopname"
+  },
+  "html_options_suspend_screen_capturing_disabled": {
+    "message": "Uitgeschakeld"
+  },
+  "html_options_suspend_screen_capturing_screen_only": {
+    "message": "Alleen bovenkant scherm vastleggen"
+  },
+  "html_options_suspend_screen_capturing_entire_page": {
+    "message": "Volledige pagina vastleggen"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1a": {
+    "message": "Op een opgeschort tabblad kan de extensie een voorbeeld tonen van hoe het tabblad eruitzag"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line1b": {
+    "message": "vlak voor het opschorten."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2a": {
+    "message": "Schermopname is experimenteel en kan aanzienlijk CPU-gebruik veroorzaken"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line2b": {
+    "message": "en het geheugengebruik licht verhogen."
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3a": {
+    "message": "Bij vreemd gedrag (tabbladen die lang duren om op te schorten of Chrome"
+  },
+  "html_options_suspend_screen_capturing_tooltip_line3b": {
+    "message": "dat onverwacht vastloopt), schakel deze functie dan uit."
+  },
+  "html_options_suspend_force_screen_capture": {
+    "message": "Hoge kwaliteit schermopname inschakelen"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line1": {
+    "message": "Wanneer uitgeschakeld gelden de volgende beperkingen voor betere prestaties:"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line2": {
+    "message": "- Lage kwaliteit schermopname"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line4": {
+    "message": "- Geen schermopname als genereren langer dan 1 minuut duurt"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line5": {
+    "message": "- Maximale hoogte van schermopname beperkt tot 5000 px"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line6": {
+    "message": "Hoge kwaliteitsmodus kan de CPU-belasting aanzienlijk verhogen"
+  },
+  "html_options_suspend_force_screen_capture_tooltip_line7": {
+    "message": "en het geheugengebruik verhogen."
+  },
+  "html_options_whitelist_title": {
+    "message": "Tabbladen met URL's uit de volgende lijst nooit opschorten:"
+  },
+  "html_options_whitelist_tooltip_line1": {
+    "message": "Voeg de URL van elke pagina op een nieuwe regel toe. Bijvoorbeeld:"
+  },
+  "html_options_whitelist_tooltip_line2": {
+    "message": "Om meerdere sites op één regel toe te voegen, geef een deel van de URL op:"
+  },
+  "html_options_whitelist_tooltip_line3": {
+    "message": "Reguliere expressies kunnen ook door de tekst tussen schuine strepen te plaatsen:"
+  },
+  "html_options_whitelist_test": {
+    "message": "Witte lijst testen"
+  },
+  "html_options_other_enable_context_menu": {
+    "message": "The Great Tab Killer toevoegen aan contextmenu (rechtermuisknop)"
+  },
+  "html_options_other_enable_context_menu_tooltip_line1": {
+    "message": "Voegt bedieningselementen toe aan het contextmenu van een webpagina."
+  },
+  "html_options_other_enable_context_menu_tooltip_line2": {
+    "message": "Geeft toegang tot geavanceerde opschortacties die elders"
+  },
+  "html_options_other_enable_context_menu_tooltip_line3": {
+    "message": "niet beschikbaar zijn in de extensie."
+  },
+  "html_options_other_enable_sync": {
+    "message": "Instellingen synchroniseren met uw Chrome-profiel"
+  },
+  "html_options_other_enable_sync_tooltip_line1a": {
+    "message": "Extensie-instellingen worden gesynchroniseerd op alle Chrome-browsers"
+  },
+  "html_options_other_enable_sync_tooltip_line1b": {
+    "message": "die zijn aangemeld met hetzelfde profiel."
+  },
+  "html_options_other_enable_sync_tooltip_line2": {
+    "message": "Dit synchroniseert ook instellingen in incognitomodus."
+  },
+  "html_options_other_enable_sync_warning": {
+    "message": "Dit inschakelen overschrijft instellingen op alle andere browsers met hetzelfde Chrome-profiel"
+  },
+  "html_options_other_language": {
+    "message": "Interfacetaal"
+  },
+  "html_options_other_backup_frequency": {
+    "message": "Automatische back-up"
+  },
+  "html_options_other_backup_frequency_tooltip": {
+    "message": "Wordt ook opgeslagen vóór updates."
+  },
+  "html_options_other_backup_never": {
+    "message": "Nooit"
+  },
+  "html_options_other_backup_every_minute": {
+    "message": "Elke minuut"
+  },
+  "html_options_other_backup_hourly": {
+    "message": "Elk uur"
+  },
+  "html_options_other_backup_daily": {
+    "message": "Elke dag"
+  },
+  "html_options_other_backup_weekly": {
+    "message": "Elke week"
+  },
+  "html_options_other_backup_monthly": {
+    "message": "Elke maand"
+  },
+  "html_options_other_language_system": {
+    "message": "Systeemtaal"
+  },
+  "html_options_suspend_on_low_memory": {
+    "message": "Direct opschorten wanneer het systeemgeheugen erg laag is"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line1": {
+    "message": "Deze optie vervangt de automatische tabblad-verwijderfunctie van Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line2": {
+    "message": "Indien ingeschakeld wordt een tabblad opgeschort in plaats van verwijderd door Chrome."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line3": {
+    "message": "Normaal gesproken verwijdert Chrome tabbladen alleen bij zeer laag geheugen."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line4": {
+    "message": "Let op: tabbladen kunnen eerder worden opgeschort dan de ingestelde tijd"
+  },
+  "html_options_suspend_on_low_memory_tooltip_line5": {
+    "message": "bij automatische opschorting."
+  },
+  "html_options_suspend_on_low_memory_tooltip_line6": {
+    "message": "Meer informatie over Chrome tabblad verwijderen:"
+  },
+  "html_options_suspend_on_low_memory_tooltip_discarding_link": {
+    "message": ""
+  },
+  "html_popup_unsuspend_tab": {
+    "message": "Dit tabblad hervatten"
+  },
+  "html_popup_suspend_tab": {
+    "message": "Dit tabblad nu opschorten"
+  },
+  "html_popup_never_suspend_domain": {
+    "message": "Dit domein nooit opschorten"
+  },
+  "html_popup_never_suspend_page": {
+    "message": "Deze URL nooit opschorten"
+  },
+  "html_popup_suspend_other_tabs": {
+    "message": "Alle andere tabbladen opschorten"
+  },
+  "html_popup_unsuspend_all_tabs": {
+    "message": "Alle tabbladen hervatten"
+  },
+  "html_popup_suspend_selected_tabs": {
+    "message": "Geselecteerde tabbladen opschorten"
+  },
+  "html_popup_unsuspend_selected_tabs": {
+    "message": "Geselecteerde tabbladen hervatten"
+  },
+  "html_popup_settings": {
+    "message": "Instellingen"
+  },
+  "html_restoring_title": {
+    "message": "Venster herstellen"
+  },
+  "html_restoring_heading": {
+    "message": "Tabbladen herstellen"
+  },
+  "html_restoring_detail": {
+    "message": "Even geduld terwijl ik dit venster herstel..."
+  },
+  "html_recovery_title": {
+    "message": "Herstel"
+  },
+  "html_recovery_ruh_roh": {
+    "message": "Oeps!"
+  },
+  "html_recovery_description_line1": {
+    "message": "Het lijkt erop dat u herstelt van een extensiecrash."
+  },
+  "html_recovery_description_line2": {
+    "message": "Uw opgeschorte tabbladen zijn mogelijk gecrasht of verdwenen."
+  },
+  "html_recovery_restore_tabs_automatically": {
+    "message": "Tabbladen automatisch herstellen"
+  },
+  "html_recovery_go_to_session_manager": {
+    "message": "Naar sessiebeheer"
+  },
+  "html_recovery_important_message": {
+    "message": "Schermopname is momenteel ingeschakeld. Als de extensie herhaaldelijk crasht, schakel deze optie dan uit."
+  },
+  "html_recovery_disable_screen_capturing": {
+    "message": "Schermopname uitschakelen"
+  },
+  "html_recovery_tabs_to_restore": {
+    "message": "Te herstellen tabbladen"
+  },
+  "html_shortcuts_title": {
+    "message": "Sneltoetsen"
+  },
+  "html_shortcuts_keyboard_shortcuts": {
+    "message": "Sneltoetsen"
+  },
+  "html_shortcuts_context_menu_note": {
+    "message": "Opmerking: deze acties zijn ook beschikbaar via het contextmenu (rechtermuisknop)."
+  },
+  "html_shortcuts_remap_keys": {
+    "message": "Sneltoetsen wijzigen"
+  },
+  "html_sidebar_general_settings": {
+    "message": "Instellingen"
+  },
+  "html_sidebar_session_management": {
+    "message": "Sessiebeheer"
+  },
+  "html_sidebar_shortcuts": {
+    "message": "Sneltoetsen"
+  },
+  "html_sidebar_support": {
+    "message": "Over"
+  },
+  "html_sidebar_changelog": {
+    "message": "Wat is er nieuw"
+  },
+  "html_success_great_success": {
+    "message": "Gelukt!"
+  },
+  "html_success_all_tabs_restored": {
+    "message": "Al uw tabbladen zijn hersteld."
+  },
+  "html_success_goto_advanced_prefix": {
+    "message": "Voor geavanceerd sessiebeheer, bezoek de"
+  },
+  "html_success_goto_advanced_suffix": {
+    "message": "pagina"
+  },
+  "html_session_manager": {
+    "message": "sessiebeheer"
+  },
+  "html_suspended_title": {
+    "message": "Opgeschort tabblad"
+  },
+  "html_suspended_click_to_reload": {
+    "message": "Vernieuwen of klikken om te herladen"
+  },
+  "html_suspended_toast_not_connected": {
+    "message": "U bent niet verbonden met internet"
+  },
+  "html_suspended_toast_reload_disabled": {
+    "message": "Automatisch herladen van tabbladen is tijdelijk uitgeschakeld."
+  },
+  "html_permissions_title": {
+    "message": "Machtigingen"
+  },
+  "html_permissions_heading": {
+    "message": "Geef mij toegang tot lokale bestands-URL's"
+  },
+  "html_permissions_info": {
+    "message": "Deze extensie heeft geen toestemming om URL's die beginnen met \"file\" op te schorten.\nSchakel \"Toegang tot bestands-URL's toestaan\" in via de extensie-instellingen."
+  },
+  "html_permissions_backup": {
+    "message": "Let op: het wijzigen van deze optie zorgt ervoor dat opgeschorte tabbladen tijdelijk verdwijnen.\nOverweeg een back-up van uw huidige tabbladssessie op te slaan."
+  },
+  "html_update_title": {
+    "message": "Update"
+  },
+  "html_update_heading2": {
+    "message": "staat op het punt beter te worden"
+  },
+  "html_update_info": {
+    "message": "Een nieuwe versie van The Great Tab Killer is klaar om te worden geïnstalleerd.\nLet op: tijdens de update verdwijnen opgeschorte tabbladen tijdelijk."
+  },
+  "html_update_info_withbackup": {
+    "message": "Overweeg een back-up van uw huidige tabbladssessie op te slaan."
+  },
+  "html_update_info_nobackup_prefix": {
+    "message": "Het wordt sterk aanbevolen een kopie van uw huidige sessie te exporteren vanuit "
+  },
+  "html_update_info_nobackup_suffix": {
+    "message": " voordat u doorgaat met de update."
+  },
+  "html_welcome_text_line1": {
+    "message": "Bedankt voor het proberen"
+  },
+  "html_welcome_text_line2": {
+    "message": "Ik zorg ervoor dat uw computer soepel draait door tabbladen die u niet gebruikt op te schorten."
+  },
+  "html_welcome_text_line3": {
+    "message": "U kunt de instellingen hieronder aanpassen."
+  },
+  "js_popup_normal": {
+    "message": "Tabblad wordt automatisch opgeschort."
+  },
+  "js_popup_normal_pause": {
+    "message": "Niet nu"
+  },
+  "js_popup_special": {
+    "message": "Tabblad kan niet worden opgeschort"
+  },
+  "js_popup_suspended": {
+    "message": "Tabblad opgeschort"
+  },
+  "js_popup_whitelisted": {
+    "message": "Site op witte lijst."
+  },
+  "js_popup_whitelisted_remove": {
+    "message": "Van witte lijst verwijderen"
+  },
+  "js_popup_audible": {
+    "message": "Tabblad speelt audio af."
+  },
+  "js_popup_form_input": {
+    "message": "Tabblad ontvangt formulierinvoer."
+  },
+  "js_popup_form_input_unpause": {
+    "message": "Hervatten"
+  },
+  "js_popup_pinned": {
+    "message": "Tabblad is vastgezet"
+  },
+  "js_popup_temp_whitelist": {
+    "message": "Opschorting van tabblad gepauzeerd."
+  },
+  "js_popup_temp_whitelist_unpause": {
+    "message": "Hervatten"
+  },
+  "js_popup_never": {
+    "message": "Automatisch opschorten uitgeschakeld."
+  },
+  "js_popup_no_connectivity": {
+    "message": "Geen netwerkverbinding"
+  },
+  "js_popup_charging": {
+    "message": "Verbonden met voedingsbron"
+  },
+  "js_popup_blockedFile": {
+    "message": "Lokale bestanden kunnen niet worden opgeschort."
+  },
+  "js_popup_blockedFile_enable": {
+    "message": "Inschakelen"
+  },
+  "js_popup_unknown": {
+    "message": "Wachten tot tabblad is geladen..."
+  },
+  "js_popup_initialising": {
+    "message": "Wachten tot extensie is geïnitialiseerd..."
+  },
+  "js_popup_error": {
+    "message": "Automatisch opschorten niet beschikbaar voor dit tabblad"
+  },
+  "js_history_delete": {
+    "message": "verwijderen"
+  },
+  "js_history_export": {
+    "message": "exporteren"
+  },
+  "js_history_reload": {
+    "message": "openen en laden"
+  },
+  "js_history_resuspend": {
+    "message": "openen en opschorten"
+  },
+  "js_history_save": {
+    "message": "opslaan"
+  },
+  "js_history_window": {
+    "message": "Venster"
+  },
+  "js_history_tab": {
+    "message": "Tabblad"
+  },
+  "js_history_plural": {
+    "message": "en"
+  },
+  "js_history_enter_name_for_session": {
+    "message": "Voer een naam in voor deze sessie"
+  },
+  "js_history_confirm_delete": {
+    "message": "Weet u zeker dat u deze sessie wilt verwijderen?"
+  },
+  "js_history_confirm_session_overwrite": {
+    "message": "Er bestaat al een opgeslagen sessie met deze naam. Bestaande sessie overschrijven?"
+  },
+  "js_history_import_fail": {
+    "message": "Laden van bestand mislukt. Zorg ervoor dat het platte tekst is met één URL per regel."
+  },
+  "js_suspended_hotkey_to_reload": {
+    "message": "Sneltoetsen instellen"
+  },
+  "js_suspended_low_memory": {
+    "message": "Tabblad opgeschort vanwege laag systeemgeheugen"
+  },
+  "js_options_incognito_warning": {
+    "message": "U bent in incognitomodus. Sommige functies zijn niet beschikbaar."
+  },
+  "js_options_whitelist_no_matches": {
+    "message": "Er zijn geen open tabbladen die overeenkomen met de huidige witte lijst."
+  },
+  "js_options_whitelist_matches_heading": {
+    "message": "Open tabbladen op witte lijst:"
+  },
+  "js_options_whitelist_matches_overflow_prefix": {
+    "message": "en"
+  },
+  "js_options_whitelist_matches_overflow_suffix": {
+    "message": "meer."
+  },
+  "js_permissions_button_export": {
+    "message": "Back-up opslaan"
+  },
+  "js_permissions_button_set": {
+    "message": "Extensie-instellingen openen"
+  },
+  "js_update_button_export": {
+    "message": "Back-up opslaan"
+  },
+  "js_update_button_reload": {
+    "message": "Extensie nu bijwerken"
+  },
+  "js_shortcuts_not_set": {
+    "message": "niet ingesteld"
+  },
+  "js_session_save_point": {
+    "message": "Automatisch opslagpunt voor v"
+  }
+}

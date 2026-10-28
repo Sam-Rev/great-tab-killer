@@ -1,0 +1,681 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link type="text/css" href="../styles/fontello.css" rel="stylesheet">
+	<link type="text/css" href="../styles/style.css" rel="stylesheet">
+	<script type="module" src="../js/monitor.js"></script>
+	<title data-i18n="__MSG_ext_extension_name__ - __MSG_html_monitor_title__"></title>
+	<style>
+		.mainContent {
+			width: 1080px;
+			max-width: 96vw;
+		}
+
+		.monitorStats {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			grid-gap: 15px;
+			margin-bottom: 25px;
+		}
+
+		.statCard {
+			background: #fff;
+			border-radius: 6px;
+			padding: 14px 18px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+		}
+
+		.statCard .statLabel {
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			color: #999;
+			margin-bottom: 6px;
+			white-space: nowrap;
+		}
+
+		.statCard .statValue {
+			font-size: 22px;
+			font-weight: 300;
+			color: #333;
+			line-height: 1.2;
+		}
+
+		.statCard .statSub {
+			font-size: 11px;
+			color: #999;
+			margin-top: 3px;
+		}
+
+		.statMiniBar {
+			height: 4px;
+			border-radius: 2px;
+			background: #eee;
+			margin-top: 8px;
+			overflow: hidden;
+		}
+
+		.statMiniBar>div {
+			height: 100%;
+			border-radius: 2px;
+			background: #3477db;
+			width: 0;
+			transition: width 0.4s ease;
+		}
+
+		.monitorControls {
+			display: flex;
+			align-items: center;
+			gap: 18px;
+			margin-bottom: 15px;
+			min-height: 40px;
+		}
+
+		.monitorControls .spacer {
+			flex: 1;
+		}
+
+		.monitorUpdated {
+			font-size: 12px;
+			color: #999;
+		}
+
+		.preciseLink {
+			font-size: 12px;
+			color: #999;
+			cursor: help;
+		}
+
+		.preciseLink:hover {
+			color: #3477db;
+		}
+
+		.preciseLink.preciseLinkDisabled {
+			cursor: help;
+		}
+
+		#refreshBtn.refreshing {
+			opacity: 0.6;
+			pointer-events: none;
+		}
+
+		#refreshBtn .spinner {
+			display: none;
+			width: 12px;
+			height: 12px;
+			border: 2px solid rgba(255, 255, 255, 0.4);
+			border-top-color: #fff;
+			border-radius: 50%;
+			margin-right: 7px;
+			vertical-align: -1px;
+			animation: monitorSpin 0.8s linear infinite;
+		}
+
+		#refreshBtn.refreshing .spinner {
+			display: inline-block;
+		}
+
+		@keyframes monitorSpin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		.monitorTableWrap {
+			background: #fff;
+			border-radius: 6px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+			overflow: hidden;
+			margin-bottom: 30px;
+		}
+
+		table.monitorTable {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 13px;
+			table-layout: fixed;
+		}
+
+		.monitorTable th {
+			text-align: left;
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+			color: #888;
+			padding: 12px 10px;
+			border-bottom: 2px solid #eee;
+			white-space: nowrap;
+			user-select: none;
+		}
+
+		.monitorTable th.sortable {
+			cursor: pointer;
+		}
+
+		.monitorTable th.sortable:hover {
+			color: #3477db;
+		}
+
+		.monitorTable th .sortArrow {
+			font-size: 9px;
+			margin-left: 4px;
+		}
+
+		.monitorTable th.sorted {
+			color: #3477db;
+		}
+
+		.monitorTable td {
+			padding: 8px 10px;
+			border-bottom: 1px solid #f2f2f2;
+			vertical-align: middle;
+		}
+
+		.monitorTable tbody tr:hover {
+			background: #f7faff;
+		}
+
+		.monitorTable tbody tr:last-child td {
+			border-bottom: none;
+		}
+
+		.monitorTable col.colTab {
+			width: auto;
+		}
+
+		.monitorTable col.colStatus {
+			width: 130px;
+		}
+
+		.monitorTable col.colMem {
+			width: 170px;
+		}
+
+		.monitorTable col.colCpu {
+			width: 90px;
+		}
+
+		.monitorTable col.colActions {
+			width: 132px;
+		}
+
+		.tabCell {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			min-width: 0;
+		}
+
+		.tabCell img.tabFavicon {
+			width: 16px;
+			height: 16px;
+			flex: 0 0 16px;
+		}
+
+		.tabCellText {
+			min-width: 0;
+		}
+
+		.tabCellTitle {
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			color: #333;
+		}
+
+		.tabCellTitle.gotoLink {
+			cursor: pointer;
+		}
+
+		.tabCellTitle.gotoLink:hover {
+			color: #3477db;
+			text-decoration: underline;
+		}
+
+		.tabCellHost {
+			font-size: 11px;
+			color: #999;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		tr.suspendedRow .tabCellTitle {
+			color: #999;
+		}
+
+		.statusChip {
+			display: inline-block;
+			font-size: 11px;
+			line-height: 1;
+			padding: 4px 8px;
+			border-radius: 10px;
+			background: #f0f0f0;
+			color: #777;
+			white-space: nowrap;
+		}
+
+		.statusChip.stActive {
+			background: #e2efda;
+			color: #3c763d;
+		}
+
+		.statusChip.stAudible {
+			background: #dcecfb;
+			color: #2a6bc5;
+		}
+
+		.statusChip.stSuspended {
+			background: #ece7f6;
+			color: #6a51a3;
+		}
+
+		.statusChip.stDiscarded {
+			background: #f0f0f0;
+			color: #999;
+		}
+
+		.statusChip.stFrozen {
+			background: #ddf1f5;
+			color: #31708f;
+		}
+
+		.statusChip.stRunning {
+			background: #e8f5e9;
+			color: #347444;
+		}
+
+		.statusChip.stPinned {
+			background: #fdf3d8;
+			color: #9a7c22;
+		}
+
+		.memCell .memValue {
+			font-weight: 600;
+			color: #333;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.memCell .memValue.memNa {
+			color: #bbb;
+			font-weight: normal;
+		}
+
+		.memCell .memMethod {
+			font-size: 10px;
+			color: #b5b5b5;
+			margin-left: 4px;
+		}
+
+		.memBar {
+			height: 4px;
+			border-radius: 2px;
+			background: #f0f0f0;
+			margin-top: 5px;
+			overflow: hidden;
+		}
+
+		.memBar>div {
+			height: 100%;
+			border-radius: 2px;
+			background: #3477db;
+			transition: width 0.4s ease;
+		}
+
+		.memBar>div.memMed {
+			background: #e8a33d;
+		}
+
+		.memBar>div.memHigh {
+			background: #d9534f;
+		}
+
+		.memFreed {
+			font-size: 10px;
+			color: #7ba05b;
+			margin-top: 3px;
+			white-space: nowrap;
+		}
+
+		.memValue.memReleasedValue {
+			color: #999;
+			font-weight: normal;
+		}
+
+		.memCell .memValue.memHasTip {
+			border-bottom: 1px dotted #c0c0c0;
+			cursor: help;
+		}
+
+		.memTip {
+			position: fixed;
+			z-index: 100;
+			width: 300px;
+			padding: 10px 12px;
+			border-radius: 6px;
+			background: rgba(40, 42, 48, 0.97);
+			color: #f2f2f2;
+			font-size: 11px;
+			line-height: 1.5;
+			box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+			pointer-events: none;
+		}
+
+		.memTipRow {
+			display: flex;
+			justify-content: space-between;
+			gap: 14px;
+			white-space: nowrap;
+		}
+
+		.memTipRow>span:first-child {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			color: #cfcfcf;
+		}
+
+		.memTipValue {
+			font-variant-numeric: tabular-nums;
+		}
+
+		.memTipRow.memTipTotal {
+			margin-top: 5px;
+			padding-top: 5px;
+			border-top: 1px solid rgba(255, 255, 255, 0.25);
+			font-weight: 600;
+		}
+
+		.memTipRow.memTipTotal>span:first-child {
+			color: #f2f2f2;
+		}
+
+		.memTipNote {
+			margin-top: 6px;
+			color: #a8a8a8;
+			white-space: normal;
+		}
+
+		.memTipNote:first-child {
+			margin-top: 0;
+		}
+
+		.memBar>div.memReleased {
+			background: #b7d1a8;
+		}
+
+		.cpuCell {
+			font-variant-numeric: tabular-nums;
+			white-space: nowrap;
+		}
+
+		.cpuDot {
+			display: inline-block;
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			margin-right: 6px;
+			background: #c9e2c9;
+		}
+
+		.cpuDot.cpuMed {
+			background: #e8a33d;
+		}
+
+		.cpuDot.cpuHigh {
+			background: #d9534f;
+		}
+
+		.cpuNa {
+			color: #bbb;
+		}
+
+		.rowActions {
+			display: flex;
+			gap: 2px;
+			visibility: hidden;
+		}
+
+		.monitorTable tbody tr:hover .rowActions {
+			visibility: visible;
+		}
+
+		#monitorTableBody .rowActions {
+			visibility: visible;
+		}
+
+		.actBtn {
+			border: 0;
+			background: transparent;
+			padding: 5px;
+			border-radius: 4px;
+			cursor: pointer;
+			color: #888;
+			line-height: 0;
+		}
+
+		.actBtn:not(:disabled):hover {
+			background: #e8f0fc;
+			color: #3477db;
+		}
+
+		.actBtn.actClose:not(:disabled):hover {
+			background: #fbe9e9;
+			color: #d9534f;
+		}
+
+		.actBtn:disabled {
+			color: #c6cbd3;
+			cursor: not-allowed;
+		}
+
+		.actBtn svg {
+			width: 15px;
+			height: 15px;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 1.8;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.monitorNote {
+			font-size: 12px;
+			color: #999;
+			margin: 0 0 30px;
+			line-height: 1.6;
+		}
+
+		.monitorEmpty {
+			padding: 40px;
+			text-align: center;
+			color: #999;
+		}
+
+		@media (max-width: 900px) {
+			.monitorStats {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+        .monitorExplanation { margin: 0 0 22px; padding: 14px 18px; background: #f4f7fc; border: 1px solid #e4eaf3; border-radius: 8px; color: #697383; font-size: 12px; line-height: 1.65; }
+        .monitorExplanation p { margin: 0 0 8px; }
+        .monitorExplanation summary { color: #3477db; cursor: pointer; width: fit-content; }
+        .monitorExplanation details[open] summary { margin-bottom: 10px; }
+        .methodLinks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+        .methodLinks a { color: #3477db; }
+        .monitorExplanation .processSetup { margin: 12px 0 0; }
+        .processGrant { border: 0; background: transparent; padding: 0; color: #3477db; cursor: pointer; font: inherit; text-decoration: underline; }
+        .monitorSearchWrap { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #e1e5ec; border-radius: 8px; padding: 0 14px; margin: 0 0 16px; min-height: 44px; box-shadow: 0 1px 3px #00000004; }
+        .monitorSearchWrap:focus-within { border-color: #3477db; box-shadow: 0 0 0 3px #3477db15; }
+        .monitorSearchWrap svg { width: 17px; height: 17px; fill: none; stroke: #8994a4; stroke-width: 1.8; flex-shrink: 0; }
+        #monitorSearch { flex: 1; min-width: 0; width: 100%; padding: 12px 0; border: 0; outline: none; background: transparent; box-shadow: none; font: inherit; color: #333; }
+        #monitorSearch::placeholder { color: #8994a4; }
+        #searchCount { color: #8994a4; font-size: 11px; white-space: nowrap; }
+        .monitorTable col.colChrome { width: 140px; }
+        .monitorTable col.colMem { width: 140px; }
+        .monitorTable col.colStatus { width: 112px; }
+        .monitorTable col.colCpu { width: 65px; }
+        .monitorTable col.colActions { width: 132px; }
+        .monitorTableWrap { overflow-x: auto; }
+        .monitorTable { min-width: 790px; }
+        .monitorControls { flex-wrap: wrap; gap: 12px; }
+        .memProvenance { font-size: 10px; color: #8b93a0; margin-top: 4px; }
+        .chromeMemory { font-variant-numeric: tabular-nums; cursor: help; }
+        .monitorTable tbody tr:focus-within .rowActions { visibility: visible; }
+        @media (hover: none) { .rowActions { visibility: visible; } }
+        .actBtn { position: relative; }
+        .actBtn.actionPending { color: #3477db; cursor: progress; }
+        .actBtn.actionPending svg { visibility: hidden; }
+        .actionSpinner { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -8px 0 0 -8px; border: 2px solid #d6e4f8; border-top-color: #3477db; border-radius: 50%; animation: monitorSpin .75s linear infinite; }
+        .statusChip.stPending { background: #e9f1fc; color: #3477db; }
+        .monitorTable tbody tr.rowPending { background: #f6f9ff; }
+        .rowActionDone .memValue { animation: memoryUpdated 2s ease-out; }
+        @keyframes memoryUpdated { from { background: #cceecd; box-shadow: 0 0 0 4px #cceecd; } to { background: transparent; box-shadow: 0 0 0 4px transparent; } }
+        .rowActionError { color: #b5473e; font-size: 11px; margin-top: 3px; }
+        .monitorSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        #refreshBtn:disabled { opacity: .6; cursor: wait; }
+        @media (prefers-reduced-motion: reduce) { .rowActionDone .memValue { animation: none; } }
+	</style>
+</head>
+
+<body hidden>
+
+	<div class="mainContent">
+
+		<div class="pageHeader">
+			<h1 data-i18n="__MSG_ext_extension_name__"></h1>
+		</div>
+
+		<div class="contentNav">
+			<ul>
+				<li>
+					<a href='./options.html' data-i18n="__MSG_html_sidebar_general_settings__"></a>
+				</li>
+				<li class="noIncognito">
+					<a href="./history.html" data-i18n="__MSG_html_sidebar_session_management__"></a>
+				</li>
+				<li>
+					<a class="active" href="./monitor.html" data-i18n="__MSG_html_sidebar_monitor__"></a>
+				</li>
+				<li class="noIncognito">
+					<a href='./shortcuts.html' data-i18n="__MSG_html_sidebar_shortcuts__"></a>
+				</li>
+				<li>
+					<a href="./about.html" data-i18n="__MSG_html_sidebar_support__"></a>
+				</li>
+				<li>
+					<a href="./changelog.html" data-i18n="__MSG_html_sidebar_changelog__"></a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h2 data-i18n="__MSG_html_monitor_title__"></h2>
+
+            <section class="monitorExplanation">
+                <p data-i18n="__MSG_html_monitor_intro__"></p>
+                <details>
+                    <summary data-i18n="__MSG_html_monitor_more__"></summary>
+                    <p data-i18n="__MSG_html_monitor_method_detail__"></p>
+                    <p data-i18n="__MSG_html_monitor_chrome_detail__"></p>
+                    <p data-i18n="__MSG_html_monitor_states_detail__"></p>
+                    <div class="methodLinks">
+                        <a href="https://www.chromium.org/developers/memory-usage-backgrounder/" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_memory__"></a>
+                        <a href="https://chromium.googlesource.com/chromium/src/+/refs/heads/main/components/performance_manager/public/graph/page_node.h" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_code__"></a>
+                        <a href="https://developer.chrome.com/docs/extensions/reference/api/processes" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_api__"></a>
+                        <a href="https://developer.chrome.com/docs/web-platform/page-lifecycle-api" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_discard__"></a>
+                    </div>
+                    <p class="processSetup"><button id="grantProcesses" class="processGrant" data-i18n="__MSG_js_monitor_precise_enable__"></button> <span id="processGrantStatus" role="status"></span></p>
+                </details>
+            </section>
+
+			<div class="monitorStats">
+				<div class="statCard">
+					<div class="statLabel" data-i18n="__MSG_html_monitor_tabs_total__"></div>
+					<div class="statValue" id="statTabCount">&mdash;</div>
+					<div class="statSub" id="statTabSub"></div>
+				</div>
+				<div class="statCard">
+					<div class="statLabel" data-i18n="__MSG_html_monitor_memory_total__"></div>
+					<div class="statValue" id="statTabsMem">&mdash;</div>
+					<div class="statSub" id="statTabsMemSub"></div>
+				</div>
+				<div class="statCard">
+					<div class="statLabel" data-i18n="__MSG_html_monitor_system_memory__"></div>
+					<div class="statValue" id="statSysMem">&mdash;</div>
+					<div class="statMiniBar">
+						<div id="statSysMemBar"></div>
+					</div>
+					<div class="statSub" id="statSysMemSub"></div>
+				</div>
+				<div class="statCard">
+					<div class="statLabel" data-i18n="__MSG_html_monitor_system_cpu__"></div>
+					<div class="statValue" id="statSysCpu">&mdash;</div>
+					<div class="statMiniBar">
+						<div id="statSysCpuBar"></div>
+					</div>
+					<div class="statSub" id="statSysCpuSub"></div>
+				</div>
+			</div>
+
+            <div id="monitorActionFeedback" class="monitorSrOnly" role="status" aria-live="polite"></div>
+			<div class="monitorControls">
+				<button id="refreshBtn" class="btn"><span class="spinner"></span><span
+						data-i18n="__MSG_html_monitor_refresh__"></span></button>
+				<span>
+					<input type="checkbox" id="autoRefresh" />
+					<label for="autoRefresh" class="cbLabel" data-i18n="__MSG_html_monitor_auto_refresh__"></label>
+				</span>
+				<span id="preciseModeLink" class="preciseLink" tabindex="0" hidden></span>
+				<span class="spacer"></span>
+				<span class="monitorUpdated" id="lastUpdated"></span>
+			</div>
+
+            <div class="monitorSearchWrap">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+                <input type="search" id="monitorSearch" autocomplete="off" spellcheck="false" />
+                <span id="searchCount" aria-live="polite"></span>
+            </div>
+
+			<div class="monitorTableWrap">
+				<table class="monitorTable">
+					<colgroup>
+						<col class="colTab" />
+						<col class="colStatus" />
+						<col class="colMem" />
+						<col class="colChrome" />
+						<col class="colCpu" />
+						<col class="colActions" />
+					</colgroup>
+					<thead>
+						<tr>
+							<th class="sortable" data-sort="title" data-i18n="__MSG_html_monitor_col_tab__"></th>
+							<th class="sortable" data-sort="status" data-i18n="__MSG_html_monitor_col_status__"></th>
+							<th class="sortable" data-sort="memory" id="memHeader"
+								data-i18n="__MSG_html_monitor_col_memory__"></th>
+							<th class="sortable" data-sort="chromeMemory" data-i18n="__MSG_html_monitor_col_chrome__"></th>
+							<th class="sortable" data-sort="cpu" id="cpuHeader" data-i18n="__MSG_html_monitor_col_cpu__">
+							</th>
+							<th data-i18n="__MSG_html_monitor_col_actions__"></th>
+						</tr>
+					</thead>
+					<tbody id="monitorTableBody">
+						<tr>
+							<td colspan="6" class="monitorEmpty" id="loadingCell">&hellip;</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
