@@ -4,4 +4,4 @@ A dedicated RSA keypair was generated for the extension. The manifest contains o
 
 The private key is stored outside the repository at `/home/samrev/.local/share/tab-killer/manifest-key.pem` with owner-only file permissions. Keep it backed up securely. It is needed only if the owner ever packages or publishes a CRX that must retain this extension ID. Never commit the private key.
 
-The ID calculation and the presence of the manifest key have been verified locally. Loading copies from two different directories in Chrome has not yet been tested. Manual check: copy this extension folder to two different directory paths; load the first in Chrome through chrome://extensions/ with Developer mode enabled and record its ID; remove it, load the second path, and compare the IDs. They should both be odolpeeackiejlhdfpakabidhggghnlo before relying on history recovery across folder changes.
+The ID calculation and the presence of the manifest key have been verified locally. The owner reports that unpacked copies from two different folders had the same ID in Brave with Developer mode. This manual result was not independently rerun. Chrome comparison has not been tested.

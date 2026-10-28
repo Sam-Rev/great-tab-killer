@@ -22,3 +22,57 @@ Branch: `phase-2-cleanup`. Every source removal is recorded with its evidence an
 ## Completed removals
 
 Each row records the candidate files/symbols, pre-removal evidence, protected behavior, and exact source commit hash. Task 2.8’s scanner reported zero candidates after cleanup. Phase 2 did not edit `manifest.json`.
+
+### Task 2.8 locale-key evidence
+
+Compared `_locales/en/messages.json` at `phase-0-legal-branding` with the Phase 2 result. These 48 keys were removed; the first 37 were removed by `10ef16c` and the remaining monitor-extension keys by `c129ebb`:
+
+```text
+html_changelog_rating_5stars, html_changelog_rating_feedback, html_changelog_rating_title,
+html_monitor_col_extension, html_monitor_col_impact, html_monitor_col_pages,
+html_monitor_ext_grant, html_monitor_ext_note, html_monitor_ext_title, html_monitor_note,
+html_notice_important_notice, html_notice_title, html_options_suspend_seconds,
+html_popup_dont_suspend_now, html_popup_monitor, html_suspended_donation_question,
+html_suspended_tab_reload, html_suspended_tab_suspended, html_suspended_tab_whitelist_prefix,
+html_suspended_tab_whitelist_suffix, html_thanks_header, html_thanks_sub_header,
+html_thanks_title, html_updated_bug_fixes_header, html_updated_detail_header_prefix,
+html_updated_detail_header_suffix, html_updated_great_suspender_updated,
+html_updated_info_line1, html_updated_info_line2_prefix, html_updated_info_line2_suffix,
+html_updated_new_features_header, html_updated_patch_message, html_updated_release_notes,
+html_updated_title, html_updating_heading, html_updating_message, html_welcome_title,
+js_monitor_ext_action_details, js_monitor_ext_action_disable, js_monitor_ext_action_enable,
+js_monitor_ext_this, js_monitor_freed, js_monitor_pages_tooltip, js_monitor_tt_fixed_discarded,
+js_monitor_tt_released, js_popup_suspended_pause, js_suspended_remove_from_whitelist,
+js_update_confirm
+```
+
+At task 2.8 the scanner preserved these generated-key prefixes: `js_monitor_action_pending_`, `js_monitor_ext_status_`, `js_monitor_impact_`, and `js_monitor_status_`. A later source removal in task 2.12 removed the `ext_status_` and `impact_` generators along with the extension monitor UI; their remaining locale entries are still preserved by the scanner. Current generators are `action_pending_` and `status_` in `js/monitor.js`.
+
+The current source contains 263 distinct statically referenced localization keys across HTML `__MSG_...__`, manifest placeholders, and literal `chrome.i18n.getMessage()` / `gsUtils.getMessage()` calls. All 263 exist in `_locales/en/messages.json`. All 18 entries in the four preserved key families also exist there. Result: **PASS; zero missing English keys**. This was checked by extracting those patterns and comparing them with the English message map.
+
+Non-literal message-key flows found by searching all `js/` and `html/`:
+
+- `js/shortcuts.js:41`: `msgKey` from registered command metadata; command descriptions are manifest `__MSG_...__` keys.
+- `js/monitor.js:382,397,520,750,841,851,1091,1093`: fixed note/action keys, status-family keys, conditional literal keys, and the process-API-dependent tooltip key.
+- `js/helpers/gsUtils.js:386,391`: generic forwarding of a key and runtime substitution of keys parsed from static HTML placeholders.
+- `js/monitor.js:648`: `js_monitor_action_pending_` plus the action suffix; `js/monitor.js:748-749`: `js_monitor_status_` plus the status suffix.
+- No HTML or manifest `__MSG_` placeholder uses a non-literal argument. The only dynamic placeholder pattern is the `__MSG_(\w+)__` replacement in `js/helpers/gsUtils.js:397,405`.
+
+### Dispatch and HTML-selector evidence checks
+
+For each row, the pre-removal revision was searched in `js/`, `html/`, and `manifest.json` for the named message/function strings and selector IDs/data attributes. The search checked `chrome.runtime.sendMessage`/`tabs.sendMessage` payloads, `function`/`action` dispatch, and `getElementById`/HTML `id`/`data-*` references. No unlisted caller or UI consumer was found.
+
+| Task | Dispatch / selector search result |
+|---|---|
+| 2.1 | `requestNotice` and `clearNotice` occurred only between `js/notice.js` and their `js/tgs.js` handlers; `gsNotice` was only the notice page/container selector. No other page or sender referenced them. |
+| 2.2 | `cookiesGetAll`/`cookiesRemove` were used only by `performMigration()`; no message dispatch or HTML selector used the cookie migration. |
+| 2.3 | `performMigration()` had one caller in `gsSession.handleUpdate()`; session-store use is current functionality, not a legacy message or UI dispatch. No HTML selector referenced the conversion code. |
+| 2.4 | `{function: 'getDebugInfo'}` was sent only by `js/helpers/debug.js` to its `js/tgs.js` handler; profiler DOM IDs were local to the unreferenced helper and had no HTML owner. |
+| 2.5 | Donation `action: 'donationPopupEvents'` originated only in `gsSuspendedTab.js` and was handled by `suspended.js`; donation bubble IDs belonged only to the removed suspended-page UI. `thanks.html` and `updated.html` had no remaining route/caller. |
+| 2.6 | Searched every removed commented symbol and disabled fragment; no live dispatch was removed. Checked affected DOM IDs against HTML; active monitor behavior and its HTML-owned IDs were retained until task 2.12. |
+| 2.7 | `migrateForeignSuspendedTabs()` had exactly one caller, the install branch of `runtime.onInstalled`; it had no message dispatch or HTML selector. |
+| 2.8 | Searched all 48 removed key names in HTML, JS, and manifest; none remained as a static placeholder or literal message key. Checked generated keys separately as above. |
+| 2.9 | Searched the extension JS/HTML/manifest for `scripts/`, `tests/`, and moved module names; no runtime import, message dispatch, or HTML selector depended on those developer-only paths. Updated the two Node tests' relative source paths and `mem_watch.py` repository root. |
+| 2.10 | `chrome.history.onVisited`/`deleteUrl` was a direct listener with no message dispatch or HTML selector. IndexedDB-backed session history remained separate and was preserved. |
+| 2.11 | `onMessageExternal` handled only `suspend`/`unsuspend`; the search found no internal sender or HTML selector for that external-only interface. |
+| 2.12 | `initExtensionsSection()`, `refreshExtensions()`, and `toggleExtension()` formed the only management flow; `extGrant*`/`extTable*` IDs and `data-i18n` entries were confined to the removed section in `html/monitor.html`. No other page used them. |
