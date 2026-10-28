@@ -10,6 +10,12 @@ These checksums pin the vendored files at their current paths under `js/helpers/
 
 The previous Phase 1 comparison found html2canvas's normalized Terser output identical to the official same-version artifact; runtime equivalence remains unverified. The dom-to-image local changes match its documented `toCanvas` export/helper and error handling patch. Both screenshot libraries contain `XMLHttpRequest` paths for image capture, so the guard excludes only these three hash-pinned paths from first-party forbidden-pattern scanning. The hash check still runs on every guard invocation.
 
+## Phase 1 comparison evidence
+
+- The local html2canvas file differs byte-for-byte from the official npm `1.0.0-alpha.10` `dist/html2canvas.min.js` (official SHA-256 `745d277f4148a4bddc9805d16e31048935cc9885da561cae4329fe2c2006bb89`) because it is expanded/formatted. Terser 5.39.0 with matching compression/mangling options produced identical normalized output (SHA-256 `9d948037534f3f5a78453d385bd54d6a487e61ecdd9d56f461d89b55ff6d1eb6`). This does not establish runtime equivalence.
+- The local dom-to-image `2.6.0` fork differs from upstream to expose `toCanvas` and adjust promise rejection handling; its upstream source SHA-256 was `4f0d3f817e9a14331eb1ee861d02452ff66317e7fb79dc85f68905558fc1f685`.
+- The `db.js` wrapper has no upstream name/version header; repository history or owner records are still needed to recover provenance and license.
+
 ## Remaining vendor follow-up
 
 - Recover and verify the identity, version, source and license for `db.js`.
