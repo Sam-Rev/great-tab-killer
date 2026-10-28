@@ -31,20 +31,16 @@
   "permissions": [
     "tabs",
     "storage",
-    "history",
     "unlimitedStorage",
     "contextMenus",
-    "cookies",
     "alarms",
     "favicon",
     "scripting",
-    "offscreen",
-    "system.cpu",
-    "system.memory"
+    "offscreen"
   ],
   "optional_permissions": [
-    "processes",
-    "management"
+    "system.cpu",
+    "system.memory"
   ],
   "web_accessible_resources": [
     {

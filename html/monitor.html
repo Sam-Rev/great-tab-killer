@@ -83,19 +83,6 @@
 			color: #999;
 		}
 
-		.preciseLink {
-			font-size: 12px;
-			color: #999;
-			cursor: help;
-		}
-
-		.preciseLink:hover {
-			color: #3477db;
-		}
-
-		.preciseLink.preciseLinkDisabled {
-			cursor: help;
-		}
 
 		#refreshBtn.refreshing {
 			opacity: 0.6;
@@ -515,7 +502,6 @@
         #monitorSearch { flex: 1; min-width: 0; width: 100%; padding: 12px 0; border: 0; outline: none; background: transparent; box-shadow: none; font: inherit; color: #333; }
         #monitorSearch::placeholder { color: #8994a4; }
         #searchCount { color: #8994a4; font-size: 11px; white-space: nowrap; }
-        .monitorTable col.colChrome { width: 140px; }
         .monitorTable col.colMem { width: 140px; }
         .monitorTable col.colStatus { width: 112px; }
         .monitorTable col.colCpu { width: 65px; }
@@ -524,7 +510,6 @@
         .monitorTable { min-width: 790px; }
         .monitorControls { flex-wrap: wrap; gap: 12px; }
         .memProvenance { font-size: 10px; color: #8b93a0; margin-top: 4px; }
-        .chromeMemory { font-variant-numeric: tabular-nums; cursor: help; }
         .monitorTable tbody tr:focus-within .rowActions { visibility: visible; }
         @media (hover: none) { .rowActions { visibility: visible; } }
         .actBtn { position: relative; }
@@ -589,10 +574,8 @@
                     <div class="methodLinks">
                         <a href="https://www.chromium.org/developers/memory-usage-backgrounder/" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_memory__"></a>
                         <a href="https://chromium.googlesource.com/chromium/src/+/refs/heads/main/components/performance_manager/public/graph/page_node.h" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_code__"></a>
-                        <a href="https://developer.chrome.com/docs/extensions/reference/api/processes" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_api__"></a>
                         <a href="https://developer.chrome.com/docs/web-platform/page-lifecycle-api" target="_blank" rel="noopener noreferrer" data-i18n="__MSG_html_monitor_source_discard__"></a>
                     </div>
-                    <p class="processSetup"><button id="grantProcesses" class="processGrant" data-i18n="__MSG_js_monitor_precise_enable__"></button> <span id="processGrantStatus" role="status"></span></p>
                 </details>
             </section>
 
@@ -626,6 +609,8 @@
 			</div>
 
             <div id="monitorActionFeedback" class="monitorSrOnly" role="status" aria-live="polite"></div>
+			<p id="systemPermissionNote" role="status" data-i18n="__MSG_html_monitor_optional_system_note__"></p>
+			<button id="enableSystemStats" class="btn" data-i18n="__MSG_html_monitor_enable_system_stats__"></button>
 			<div class="monitorControls">
 				<button id="refreshBtn" class="btn"><span class="spinner"></span><span
 						data-i18n="__MSG_html_monitor_refresh__"></span></button>
@@ -633,7 +618,10 @@
 					<input type="checkbox" id="autoRefresh" />
 					<label for="autoRefresh" class="cbLabel" data-i18n="__MSG_html_monitor_auto_refresh__"></label>
 				</span>
-				<span id="preciseModeLink" class="preciseLink" tabindex="0" hidden></span>
+				<span>
+					<input type="checkbox" id="backgroundSampling" />
+					<label for="backgroundSampling" class="cbLabel" data-i18n="__MSG_html_monitor_background_sampling__"></label>
+				</span>
 				<span class="spacer"></span>
 				<span class="monitorUpdated" id="lastUpdated"></span>
 			</div>
@@ -650,7 +638,6 @@
 						<col class="colTab" />
 						<col class="colStatus" />
 						<col class="colMem" />
-						<col class="colChrome" />
 						<col class="colCpu" />
 						<col class="colActions" />
 					</colgroup>
@@ -660,7 +647,6 @@
 							<th class="sortable" data-sort="status" data-i18n="__MSG_html_monitor_col_status__"></th>
 							<th class="sortable" data-sort="memory" id="memHeader"
 								data-i18n="__MSG_html_monitor_col_memory__"></th>
-							<th class="sortable" data-sort="chromeMemory" data-i18n="__MSG_html_monitor_col_chrome__"></th>
 							<th class="sortable" data-sort="cpu" id="cpuHeader" data-i18n="__MSG_html_monitor_col_cpu__">
 							</th>
 							<th data-i18n="__MSG_html_monitor_col_actions__"></th>
@@ -668,7 +654,7 @@
 					</thead>
 					<tbody id="monitorTableBody">
 						<tr>
-							<td colspan="6" class="monitorEmpty" id="loadingCell">&hellip;</td>
+							<td colspan="5" class="monitorEmpty" id="loadingCell">&hellip;</td>
 						</tr>
 					</tbody>
 				</table>

@@ -482,6 +482,15 @@
   "html_monitor_col_cpu": {
     "message": "CPU"
   },
+  "html_monitor_optional_system_note": {
+    "message": "System totals are optional. Tab estimates remain available without them."
+  },
+  "html_monitor_enable_system_stats": {
+    "message": "Enable system totals"
+  },
+  "html_monitor_background_sampling": {
+    "message": "Sample tabs in the background"
+  },
   "html_monitor_col_actions": {
     "message": "Actions"
   },
