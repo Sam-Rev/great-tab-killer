@@ -291,7 +291,13 @@ export var gsFavicon = (function () {
   function buildFaviconMetaData(url) {
     const timeout = 5 * 1000;
     return new Promise((resolve, reject) => {
-      fetch(url)
+      const faviconUrl = new URL(url);
+      const extensionOrigin = new URL(chrome.runtime.getURL("/")).origin;
+      if (faviconUrl.origin !== extensionOrigin) {
+        reject(new Error("Refusing to fetch a non-extension favicon URL"));
+        return;
+      }
+      fetch(faviconUrl.href)
           .then(response => response.blob())
           .then(blob => {
 

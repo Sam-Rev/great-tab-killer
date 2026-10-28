@@ -364,8 +364,9 @@ export var gsUtils = {
 
   loadCustomMessages: async function (locale) {
     try {
-      const url = chrome.runtime.getURL(`_locales/${locale}/messages.json`);
-      const response = await fetch(url);
+      const response = await fetch(
+        chrome.runtime.getURL(`_locales/${locale}/messages.json`)
+      );
       if (response.ok) {
         _customMessages = await response.json();
         _currentLocale = locale.replace(/_/g, '-');
