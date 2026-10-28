@@ -136,27 +136,6 @@ export var gsFavicon = (function () {
       return faviconMeta;
     }
 
-    // Else try to build from tab.favIconUrl
-    gsUtils.log(
-      tab.id,
-      "No entry in chrome favicon cache for url: " + originalUrl
-    );
-    if (
-      tab.favIconUrl &&
-      tab.favIconUrl !== chrome.runtime.getURL("images/icon-16x16.png")
-    ) {
-      faviconMeta = await buildFaviconMetaFromTabFavIconUrl(tab.favIconUrl);
-      if (faviconMeta) {
-        gsUtils.log(
-          tab.id,
-          "Built faviconMeta from tab.favIconUrl",
-          faviconMeta
-        );
-        return faviconMeta;
-      }
-    }
-
-
     // Else return the default chrome favicon
     gsUtils.log(tab.id, "Failed to build faviconMeta. Using default icon");
     return _defaultChromeFaviconMeta;
@@ -170,19 +149,6 @@ export var gsFavicon = (function () {
     );
     try {
       const faviconMeta = await buildFaviconMetaData(chromeFavIconUrl);
-      const faviconMetaValid = await isFaviconMetaValid(faviconMeta);
-      if (faviconMetaValid) {
-        return faviconMeta;
-      }
-    } catch (e) {
-      gsUtils.warning("gsUtils", e);
-    }
-    return null;
-  }
-
-  async function buildFaviconMetaFromTabFavIconUrl(favIconUrl) {
-    try {
-      const faviconMeta = await buildFaviconMetaData(favIconUrl);
       const faviconMetaValid = await isFaviconMetaValid(faviconMeta);
       if (faviconMetaValid) {
         return faviconMeta;
