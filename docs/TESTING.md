@@ -47,3 +47,14 @@ These Gate B checks were not run in this environment.
 - Browser/PC restart and recovery; incognito; pinned tabs; audio tabs; pause shortcut; Tab Groups.
 - Chrome Stable functional compatibility beyond the reported manifest warning; Windows/macOS; 200+ tabs; service-worker termination.
 - Brave Shields interaction and browser/OS/version-specific coverage.
+
+# Clean Brave profile checklist — privacy defaults and runtime errors
+
+Use a clean Brave profile with only this extension installed. Confirm:
+
+- The first-run backup notice appears once; dismiss it, restart the browser, and confirm it does not appear again.
+- No `tgs-session-backup` alarm exists until backups are enabled. Enable backups and choose a frequency; confirm the alarm appears.
+- Options shows settings sync unchecked by default.
+- Open five regular tabs, suspend and restore them normally, and confirm the Brave Errors page, extension Errors page, and service-worker console show none of: `tabProperties.url not set`, `Failed to fetch`, or `Failed to parse gsExtensionRecovery`.
+
+Automated coverage verifies the local defaults, backup alarm gating, incognito tab filter, supported suspension URL schemes, recovery-state failure handling, and favicon fetch rejection propagation. Browser behavior remains a manual check.
