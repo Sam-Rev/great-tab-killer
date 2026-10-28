@@ -15,4 +15,5 @@ The bundled dependency versions and file hashes must be pinned by the supply-cha
 
 ## Owner-provided project assets
 
-- `assets/source/Tab_Killer_logo.png` (original) and generated files in `images/` are owner-provided project artwork. License terms are to be confirmed by the owner.
+- `assets/source/Tab_Killer_logo.png` is the v1 owner-provided source and remains under `assets/source/`.
+- `assets/source/Tab_Killer_logo_v2.png`, `assets/source/Tab_Killer_logo_v2_original.jpg`, and `assets/source/Tab_Killer_logo_v2_master.png` are the owner-provided v2 PNG, original JPEG, and processed master. Generated files in `images/` derive from that master. The owner-provided artwork license is unconfirmed.

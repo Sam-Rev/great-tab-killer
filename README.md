@@ -1,6 +1,6 @@
 # The Great Tab Killer
 
-![The Great Tab Killer icon placeholder](images/tab-killer-placeholder.png)
+![The Great Tab Killer logo](images/tab-killer-logo.png)
 
 The Great Tab Killer is a local-first Chromium extension that suspends inactive tabs to reduce their resource use and restores them when requested. It is distributed as source for unpacked installation and as GitHub release archives; it is not distributed through the Chrome Web Store.
 
@@ -22,4 +22,4 @@ This project is distributed under GPL-2.0-only. See [LICENSE](LICENSE), [NOTICE]
 
 ## Branding asset
 
-The included icon is a simple project placeholder created for this repository. It replaces the upstream mascot and should be reviewed before a public release.
+The project logo is owner-provided artwork. Its license is not yet confirmed; see `NOTICE` and the source copies under `assets/source/`.
