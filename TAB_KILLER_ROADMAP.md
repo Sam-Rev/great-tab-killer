@@ -220,6 +220,8 @@ Goal: a public, detailed, honest audit of the project as it stands. Every findin
 
 ### Phase 3 — Hardening: permissions, guards, pinned libs
 
+**Gate B status (2026-10-28):** a proposed permission diff with current call-site evidence and remaining permission purposes is in `docs/GATE_B_PROPOSAL.md`. `manifest.json` is unchanged; awaiting owner decision.
+
 - [ ] **3.1 Minimize permissions** per the Phase 1 permission-usage map and the resolved decisions (§5): remove `cookies` (after 2.2), remove `history` (2.10), remove `management` (2.12). Move `system.cpu`/`system.memory`/`processes` to `optional_permissions` if Chrome allows it (verify), requested via `chrome.permissions.request` from a user gesture when the monitor is enabled. **Load the extension in Chrome Stable and record every manifest warning** (e.g. `processes` is a Dev/Canary-only API; Stable may warn or reject it) → fix so a clean Stable install shows no manifest errors/warnings. Consider narrowing the content script or host access only if no feature breaks (document the trade-off).
 - [ ] **3.2 Permission lock file** `security/permissions.lock.json` containing the exact allowed sets: `permissions`, `optional_permissions`, `host_permissions`, `content_scripts[].matches`, `web_accessible_resources`, `content_security_policy`, `externally_connectable` (absent), `update_url` (absent), `incognito`.
 - [ ] **3.3 Guard script** `tools/check-guards.mjs` (Node, no deps) that fails with a clear message when:

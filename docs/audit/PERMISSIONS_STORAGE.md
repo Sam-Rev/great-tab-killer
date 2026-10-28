@@ -18,7 +18,7 @@ Date: 2026-10-27. Static source map for the current manifest and source tree. A 
 | Required `offscreen` | `js/helpers/gsBackup.js:54-72` creates/checks/closes an offscreen document to turn a Blob into a downloaded text file. |
 | Required `system.cpu` | `js/monitor.js:296-298` reads CPU samples for monitor estimates. |
 | Required `system.memory` | `js/monitor.js:281` reads system memory for monitor estimates. |
-| Optional `processes` | `js/monitor.js:66-109,852,1510-1515` reads process memory and subscribes to process updates when the user grants access; `js/helpers/debug.js:128` also has a process-updated diagnostic listener. |
+| Optional `processes` | `js/monitor.js:58-110,852,1091-1102` requests and reads per-process memory for the monitor when the user grants access. Chrome documents the API as Dev-channel-only; the Stable warning is reported by the owner. |
 | Optional `management` | No current source call site after Phase 2 task 2.12 removed the monitor extension-list/toggle UI and `chrome.management` calls. The optional manifest entry remains pending Gate B/Phase 3. |
 
 ## Host access and content-script match patterns
