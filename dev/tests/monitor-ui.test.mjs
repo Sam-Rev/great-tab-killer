@@ -7,7 +7,7 @@ const M = 1048576;
 const source = (await readFile(new URL('../../js/monitor.js', import.meta.url), 'utf8'))
   .replace(/^import .*;$/gm, '')
   .replace(/\}\)\(\);\s*$/, 'globalThis.monitorTest = { measureAllTabs, renderTabStats, buildTabActions, buildStatusChip, performTabAction, runTabAction, rowAfterAction, refresh, actions: _tabActions, getRows: () => _rows, setRows: rows => { _rows = rows; } }; })();');
-function setup(processes) {
+function setup() {
   const cells = new Map();
   const tabs = [
     { id: 1, url: 'https://live.test', title: 'Live' },
@@ -58,7 +58,6 @@ function setup(processes) {
         discard: async id => { calls.push({ discard: id }); const t = tabs.find(t => t.id === id); t.discarded = true; return { ...t }; },
       },
       windows: { getAll: async () => [{ id: 1 }], update: () => {} },
-      processes: processes ? { getProcessInfo: (ids, memory, cb) => cb(processes) } : undefined,
     },
   });
   vm.runInContext(source, context);
@@ -80,21 +79,17 @@ test('placeholder remains 4 MB; discard retains history without reporting saving
   assert.ok(app.cells.get('statTabsMemSub').textContent.includes('js_monitor_history_excluded: 1'));
 });
 
-test('Chrome comparison never overwrites main estimates, placeholder or history', async () => {
-  const app = setup({
-    a: { type: 'renderer', privateMemory: 200 * M, tasks: [{ tabId: 1 }, { tabId: 2 }, { tabId: 2 }] },
-    b: { type: 'renderer', privateMemory: 50 * M, tasks: [{ tabId: 4 }] },
-    c: { type: 'renderer', privateMemory: 0, tasks: [{ tabId: 5 }] },
-  });
+test('estimate-only monitor retains estimates, placeholders and history without process metrics', async () => {
+  const app = setup();
   const rows = await app.measureAllTabs();
   assert.equal(rows[0].memBytes, 320 * M);
-  assert.equal(rows[0].chromeMemBytes, 100 * M);
+  assert.equal(rows[0].chromeMemBytes, undefined);
   assert.equal(rows[1].memBytes, 4 * M);
-  assert.equal(rows[1].chromeMemBytes, 100 * M);
+  assert.equal(rows[1].chromeMemBytes, undefined);
   assert.equal(rows[3].memBytes, 480 * M);
-  assert.equal(rows[3].chromeMemBytes, 50 * M);
-  assert.equal(rows[4].chromeMemBytes, 0);
-  assert.equal(rows[5].chromeMemBytes, null);
+  assert.equal(rows[3].chromeMemBytes, undefined);
+  assert.equal(rows[4].chromeMemBytes, undefined);
+  assert.equal(rows[5].chromeMemBytes, undefined);
 });
 
 
