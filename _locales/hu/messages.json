@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Függessze fel az inaktív Chrome lapokat a RAM megtakarításához és a gyorsítás érdekében. A legjobb Tab Suspender — automatikusan lefagyasztja a nem használt lapokat és azonnal visszaállítja őket."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

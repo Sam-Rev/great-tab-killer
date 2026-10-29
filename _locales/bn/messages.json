@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "RAM বাঁচাতে এবং গতি বাড়াতে নিষ্ক্রিয় ক্রোম ট্যাবগুলি স্থগিত (Suspend) করুন। সেরা ট্যাব সাসপেন্ডার — অব্যবহৃত ট্যাবগুলি অটো-ফ্রিজ করে এবং তাৎক্ষণিকভাবে পুনরুদ্ধার করে।"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

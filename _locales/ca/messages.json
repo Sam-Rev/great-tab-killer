@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspèn les pestanyes inactives de Chrome per estalviar RAM i augmentar la velocitat. El millor Tab Suspender: congela automàticament les pestanyes no utilitzades i les restaura a l'instat."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Chrome के अनुपयोगी Tab को Suspend करें और RAM बचाएं। सबसे अच्छा Tab Suspender — टैब स्वचालित रूप से फ्रीज़ होते हैं और एक क्लिक में वापस आते हैं।"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

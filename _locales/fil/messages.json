@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "I-suspend ang hindi ginagamit na Chrome tabs para makatipid ng RAM. Pinakamahusay na Tab Suspender — auto-freeze ng tabs at madaling i-restore sa isang click."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

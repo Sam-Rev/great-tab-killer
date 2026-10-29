@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "RAM ಉಳಿಸಲು ಮತ್ತು ವೇಗವನ್ನು ಹೆಚ್ಚಿಸಲು ನಿಷ್ಕ್ರಿಯ ಕ್ರೋಮ್ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಅಮಾನತುಗೊಳಿಸಿ (Suspend). ಅತ್ಯುತ್ತಮ ಟ್ಯಾಬ್ ಸಸ್ಪೆಂಡರ್ — ಬಳಸದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಫ್ರೀಜ್ ಮಾಡುತ್ತದೆ ಮತ್ತು ತಕ್ಷಣವೇ ಮರುಸ್ಥಾಪಿಸುತ್ತದೆ."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

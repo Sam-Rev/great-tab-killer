@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "凍結 Chrome 中暫時不用的分頁，釋放記憶體，讓瀏覽器更流暢。最佳分頁凍結工具 Tab Suspender —— 自動凍結分頁，一鍵還原，節省 RAM。"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

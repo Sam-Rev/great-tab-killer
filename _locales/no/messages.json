@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Sett inaktive Chrome-faner på pause for å spare RAM. Den beste Tab Suspender — fryser automatisk ubrukte faner og gjenoppretter dem med ett klikk."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

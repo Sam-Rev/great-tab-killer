@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "冻结 Chrome 中暂时不用的标签页，释放内存，让浏览器更流畅。最佳标签冻结工具 Tab Suspender —— 自动冻结标签，一键恢复，节省 RAM。"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

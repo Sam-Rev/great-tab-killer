@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Tangguhkan tab Chrome yang tidak aktif untuk menjimatkan RAM. Tab Suspender terbaik — membekukan tab secara automatik dan memulihkannya dengan satu klik."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

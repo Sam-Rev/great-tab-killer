@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspenda separadores inativos do Chrome para libertar RAM. O melhor Tab Suspender — suspende separadores não utilizados automaticamente e restaura-os num clique."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

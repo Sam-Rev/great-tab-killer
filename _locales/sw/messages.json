@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Simamisha kadi (tabs) za Chrome ambazo hazitumiki ili kuokoa RAM na kuongeza kasi. Tab Suspender bora zaidi — hufungia kadi zisizotumika na kuzirudisha papo hapo."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

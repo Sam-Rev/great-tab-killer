@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "미사용 Chrome 탭을 자동으로 중단하여 RAM 절약. 최고의 Tab Suspender — 탭을 자동 일시정지하고 한 번의 클릭으로 복원."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

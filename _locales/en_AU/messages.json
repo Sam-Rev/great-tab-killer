@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspend inactive Chrome tabs to save RAM and boost speed. Best Tab Suspender — auto-freezes unused tabs and restores them instantly."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

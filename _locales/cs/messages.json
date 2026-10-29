@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Pozastavte neaktivní karty Chrome pro úsporu RAM a zvýšení rychlosti. Nejlepší Tab Suspender — automaticky zmrazí nepoužívané karty a okamžitě je obnoví."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },
