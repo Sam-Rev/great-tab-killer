@@ -436,7 +436,7 @@ export var tgs = (function () {
       if (!activeTab) {
         gsUtils.warning(
           "background",
-          "Could not determine currently active window."
+          "Could not determine the active browser window."
         );
         return;
       }
@@ -468,7 +468,7 @@ export var tgs = (function () {
       if (!activeTab) {
         gsUtils.warning(
           "background",
-          "Could not determine currently active window."
+          "Could not determine the active browser window."
         );
         return;
       }
@@ -1722,8 +1722,8 @@ export var tgs = (function () {
         handleUnsuspendedTabStateChanged(tab, changeInfo);
       }
     });
-    chrome.windows.onCreated.addListener(function (window) {
-      gsUtils.log(window.id, "window created.");
+    chrome.windows.onCreated.addListener(function (browserWindow) {
+      gsUtils.log(browserWindow.id, "window created.");
       queueSessionTimer();
     });
     chrome.windows.onRemoved.addListener(function (windowId) {

@@ -1,4 +1,4 @@
-/*global chrome, localStorage, gsStorage, gsChrome, gsMessages, gsSession, gsTabSuspendManager, gsTabDiscardManager, gsSuspendedTab, gsFavicon, tgs */
+/*global chrome, gsStorage, gsChrome, gsMessages, gsSession, gsTabSuspendManager, gsTabDiscardManager, gsSuspendedTab, gsFavicon, tgs */
 "use strict";
 
 import {gsStorage} from "./gsStorage.js"
@@ -236,18 +236,18 @@ export var gsUtils = {
 
   createWindowAndWaitForFinishLoading: function (createData, maxWaitTimeInMs) {
     return new Promise(async (resolve) => {
-      let window = await gsChrome.windowsCreate(createData);
+      let createdWindow = await gsChrome.windowsCreate(createData);
       maxWaitTimeInMs = maxWaitTimeInMs || 1000;
       const retryUntil = Date.now() + maxWaitTimeInMs;
       let loaded = false;
       while (!loaded && Date.now() < retryUntil) {
-        window = await gsChrome.windowsGet(window.id);
-        loaded = window.tabs.length > 0 && window.tabs[0].status === "complete";
+        createdWindow = await gsChrome.windowsGet(createdWindow.id);
+        loaded = createdWindow.tabs.length > 0 && createdWindow.tabs[0].status === "complete";
         if (!loaded) {
           await gsUtils.setTimeout(200);
         }
       }
-      resolve(window);
+      resolve(createdWindow);
     });
   },
 
@@ -587,9 +587,10 @@ export var gsUtils = {
   },
 
   htmlEncode: function (text) {
-    return document
-      .createElement("pre")
-      .appendChild(document.createTextNode(text)).parentNode.innerHTML;
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   },
 
   getChromeVersion: function () {

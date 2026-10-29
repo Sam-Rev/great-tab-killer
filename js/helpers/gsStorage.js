@@ -1,4 +1,4 @@
-/*global chrome, gsSession, localStorage, gsUtils */
+/*global chrome, gsSession, gsUtils */
 'use strict';
 import {gsUtils} from "./gsUtils.js"
 import {gsSession} from "./gsSession.js"
@@ -96,10 +96,10 @@ export var gsStorage = {
     return new Promise(function(resolve) {
       var defaultSettings = gsStorage.getSettingsDefaults();
       var defaultKeys = Object.keys(defaultSettings);
-      chrome.storage.local.get(['gsSettings'], function(localStorage) {
+      chrome.storage.local.get(['gsSettings'], function(localData) {
         let syncEnabledLocally = false;
         try {
-          const localSettings = JSON.parse(localStorage['gsSettings'] || false) || {};
+          const localSettings = JSON.parse(localData['gsSettings'] || false) || {};
           syncEnabledLocally = localSettings[gsStorage.SYNC_SETTINGS] === true;
         } catch (e) {}
         const initialiseWithSyncSettings = function(syncedSettings) {
@@ -109,12 +109,12 @@ export var gsStorage = {
 
         var rawLocalSettings;
         try {
-          rawLocalSettings = JSON.parse(localStorage['gsSettings'] || false);
+          rawLocalSettings = JSON.parse(localData['gsSettings'] || false);
         } catch (e) {
           gsUtils.error(
             'gsStorage',
             'Failed to parse gsSettings: ',
-            localStorage['gsSettings']
+            localData['gsSettings']
           );
         }
         if (!rawLocalSettings) {
@@ -252,10 +252,10 @@ export var gsStorage = {
     gsStorage.saveSettings(settings);
   },
 
-  // Important to note that setOption (and ultimately saveSettings) uses localStorage whereas
+  // Important to note that setOption (and ultimately saveSettings) uses chrome.storage.local whereas
   // syncSettings saves to chrome.storage.
   // Calling syncSettings has the unfortunate side-effect of triggering the chrome.storage.onChanged
-  // listener which the re-saves the setting to localStorage a second time.
+  // listener which re-saves the setting to chrome.storage.local a second time.
   setOptionAndSync: async function(prop, value) {
     await gsStorage.setOption(prop, value);
     gsStorage.syncSettings();

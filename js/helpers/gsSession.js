@@ -1,4 +1,4 @@
-/*global chrome, localStorage, tgs, gsStorage, gsIndexedDb, gsUtils, gsChrome, gsTabCheckManager, gsTabDiscardManager */
+/*global chrome, tgs, gsStorage, gsIndexedDb, gsUtils, gsChrome, gsTabCheckManager, gsTabDiscardManager */
 // eslint-disable-next-line no-unused-vars
 
 
@@ -100,10 +100,10 @@ export var gsSession = (function () {
 
   async function buildCurrentSession() {
     const currentWindows = await gsChrome.windowsGetAll();
-    for (const window of currentWindows) {
-      if (window.tabs) window.tabs = excludeIncognitoTabs(window.tabs);
+    for (const browserWindow of currentWindows) {
+      if (browserWindow.tabs) browserWindow.tabs = excludeIncognitoTabs(browserWindow.tabs);
     }
-    const regularWindows = currentWindows.filter((window) => window.tabs && window.tabs.length);
+    const regularWindows = currentWindows.filter((browserWindow) => browserWindow.tabs && browserWindow.tabs.length);
     const tabsExist = regularWindows.length > 0;
     if (!tabsExist) {
       gsUtils.warning(
@@ -523,23 +523,23 @@ export var gsSession = (function () {
     //if there is a current window open that matches the id of the session window id then match it
     unmatchedSessionWindows.slice().forEach(function (sessionWindow) {
       const matchingCurrentWindow = unmatchedCurrentWindows.find(function (
-        window
+        browserWindow
       ) {
-        return window.id === sessionWindow.id;
+        return browserWindow.id === sessionWindow.id;
       });
       if (matchingCurrentWindow) {
         matchedCurrentWindowBySessionWindowId[sessionWindow.id] =
           matchingCurrentWindow;
         //remove from unmatchedSessionWindows and unmatchedCurrentWindows
         unmatchedSessionWindows = unmatchedSessionWindows.filter(function (
-          window
+          browserWindow
         ) {
-          return window.id !== sessionWindow.id;
+          return browserWindow.id !== sessionWindow.id;
         });
         unmatchedCurrentWindows = unmatchedCurrentWindows.filter(function (
-          window
+          browserWindow
         ) {
-          return window.id !== matchingCurrentWindow.id;
+          return browserWindow.id !== matchingCurrentWindow.id;
         });
       }
     });
@@ -579,14 +579,14 @@ export var gsSession = (function () {
       const unmatchedSessionWindowsLengthBefore =
         unmatchedSessionWindows.length;
       unmatchedSessionWindows = unmatchedSessionWindows.filter(function (
-        window
+        browserWindow
       ) {
-        return window.id !== bestTabMatchingObject.sessionWindow.id;
+        return browserWindow.id !== bestTabMatchingObject.sessionWindow.id;
       });
       unmatchedCurrentWindows = unmatchedCurrentWindows.filter(function (
-        window
+        browserWindow
       ) {
-        return window.id !== bestTabMatchingObject.currentWindow.id;
+        return browserWindow.id !== bestTabMatchingObject.currentWindow.id;
       });
       gsUtils.log(
         "gsUtils",

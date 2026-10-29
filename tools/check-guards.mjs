@@ -61,6 +61,44 @@ async function walk(root, directory = root) {
 }
 
 // The service worker must use only browser-worker-safe static module code.
+function maskCommentsAndStrings(source) {
+  const output = source.split('');
+  const blank = (start, end) => {
+    for (let index = start; index < end; index++) {
+      if (source[index] !== '\n' && source[index] !== '\r') output[index] = ' ';
+    }
+  };
+  for (let index = 0; index < source.length;) {
+    if (source[index] === '/' && source[index + 1] === '/') {
+      let end = index + 2;
+      while (end < source.length && source[end] !== '\n') end++;
+      blank(index, end);
+      index = end;
+      continue;
+    }
+    if (source[index] === '/' && source[index + 1] === '*') {
+      const close = source.indexOf('*/', index + 2);
+      const end = close < 0 ? source.length : close + 2;
+      blank(index, end);
+      index = end;
+      continue;
+    }
+    if (source[index] === '"' || source[index] === "'" || source[index] === '`') {
+      const quote = source[index];
+      let end = index + 1;
+      while (end < source.length) {
+        if (source[end] === '\\') { end += 2; continue; }
+        if (source[end++] === quote) break;
+      }
+      blank(index, Math.min(end, source.length));
+      index = end;
+      continue;
+    }
+    index++;
+  }
+  return output.join('');
+}
+
 async function serviceWorkerGraphErrors(root) {
   const errors = [];
   const visited = new Set();
@@ -79,8 +117,9 @@ async function serviceWorkerGraphErrors(root) {
     try { source = await readFile(file, 'utf8'); }
     catch (error) { errors.push(`${path.relative(root, file)}: service-worker import could not be read: ${error.message}`); return; }
     const relative = path.relative(root, file).split(path.sep).join('/');
+    const executableSource = maskCommentsAndStrings(source);
     for (const [label, pattern] of forbidden) {
-      if (pattern.test(source)) errors.push(`${relative}: service-worker graph contains ${label}`);
+      if (pattern.test(executableSource)) errors.push(`${relative}: service-worker graph contains ${label}`);
     }
     const imports = /(?:^|[;\n])\s*(?:import\s+(?:[^'";]*?\s+from\s*)?|export\s+[^'";]*?\s+from\s*)['"]([^'"]+)['"]/gm;
     for (const match of source.matchAll(imports)) {

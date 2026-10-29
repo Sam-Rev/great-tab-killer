@@ -120,6 +120,14 @@ test('service-worker graph accepts worker-safe static imports', async () => {
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test('service-worker graph ignores matching words in strings and comments', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/main.js'), 'const label = "window.document localStorage"; // sessionStorage\n');
+    assert.deepEqual(await checkRoot(root), []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 for (const [label, source, pattern] of [
   ['dynamic import', 'import("./later.js");', /dynamic import/],
   ['window access', 'window.location;', /window\./],

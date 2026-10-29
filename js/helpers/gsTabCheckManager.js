@@ -1,4 +1,4 @@
-/*global chrome, localStorage, gsStorage, gsSession, gsMessages, gsUtils, gsTabDiscardManager, gsChrome, GsTabQueue, gsSuspendedTab */
+/*global chrome, gsStorage, gsSession, gsMessages, gsUtils, gsTabDiscardManager, gsChrome, GsTabQueue, gsSuspendedTab */
 // eslint-disable-next-line no-unused-vars
 
 import {gsStorage} from "./gsStorage.js"
@@ -515,7 +515,7 @@ export var gsTabCheckManager = (function() {
   // https://groups.google.com/a/chromium.org/forum/#!topic/chromium-extensions/QLC4gNlYjbA
   // https://bugs.chromium.org/p/chromium/issues/detail?id=649947
   // Notably (for me), the key listener of the old content script remains active
-  // if using: window.addEventListener('keydown', formInputListener);
+  // A previous page listener used addEventListener('keydown', formInputListener).
   function reinjectContentScriptOnTab(tab) {
     return new Promise(resolve => {
       gsUtils.log(
