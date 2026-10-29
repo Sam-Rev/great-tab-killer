@@ -500,20 +500,11 @@
   "js_monitor_tabs_measured": {
     "message": "Измерено"
   },
-  "js_monitor_method_precise": {
-    "message": "Chrome"
-  },
   "js_monitor_free": {
     "message": "свободно"
   },
   "js_monitor_cores": {
     "message": "ядер"
-  },
-  "js_monitor_precise_enable": {
-    "message": "Разрешить API процессов в Chrome Dev/Canary"
-  },
-  "js_monitor_precise_unavailable": {
-    "message": "API процессов доступен только в Chrome Dev/Canary с разрешением «processes». В Stable и обычной Beta недоступен."
   },
   "js_monitor_ext_status_active": {
     "message": "Работает"
@@ -616,9 +607,6 @@
   },
   "js_monitor_tt_estimate_note": {
     "message": "Приблизительная оценка по содержимому страницы. Погрешность может быть кратной; точность относительно диспетчера задач не гарантируется."
-  },
-  "js_monitor_tt_precise": {
-    "message": "Данные privateMemory процессов Chrome. Общий процесс делится поровну между связанными вкладками. Это оценка доли процесса, не число из подсказки Chrome и не гарантированное освобождение RAM."
   },
   "js_monitor_tt_fixed_suspended": {
     "message": "Фиксированная оценка ≈4 МБ для страницы-заглушки расширения. Это условное значение, а не текущий замер."
@@ -827,9 +815,6 @@
   "js_session_save_point": {
     "message": "Автоматическая точка восстановления для версии "
   },
-  "html_monitor_col_chrome": {
-    "message": "Память Chrome"
-  },
   "html_monitor_intro": {
     "message": "Память вкладок рассчитана приблизительно. Расхождение в три раза в меньшую или большую сторону возможно; это не гарантированный предел ошибки."
   },
@@ -850,9 +835,6 @@
   },
   "html_monitor_source_code": {
     "message": "Chromium: оценка памяти страницы ↗"
-  },
-  "html_monitor_source_api": {
-    "message": "Chrome: API процессов ↗"
   },
   "html_monitor_source_discard": {
     "message": "Chrome: discard и freeze ↗"
@@ -877,15 +859,6 @@
   },
   "js_monitor_history_excluded": {
     "message": "прежних оценок вне суммы"
-  },
-  "js_monitor_chrome_no_data": {
-    "message": "Chrome не вернул память связанного процесса для этой вкладки."
-  },
-  "js_monitor_chrome_channels": {
-    "message": "Данные Chrome · Dev/Canary"
-  },
-  "js_monitor_chrome_connected": {
-    "message": "Данные Chrome подключены"
   },
   "js_monitor_action_pending": {
     "message": "В процессе…"

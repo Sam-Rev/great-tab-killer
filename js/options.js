@@ -3,6 +3,7 @@
 import {gsStorage} from "./helpers/gsStorage.js";
 import {gsChrome} from "./helpers/gsChrome.js";
 import {gsUtils} from "./helpers/gsUtils.js";
+import {gsBackup} from "./helpers/gsBackup.js";
 
 (function() {
   var elementPrefMap = {
@@ -100,6 +101,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
     );
     const syncSettings = await gsStorage.getOption(gsStorage.SYNC_SETTINGS);
     setSyncNoteVisibility(!syncSettings);
+    document.getElementById('backupEnabled').checked = await gsBackup.isEnabled();
 
     const isDiscardOnly = await gsStorage.getOption(gsStorage.DISCARD_IN_PLACE_OF_SUSPEND);
     setSuspendedTabOptionsState(isDiscardOnly);
@@ -260,6 +262,14 @@ import {gsUtils} from "./helpers/gsUtils.js";
         element.onchange = handleChange(element);
       }
     }
+
+    document.getElementById('backupEnabled').addEventListener('change', async (event) => {
+      if (event.target.checked) {
+        await gsBackup.enable(await gsStorage.getOption(gsStorage.BACKUP_FREQUENCY));
+      } else {
+        await gsBackup.disable();
+      }
+    });
 
     document.getElementById('testWhitelistBtn').onclick = async e => {
       e.preventDefault();

@@ -1,4 +1,4 @@
-/*global chrome, localStorage, gsStorage, gsChrome, gsMessages, gsSession, gsTabSuspendManager, gsTabDiscardManager, gsSuspendedTab, gsFavicon, tgs */
+/*global chrome, gsStorage, gsChrome, gsMessages, gsSession, gsTabSuspendManager, gsTabDiscardManager, gsSuspendedTab, gsFavicon, tgs */
 "use strict";
 
 import {gsStorage} from "./gsStorage.js"
@@ -236,18 +236,18 @@ export var gsUtils = {
 
   createWindowAndWaitForFinishLoading: function (createData, maxWaitTimeInMs) {
     return new Promise(async (resolve) => {
-      let window = await gsChrome.windowsCreate(createData);
+      let createdWindow = await gsChrome.windowsCreate(createData);
       maxWaitTimeInMs = maxWaitTimeInMs || 1000;
       const retryUntil = Date.now() + maxWaitTimeInMs;
       let loaded = false;
       while (!loaded && Date.now() < retryUntil) {
-        window = await gsChrome.windowsGet(window.id);
-        loaded = window.tabs.length > 0 && window.tabs[0].status === "complete";
+        createdWindow = await gsChrome.windowsGet(createdWindow.id);
+        loaded = createdWindow.tabs.length > 0 && createdWindow.tabs[0].status === "complete";
         if (!loaded) {
           await gsUtils.setTimeout(200);
         }
       }
-      resolve(window);
+      resolve(createdWindow);
     });
   },
 
@@ -364,8 +364,9 @@ export var gsUtils = {
 
   loadCustomMessages: async function (locale) {
     try {
-      const url = chrome.runtime.getURL(`_locales/${locale}/messages.json`);
-      const response = await fetch(url);
+      const response = await fetch(
+        chrome.runtime.getURL(`_locales/${locale}/messages.json`)
+      );
       if (response.ok) {
         _customMessages = await response.json();
         _currentLocale = locale.replace(/_/g, '-');
@@ -586,9 +587,10 @@ export var gsUtils = {
   },
 
   htmlEncode: function (text) {
-    return document
-      .createElement("pre")
-      .appendChild(document.createTextNode(text)).parentNode.innerHTML;
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   },
 
   getChromeVersion: function () {
@@ -772,14 +774,16 @@ export var gsUtils = {
     //if backup frequency has changed then recreate the alarm
     if (gsUtils.contains(changedSettingKeys, gsStorage.BACKUP_FREQUENCY)) {
       const newFreq = newValueBySettingKey[gsStorage.BACKUP_FREQUENCY];
-      chrome.alarms.clear('tgs-session-backup', () => {
-        const minutes = parseInt(newFreq, 10);
-        if (minutes > 0) {
-          chrome.alarms.create('tgs-session-backup', {
-            delayInMinutes: minutes,
-            periodInMinutes: minutes,
-          });
-        }
+      chrome.storage.local.get('gsBackupEnabled', (stored) => {
+        chrome.alarms.clear('tgs-session-backup', () => {
+          const minutes = parseInt(newFreq, 10);
+          if (stored.gsBackupEnabled === true && minutes > 0) {
+            chrome.alarms.create('tgs-session-backup', {
+              delayInMinutes: minutes,
+              periodInMinutes: minutes,
+            });
+          }
+        });
       });
     }
   },

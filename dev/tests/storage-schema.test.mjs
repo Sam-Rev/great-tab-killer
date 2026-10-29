@@ -8,24 +8,38 @@ const storageSource = (await readFile(new URL('../../js/helpers/gsStorage.js', i
   .replace('export var gsStorage =', 'var gsStorage =') +
   '\nglobalThis.gsStorageForTest = gsStorage;';
 
-function loadStorage(initial = {}) {
+function loadStorage(initial = {}, failGet = false) {
   const data = { ...initial };
+  const syncStats = { gets: 0, sets: 0 };
   const chrome = {
     storage: {
       local: {
-        async get(key) {
+        get(key, callback) {
+          if (failGet) throw new Error('storage unavailable');
           const keys = Array.isArray(key) ? key : [key];
-          return Object.fromEntries(keys.filter((name) => name in data).map((name) => [name, data[name]]));
+          const result = Object.fromEntries(keys.filter((name) => name in data).map((name) => [name, data[name]]));
+          if (callback) callback(result);
+          return Promise.resolve(result);
         },
         async set(values) {
           Object.assign(data, values);
         },
       },
+      sync: {
+        get(keys, callback) {
+          syncStats.gets++;
+          callback({});
+        },
+        set() { syncStats.sets++; },
+      },
+      onChanged: { addListener() {} },
     },
+    extension: { inIncognitoContext: false },
   };
-  const context = vm.createContext({ chrome, gsUtils: {}, gsSession: {} });
+  const messages = [];
+  const context = vm.createContext({ chrome, gsUtils: { error(...args) { messages.push(['error', ...args]); }, warning(...args) { messages.push(['warning', ...args]); }, log() {}, errorIfInitialised() {} }, gsSession: { setSynchedSettingsOnInit() {} } });
   vm.runInContext(storageSource, context);
-  return { storage: context.gsStorageForTest, data };
+  return { storage: context.gsStorageForTest, data, syncStats, messages };
 }
 
 test('fresh storage initializes the project schema at version 1', async () => {
@@ -43,4 +57,32 @@ test('current schema version is accepted without rewriting it', async () => {
 test('unsupported future schema versions fail explicitly', async () => {
   const { storage } = loadStorage({ schemaVersion: 2 });
   await assert.rejects(storage.initSchemaVersion(), /Unsupported storage schema version: 2/);
+});
+
+test('fresh settings default sync off and backup remains disabled without an enable flag', () => {
+  const { storage } = loadStorage();
+  const defaults = storage.getSettingsDefaults();
+  assert.equal(defaults[storage.SYNC_SETTINGS], false);
+  assert.equal(defaults[storage.BACKUP_FREQUENCY], '10080');
+});
+
+test('settings sync storage is not read on fresh local defaults', async () => {
+  const { storage, syncStats } = loadStorage();
+  await storage.initSettingsAsPromised();
+  assert.equal(syncStats.gets, 0);
+  assert.equal(syncStats.sets, 0);
+});
+
+test('invalid or unreadable extension recovery state fails closed', async () => {
+  const { storage, messages } = loadStorage({ gsExtensionRecovery: '{broken' });
+  assert.equal(await storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+  assert.equal(messages.some(([level]) => level === 'error'), false);
+  const unreadable = loadStorage({}, true);
+  assert.equal(await unreadable.storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+});
+
+test('missing extension recovery state is a normal empty state', async () => {
+  const { storage, messages } = loadStorage();
+  assert.equal(await storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+  assert.deepEqual(messages, []);
 });

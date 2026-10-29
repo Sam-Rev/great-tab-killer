@@ -3,6 +3,7 @@
 
 import {gsUtils} from "./gsUtils.js"
 import {gsIndexedDb} from "./gsIndexedDb.js"
+import {isExtensionOriginUrl} from "./isExtensionOriginUrl.js"
 
 export var gsFavicon = (function () {
   "use strict";
@@ -136,27 +137,6 @@ export var gsFavicon = (function () {
       return faviconMeta;
     }
 
-    // Else try to build from tab.favIconUrl
-    gsUtils.log(
-      tab.id,
-      "No entry in chrome favicon cache for url: " + originalUrl
-    );
-    if (
-      tab.favIconUrl &&
-      tab.favIconUrl !== chrome.runtime.getURL("images/icon-16x16.png")
-    ) {
-      faviconMeta = await buildFaviconMetaFromTabFavIconUrl(tab.favIconUrl);
-      if (faviconMeta) {
-        gsUtils.log(
-          tab.id,
-          "Built faviconMeta from tab.favIconUrl",
-          faviconMeta
-        );
-        return faviconMeta;
-      }
-    }
-
-
     // Else return the default chrome favicon
     gsUtils.log(tab.id, "Failed to build faviconMeta. Using default icon");
     return _defaultChromeFaviconMeta;
@@ -170,19 +150,6 @@ export var gsFavicon = (function () {
     );
     try {
       const faviconMeta = await buildFaviconMetaData(chromeFavIconUrl);
-      const faviconMetaValid = await isFaviconMetaValid(faviconMeta);
-      if (faviconMetaValid) {
-        return faviconMeta;
-      }
-    } catch (e) {
-      gsUtils.warning("gsUtils", e);
-    }
-    return null;
-  }
-
-  async function buildFaviconMetaFromTabFavIconUrl(favIconUrl) {
-    try {
-      const faviconMeta = await buildFaviconMetaData(favIconUrl);
       const faviconMetaValid = await isFaviconMetaValid(faviconMeta);
       if (faviconMetaValid) {
         return faviconMeta;
@@ -325,15 +292,24 @@ export var gsFavicon = (function () {
   function buildFaviconMetaData(url) {
     const timeout = 5 * 1000;
     return new Promise((resolve, reject) => {
-      fetch(url)
-          .then(response => response.blob())
+      const faviconUrl = new URL(url);
+      const extensionRootUrl = chrome.runtime.getURL("/");
+      if (!isExtensionOriginUrl(faviconUrl.href, extensionRootUrl)) {
+        reject(new Error("Refusing to fetch a non-extension favicon URL"));
+        return;
+      }
+      fetch(faviconUrl.href)
+          .then(response => {
+            if (!response.ok) throw new Error(`Favicon request failed: ${response.status}`);
+            return response.blob();
+          })
           .then(blob => {
 
             let canvas;
             let context;
             canvas = new OffscreenCanvas(16, 16);
             context = canvas.getContext("2d");
-            createImageBitmap(blob).then(imageBitmap => {
+            return createImageBitmap(blob).then(imageBitmap => {
               context.drawImage(imageBitmap,0,0)
               let imageData;
               try {
@@ -392,7 +368,7 @@ export var gsFavicon = (function () {
               const normalisedDataUrl = getFavIconDataUrl(canvas, context, imageData, normalisedDataArray);
               const transparentDataUrl = getFavIconDataUrl(canvas, context, imageData, transparentDataArray);
 
-              Promise.all([normalisedDataUrl, transparentDataUrl]).then((values) => {
+              return Promise.all([normalisedDataUrl, transparentDataUrl]).then((values) => {
                 const normalisedDataUrlResult = values[0];
                 const transparentDataUrlResult = values[1];
 
@@ -408,7 +384,8 @@ export var gsFavicon = (function () {
                 resolve(faviconMetaData);
               });
             });
-          });
+          })
+          .catch(reject);
     });
   }
 

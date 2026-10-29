@@ -1,4 +1,4 @@
-/*global chrome, gsSession, localStorage, gsUtils */
+/*global chrome, gsSession, gsUtils */
 'use strict';
 import {gsUtils} from "./gsUtils.js"
 import {gsSession} from "./gsSession.js"
@@ -76,7 +76,7 @@ export var gsStorage = {
     defaults[gsStorage.IGNORE_ACTIVE_TABS] = true;
     defaults[gsStorage.IGNORE_CACHE] = false;
     defaults[gsStorage.ADD_CONTEXT] = true;
-    defaults[gsStorage.SYNC_SETTINGS] = true;
+    defaults[gsStorage.SYNC_SETTINGS] = false;
     defaults[gsStorage.SUSPEND_TIME] = '60';
     defaults[gsStorage.WHITELIST] = '';
     defaults[gsStorage.THEME] = 'light';
@@ -96,19 +96,25 @@ export var gsStorage = {
     return new Promise(function(resolve) {
       var defaultSettings = gsStorage.getSettingsDefaults();
       var defaultKeys = Object.keys(defaultSettings);
-      chrome.storage.local.get(['gsSettings'], function(localStorage) {
-      chrome.storage.sync.get(defaultKeys, function(syncedSettings) {
+      chrome.storage.local.get(['gsSettings'], function(localData) {
+        let syncEnabledLocally = false;
+        try {
+          const localSettings = JSON.parse(localData['gsSettings'] || false) || {};
+          syncEnabledLocally = localSettings[gsStorage.SYNC_SETTINGS] === true;
+        } catch (e) {}
+        const initialiseWithSyncSettings = function(syncedSettings) {
+        syncedSettings = syncedSettings || {};
         gsUtils.log('gsStorage', 'syncedSettings on init: ', syncedSettings);
         gsSession.setSynchedSettingsOnInit(syncedSettings);
 
         var rawLocalSettings;
         try {
-          rawLocalSettings = JSON.parse(localStorage['gsSettings'] || false);
+          rawLocalSettings = JSON.parse(localData['gsSettings'] || false);
         } catch (e) {
           gsUtils.error(
             'gsStorage',
             'Failed to parse gsSettings: ',
-            localStorage['gsSettings']
+            localData['gsSettings']
           );
         }
         if (!rawLocalSettings) {
@@ -133,7 +139,7 @@ export var gsStorage = {
           // syncing is enabled locally then overwrite with synced value
           if (
             syncedSettings.hasOwnProperty(key) &&
-            (!rawLocalSettings.hasOwnProperty(key) || shouldSyncSettings)
+            shouldSyncSettings
           ) {
             mergedSettings[key] = syncedSettings[key];
           }
@@ -177,7 +183,12 @@ export var gsStorage = {
           gsUtils.log('gsStorage', 'init successful');
           resolve();
         }
-      });
+        };
+        if (syncEnabledLocally) {
+          chrome.storage.sync.get(defaultKeys, initialiseWithSyncSettings);
+        } else {
+          initialiseWithSyncSettings({});
+        }
       });
     });
   },
@@ -241,10 +252,10 @@ export var gsStorage = {
     gsStorage.saveSettings(settings);
   },
 
-  // Important to note that setOption (and ultimately saveSettings) uses localStorage whereas
+  // Important to note that setOption (and ultimately saveSettings) uses chrome.storage.local whereas
   // syncSettings saves to chrome.storage.
   // Calling syncSettings has the unfortunate side-effect of triggering the chrome.storage.onChanged
-  // listener which the re-saves the setting to localStorage a second time.
+  // listener which re-saves the setting to chrome.storage.local a second time.
   setOptionAndSync: async function(prop, value) {
     await gsStorage.setOption(prop, value);
     gsStorage.syncSettings();
@@ -342,24 +353,22 @@ export var gsStorage = {
     }
   },
 
-  fetchLastExtensionRecoveryTimestamp: function() {
-    return new Promise(resolve => {
-      chrome.storage.local.get([gsStorage.LAST_EXTENSION_RECOVERY]).then((result) => {
-        var lastExtensionRecoveryTimestamp;
-        try {
-          lastExtensionRecoveryTimestamp = JSON.parse(
-            result[gsStorage.LAST_EXTENSION_RECOVERY]
-          );
-        } catch (e) {
-          gsUtils.error(
-            'gsStorage',
-            'Failed to parse ' + gsStorage.LAST_EXTENSION_RECOVERY + ': ',
-            result[gsStorage.LAST_EXTENSION_RECOVERY]
-          );
-        }
-        resolve(lastExtensionRecoveryTimestamp);
-      });
-    });
+  fetchLastExtensionRecoveryTimestamp: async function() {
+    try {
+      const result = await chrome.storage.local.get([gsStorage.LAST_EXTENSION_RECOVERY]);
+      const storedValue = result[gsStorage.LAST_EXTENSION_RECOVERY];
+      if (storedValue === undefined || storedValue === null || storedValue === '') return undefined;
+      try {
+        const timestamp = JSON.parse(storedValue);
+        return Number.isFinite(timestamp) ? timestamp : undefined;
+      } catch (e) {
+        gsUtils.warning('gsStorage', 'Ignoring invalid ' + gsStorage.LAST_EXTENSION_RECOVERY + ' state');
+        return undefined;
+      }
+    } catch (e) {
+      gsUtils.error('gsStorage', 'Failed to read ' + gsStorage.LAST_EXTENSION_RECOVERY);
+      return undefined;
+    }
   },
   setLastExtensionRecoveryTimestamp: function(extensionRecoveryTimestamp) {
     try {

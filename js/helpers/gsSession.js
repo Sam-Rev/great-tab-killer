@@ -1,4 +1,4 @@
-/*global chrome, localStorage, tgs, gsStorage, gsIndexedDb, gsUtils, gsChrome, gsTabCheckManager, gsTabDiscardManager */
+/*global chrome, tgs, gsStorage, gsIndexedDb, gsUtils, gsChrome, gsTabCheckManager, gsTabDiscardManager */
 // eslint-disable-next-line no-unused-vars
 
 
@@ -8,6 +8,8 @@ import { gsUtils } from "./gsUtils.js"
 import { gsChrome } from "./gsChrome.js"
 import { gsTabCheckManager } from "./gsTabCheckManager.js"
 import { gsTabDiscardManager } from "./gsTabDiscardManager.js"
+import { excludeIncognitoTabs } from "./excludeIncognitoTabs.js"
+import { gsBackup } from "./gsBackup.js"
 
 export var gsSession = (function () {
   "use strict";
@@ -63,7 +65,6 @@ export var gsSession = (function () {
 
     // Auto-backup before update
     try {
-      const { gsBackup } = await import("./gsBackup.js");
       await gsBackup.performBackup('pre-update');
     } catch (e) {
       gsUtils.warning("gsSession", "Pre-update backup failed:", e);
@@ -99,9 +100,11 @@ export var gsSession = (function () {
 
   async function buildCurrentSession() {
     const currentWindows = await gsChrome.windowsGetAll();
-    const tabsExist = currentWindows.some(
-      (window) => window.tabs && window.tabs.length
-    );
+    for (const browserWindow of currentWindows) {
+      if (browserWindow.tabs) browserWindow.tabs = excludeIncognitoTabs(browserWindow.tabs);
+    }
+    const regularWindows = currentWindows.filter((browserWindow) => browserWindow.tabs && browserWindow.tabs.length);
+    const tabsExist = regularWindows.length > 0;
     if (!tabsExist) {
       gsUtils.warning(
         "gsSession",
@@ -111,7 +114,7 @@ export var gsSession = (function () {
     }
     const currentSession = {
       sessionId: getSessionId(),
-      windows: currentWindows,
+      windows: regularWindows,
       date: new Date().toISOString(),
     };
     return currentSession;
@@ -293,6 +296,8 @@ export var gsSession = (function () {
 
   async function handleNewInstall(curVersion) {
     gsStorage.setLastVersion(curVersion);
+
+    await gsBackup.showFirstRunNotice();
 
     // Try to determine if this is a new install for the computer or for the whole profile
     // If settings sync contains non-default options, then we can assume it's only
@@ -518,23 +523,23 @@ export var gsSession = (function () {
     //if there is a current window open that matches the id of the session window id then match it
     unmatchedSessionWindows.slice().forEach(function (sessionWindow) {
       const matchingCurrentWindow = unmatchedCurrentWindows.find(function (
-        window
+        browserWindow
       ) {
-        return window.id === sessionWindow.id;
+        return browserWindow.id === sessionWindow.id;
       });
       if (matchingCurrentWindow) {
         matchedCurrentWindowBySessionWindowId[sessionWindow.id] =
           matchingCurrentWindow;
         //remove from unmatchedSessionWindows and unmatchedCurrentWindows
         unmatchedSessionWindows = unmatchedSessionWindows.filter(function (
-          window
+          browserWindow
         ) {
-          return window.id !== sessionWindow.id;
+          return browserWindow.id !== sessionWindow.id;
         });
         unmatchedCurrentWindows = unmatchedCurrentWindows.filter(function (
-          window
+          browserWindow
         ) {
-          return window.id !== matchingCurrentWindow.id;
+          return browserWindow.id !== matchingCurrentWindow.id;
         });
       }
     });
@@ -574,14 +579,14 @@ export var gsSession = (function () {
       const unmatchedSessionWindowsLengthBefore =
         unmatchedSessionWindows.length;
       unmatchedSessionWindows = unmatchedSessionWindows.filter(function (
-        window
+        browserWindow
       ) {
-        return window.id !== bestTabMatchingObject.sessionWindow.id;
+        return browserWindow.id !== bestTabMatchingObject.sessionWindow.id;
       });
       unmatchedCurrentWindows = unmatchedCurrentWindows.filter(function (
-        window
+        browserWindow
       ) {
-        return window.id !== bestTabMatchingObject.currentWindow.id;
+        return browserWindow.id !== bestTabMatchingObject.currentWindow.id;
       });
       gsUtils.log(
         "gsUtils",

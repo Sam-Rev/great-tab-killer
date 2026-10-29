@@ -106,7 +106,7 @@ select {
 }
 .select-wrapper::after {
   position: absolute;
-  right: 15px;
+  inset-inline-end: 15px;
   top: 6px;
   font-family: 'fontello';
   text-decoration: none;
@@ -212,6 +212,23 @@ ul.unorderedList li {
   grid-template-areas:
     'h h'
     'n m';
+}
+.backupSetupPage {
+  max-width: 750px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'h' 'm';
+}
+.backupSetupContent {
+  grid-area: m;
+  max-width: 620px;
+}
+.backupSetupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.btnSecondary {
+  background: #666;
 }
 .pageHeader {
   grid-area: h;

@@ -299,6 +299,15 @@
   "html_options_other_enable_sync_warning": {
     "message": "Turning this on will overwrite settings on all other browsers logged into the same Chrome profile"
   },
+  "html_options_sync_privacy_note": {
+    "message": "Sync is off by default. If enabled, settings are stored in your browser profile's sync storage."
+  },
+  "html_options_backup_enable": {
+    "message": "Enable automatic session backups"
+  },
+  "html_options_backup_privacy_note": {
+    "message": "When enabled, a plain-text file containing open-tab URLs is saved to Downloads at the selected frequency. Incognito tabs are excluded."
+  },
   "html_options_other_language": {
     "message": "Interface language"
   },
@@ -482,6 +491,15 @@
   "html_monitor_col_cpu": {
     "message": "CPU"
   },
+  "html_monitor_optional_system_note": {
+    "message": "System totals are optional. Tab estimates remain available without them."
+  },
+  "html_monitor_enable_system_stats": {
+    "message": "Enable system totals"
+  },
+  "html_monitor_background_sampling": {
+    "message": "Sample tabs in the background"
+  },
   "html_monitor_col_actions": {
     "message": "Actions"
   },
@@ -500,20 +518,11 @@
   "js_monitor_tabs_measured": {
     "message": "Measured"
   },
-  "js_monitor_method_precise": {
-    "message": "Chrome"
-  },
   "js_monitor_free": {
     "message": "free"
   },
   "js_monitor_cores": {
     "message": "cores"
-  },
-  "js_monitor_precise_enable": {
-    "message": "Allow the processes API in Chrome Dev/Canary"
-  },
-  "js_monitor_precise_unavailable": {
-    "message": "The processes API requires Chrome Dev/Canary and the processes permission. It is unavailable in Stable and regular Beta."
   },
   "js_monitor_ext_status_active": {
     "message": "Running"
@@ -616,9 +625,6 @@
   },
   "js_monitor_tt_estimate_note": {
     "message": "Approximate estimate based on page contents. Errors can be severalfold; agreement with Task Manager is not guaranteed."
-  },
-  "js_monitor_tt_precise": {
-    "message": "Chrome process privateMemory data. A shared process is split equally between associated tabs. This is an estimated process share, not the hover-card value or guaranteed RAM savings."
   },
   "js_monitor_tt_fixed_suspended": {
     "message": "A fixed estimate of ≈4 MB for the extension placeholder. This is an assumption, not a current measurement."
@@ -839,9 +845,6 @@
   "html_changelog_history": {
     "message": "Use Session History to review or recover saved tabs. Project release notes are maintained in CHANGELOG.md."
   },
-  "html_monitor_col_chrome": {
-    "message": "Chrome memory"
-  },
   "html_monitor_intro": {
     "message": "Tab memory is approximate. A threefold difference in either direction is possible; this is not a guaranteed error bound."
   },
@@ -862,9 +865,6 @@
   },
   "html_monitor_source_code": {
     "message": "Chromium: page memory estimate ↗"
-  },
-  "html_monitor_source_api": {
-    "message": "Chrome: processes API ↗"
   },
   "html_monitor_source_discard": {
     "message": "Chrome: discard and freeze ↗"
@@ -889,15 +889,6 @@
   },
   "js_monitor_history_excluded": {
     "message": "historical values excluded"
-  },
-  "js_monitor_chrome_no_data": {
-    "message": "Chrome did not return memory for a process associated with this tab."
-  },
-  "js_monitor_chrome_channels": {
-    "message": "Chrome data · Dev/Canary"
-  },
-  "js_monitor_chrome_connected": {
-    "message": "Chrome data connected"
   },
   "js_monitor_action_pending": {
     "message": "In progress…"

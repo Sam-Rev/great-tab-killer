@@ -36,6 +36,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
   let _autoRefresh = true;
   let _refreshTimer = null;
   let _measuring = false;
+  let _systemPermissionsGranted = false;
   let _windowIndexById = {};
   let _windowCount = 1;
   const _tabActions = new Map();
@@ -53,117 +54,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
   // ------------------------------------------------------------------
   // per-tab measurement
   // ------------------------------------------------------------------
-
-  // ------------------------------------------------------------------
-  // precise mode: real per-process data via chrome.processes, which only
-  // exists on the dev/canary channels after the optional "processes"
-  // permission has been granted. one snapshot per refresh serves both the
-  // tabs table and the extensions table.
-  // ------------------------------------------------------------------
-
-  function getProcessMemoryInfo() {
-    return new Promise((resolve) => {
-      if (!chrome.processes || !chrome.processes.getProcessInfo) {
-        resolve(null);
-        return;
-      }
-      try {
-        chrome.processes.getProcessInfo([], true, (processes) => {
-          if (chrome.runtime.lastError || !processes) {
-            resolve(null);
-            return;
-          }
-          resolve(processes);
-        });
-      } catch (e) {
-        resolve(null);
-      }
-    });
-  }
-
-  // cpu values are only delivered through onUpdated events; wait for the
-  // second event so the usage deltas are meaningful (~2s), with a timeout
-  function getProcessCpuInfo() {
-    return new Promise((resolve) => {
-      if (!chrome.processes || !chrome.processes.onUpdated) {
-        resolve(null);
-        return;
-      }
-      let eventCount = 0;
-      let latest = null;
-      let finished = false;
-      const listener = (processes) => {
-        eventCount++;
-        latest = processes;
-        if (eventCount >= 2) finish();
-      };
-      const finish = () => {
-        if (finished) return;
-        finished = true;
-        try {
-          chrome.processes.onUpdated.removeListener(listener);
-        } catch (e) {}
-        resolve(latest);
-      };
-      try {
-        chrome.processes.onUpdated.addListener(listener);
-      } catch (e) {
-        resolve(null);
-        return;
-      }
-      setTimeout(finish, 3500);
-    });
-  }
-
-  let _preciseSnapshot = null; // pid -> {type, tasks, memBytes, cpu}
-
-  async function updatePreciseSnapshot() {
-    _preciseSnapshot = null;
-    const memInfo = await getProcessMemoryInfo();
-    if (!memInfo) return;
-    const cpuInfo = await getProcessCpuInfo();
-    const snapshot = {};
-    for (const pid of Object.keys(memInfo)) {
-      const proc = memInfo[pid];
-      if (!proc) continue;
-      const cpuProc = cpuInfo && cpuInfo[pid];
-      snapshot[pid] = {
-        type: proc.type,
-        tasks: proc.tasks || [],
-        memBytes: typeof proc.privateMemory === "number" ? proc.privateMemory : null,
-        cpu:
-          cpuProc && typeof cpuProc.cpu === "number" ? cpuProc.cpu : null,
-      };
-    }
-    _preciseSnapshot = snapshot;
-  }
-
-  // Preserve the existing equal-share process attribution for comparison.
-  // This is not Chrome's hover-card value or a measurement of released RAM.
-  function getPreciseTabStats() {
-    if (!_preciseSnapshot) return null;
-    const byTabId = {};
-    for (const pid of Object.keys(_preciseSnapshot)) {
-      const proc = _preciseSnapshot[pid];
-      if (proc.type !== "renderer" || proc.memBytes === null) continue;
-      const tabIds = [];
-      for (const task of proc.tasks) {
-        if (typeof task.tabId === "number" && tabIds.indexOf(task.tabId) < 0) {
-          tabIds.push(task.tabId);
-        }
-      }
-      if (!tabIds.length) continue;
-      const memShare = proc.memBytes / tabIds.length;
-      const cpuShare = proc.cpu !== null ? proc.cpu / tabIds.length : null;
-      for (const tabId of tabIds) {
-        const prev = byTabId[tabId] || { memBytes: 0, cpu: null };
-        prev.memBytes += memShare;
-        if (cpuShare !== null) prev.cpu = (prev.cpu || 0) + cpuShare;
-        byTabId[tabId] = prev;
-      }
-    }
-    return Object.keys(byTabId).length ? byTabId : null;
-  }
 
   function getTabStatus(tab) {
     if (gsMemorySampler.isSuspendedTabUrl(tab.url)) return "suspended";
@@ -192,10 +82,9 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
       tab: tab,
       status: getTabStatus(tab),
       memBytes: null,
-      memMethod: "none", // estimate | precise | fixed | stale | none
+      memMethod: "none", // estimate | fixed | stale | none
       memBreakdown: null, // estimate components, for the hover tooltip
       cpuPct: null,
-      chromeMemBytes: null, // separate from the unchanged page estimate
     }));
 
     // live measurable tabs (frozen tabs keep their memory but cannot run
@@ -252,21 +141,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
       }
     }
 
-    // Keep Chrome data in its own column; never replace the page estimate.
-    await updatePreciseSnapshot();
-    const preciseByTabId = getPreciseTabStats();
-    if (preciseByTabId) {
-      for (const row of rows) {
-        const precise = preciseByTabId[row.tab.id];
-        if (precise) {
-          row.chromeMemBytes = Math.round(precise.memBytes);
-          if (precise.cpu !== null) {
-            row.cpuPct = precise.cpu;
-          }
-        }
-      }
-    }
-
     return rows;
   }
 
@@ -275,6 +149,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
   // ------------------------------------------------------------------
 
   async function updateSystemStats() {
+    if (!_systemPermissionsGranted) return;
     // physical memory. note: extensions cannot see swap usage — the
     // system.memory api only exposes capacity and availableCapacity
     try {
@@ -318,6 +193,59 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
     }
   }
 
+  function containsSystemPermissions() {
+    return new Promise((resolve) => {
+      if (!chrome.permissions || typeof chrome.permissions.contains !== "function") {
+        resolve(false);
+        return;
+      }
+      try {
+        chrome.permissions.contains(
+          { permissions: ["system.cpu", "system.memory"] },
+          (granted) => resolve(!chrome.runtime.lastError && granted === true)
+        );
+      } catch (e) {
+        resolve(false);
+      }
+    });
+  }
+
+  async function refreshSystemPermissionState() {
+    _systemPermissionsGranted = await containsSystemPermissions();
+    const note = document.getElementById("systemPermissionNote");
+    const button = document.getElementById("enableSystemStats");
+    note.hidden = _systemPermissionsGranted;
+    button.hidden = _systemPermissionsGranted ||
+      !chrome.permissions || typeof chrome.permissions.request !== "function";
+    if (_systemPermissionsGranted) {
+      document.getElementById("statSysMem").textContent = "—";
+      document.getElementById("statSysCpu").textContent = "—";
+    }
+  }
+
+  function requestSystemPermissionsFromClick() {
+    const button = document.getElementById("enableSystemStats");
+    button.addEventListener("click", () => {
+      if (!chrome.permissions || typeof chrome.permissions.request !== "function") return;
+      try {
+        chrome.permissions.request(
+          { permissions: ["system.cpu", "system.memory"] },
+          (granted) => {
+            if (chrome.runtime.lastError || !granted) {
+              document.getElementById("systemPermissionNote").hidden = false;
+              return;
+            }
+            refreshSystemPermissionState().then(refresh).catch(() => {
+              document.getElementById("systemPermissionNote").hidden = false;
+            });
+          }
+        );
+      } catch (e) {
+        document.getElementById("systemPermissionNote").hidden = false;
+      }
+    });
+  }
+
   // ------------------------------------------------------------------
   // formatting helpers
   // ------------------------------------------------------------------
@@ -357,7 +285,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
 
   // ------------------------------------------------------------------
   // memory breakdown tooltip: explains how the displayed figure was
-  // computed (estimate components, precise/fixed/stale methodology)
+  // computed from estimate components, fixed values, and cached samples
   // ------------------------------------------------------------------
 
   // finer than formatBytes: small contributions would all round to "0 MB"
@@ -398,10 +326,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
 
     if (row.status === "discarded") {
       addNote(row.memBytes === null ? "js_monitor_discard_unknown" : "js_monitor_discard_history_tip");
-      return frag;
-    }
-    if (row.memMethod === "precise") {
-      addNote("js_monitor_tt_precise");
       return frag;
     }
     if (row.memMethod === "fixed") {
@@ -612,7 +536,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
 
   async function rowAfterAction(previous, tab) {
     const row = { ...previous, tab, status: getTabStatus(tab), memBreakdown: null,
-      chromeMemBytes: null, cpuPct: null, memBytes: null, memMethod: "none" };
+      cpuPct: null, memBytes: null, memMethod: "none" };
     if (row.status === "suspended") {
       row.memBytes = gsMemorySampler.EST.SUSPENDED_BYTES;
       row.memMethod = "fixed";
@@ -819,9 +743,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
       attachMemTip(tdMem, row);
       const method = document.createElement("span");
       method.className = "memMethod";
-      if (row.memMethod === "precise") {
-        method.textContent = gsUtils.getMessage("js_monitor_method_precise");
-      } else if (["estimate", "stale", "fixed", "historical"].includes(row.memMethod)) {
+      if (["estimate", "stale", "fixed", "historical"].includes(row.memMethod)) {
         method.textContent = "~";
       }
       tdMem.appendChild(method);
@@ -843,17 +765,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
       if (row.memBytes === null) attachMemTip(tdMem, row);
     }
     tr.appendChild(tdMem);
-
-    const tdChrome = document.createElement("td");
-    tdChrome.className = "memCell chromeMemory";
-    tdChrome.tabIndex = 0;
-    tdChrome.textContent = row.chromeMemBytes === null ? "—" : "~" + formatBytes(row.chromeMemBytes);
-    tdChrome.title = gsUtils.getMessage(row.chromeMemBytes !== null
-      ? "js_monitor_tt_precise" : chrome.processes?.getProcessInfo
-        ? "js_monitor_chrome_no_data" : "js_monitor_precise_unavailable");
-    tdChrome.setAttribute("aria-label", tdChrome.textContent + ". " + tdChrome.title);
-    if (row.chromeMemBytes === null) tdChrome.classList.add("cpuNa");
-    tr.appendChild(tdChrome);
 
     // cpu cell
     const tdCpu = document.createElement("td");
@@ -890,8 +801,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
     let result = 0;
     if (_sortCol === "memory") {
       result = (effectiveMemBytes(a) || -1) - (effectiveMemBytes(b) || -1);
-    } else if (_sortCol === "chromeMemory") {
-      result = (a.chromeMemBytes ?? -1) - (b.chromeMemBytes ?? -1);
     } else if (_sortCol === "cpu") {
       result = (a.cpuPct === null ? -1 : a.cpuPct) -
         (b.cpuPct === null ? -1 : b.cpuPct);
@@ -1028,7 +937,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
   // init
   // ------------------------------------------------------------------
 
-  gsUtils.documentReadyAndLocalisedAsPromsied(document).then(function () {
+  gsUtils.documentReadyAndLocalisedAsPromsied(document).then(async function () {
     // hide noIncognito items in incognito mode
     if (chrome.extension.inIncognitoContext) {
       Array.prototype.forEach.call(
@@ -1038,14 +947,6 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
         }
       );
     }
-
-    // Keep historical measurements available for tabs discarded while
-    // the monitor is closed.
-    try {
-      chrome.storage.local.set({
-        [gsMemorySampler.MONITOR_USED_STORAGE_KEY]: true,
-      });
-    } catch (e) {}
 
     // restore preferences
     try {
@@ -1084,26 +985,23 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
     document.getElementById("cpuHeader").title =
       gsUtils.getMessage("js_monitor_cpu_tooltip");
 
-    // Capability indicator is informational, including on Stable. Optional
-    // permission setup is kept inside the expanded explanation for Dev users.
-    const preciseLink = document.getElementById("preciseModeLink");
-    preciseLink.hidden = false;
-    preciseLink.title = gsUtils.getMessage(chrome.processes?.getProcessInfo
-      ? "js_monitor_tt_precise" : "js_monitor_precise_unavailable");
-    preciseLink.textContent = gsUtils.getMessage(chrome.processes?.getProcessInfo
-      ? "js_monitor_chrome_connected" : "js_monitor_chrome_channels");
-    const grantProcesses = document.getElementById("grantProcesses");
-    grantProcesses.hidden = !!chrome.processes?.getProcessInfo;
-    grantProcesses.addEventListener("click", () => {
-      const unavailable = () => {
-        document.getElementById("processGrantStatus").textContent = gsUtils.getMessage("js_monitor_precise_unavailable");
-      };
+    requestSystemPermissionsFromClick();
+    await refreshSystemPermissionState();
+
+    const sampleToggle = document.getElementById("backgroundSampling");
+    try {
+      const stored = await chrome.storage.local.get(gsMemorySampler.MONITOR_SAMPLING_ENABLED_STORAGE_KEY);
+      sampleToggle.checked = !!stored[gsMemorySampler.MONITOR_SAMPLING_ENABLED_STORAGE_KEY];
+    } catch (e) { sampleToggle.checked = false; }
+    sampleToggle.addEventListener("change", async () => {
+      const enabled = sampleToggle.checked;
       try {
-        chrome.permissions.request({ permissions: ["processes"] }, (granted) => {
-          if (chrome.runtime.lastError || !granted) { unavailable(); return; }
-          location.reload();
-        });
-      } catch { unavailable(); }
+        await chrome.storage.local.set({ [gsMemorySampler.MONITOR_SAMPLING_ENABLED_STORAGE_KEY]: enabled });
+        if (enabled) await gsMemorySampler.setupAlarm();
+        else await gsMemorySampler.clearAlarm();
+      } catch (e) {
+        sampleToggle.checked = !enabled;
+      }
     });
     const search = document.getElementById("monitorSearch");
     search.placeholder = gsUtils.getMessage("js_monitor_search_placeholder");

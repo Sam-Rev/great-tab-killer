@@ -3,18 +3,23 @@
 
 import {gsUtils} from "./gsUtils.js"
 import {gsStorage} from "./gsStorage.js"
+import {excludeIncognitoTabs} from "./excludeIncognitoTabs.js"
 
 const ALARM_NAME = 'tgs-session-backup';
+const BACKUP_ENABLED_KEY = 'gsBackupEnabled';
+const NOTICE_SHOWN_KEY = 'gsBackupSetupNoticeShown';
 
 export var gsBackup = {
 
   performBackup: async function(label) {
     try {
+      if (!(await gsBackup.isEnabled())) return;
       const tabs = await new Promise(resolve => chrome.tabs.query({}, resolve));
+      const regularTabs = excludeIncognitoTabs(tabs);
 
       // Group tabs by window
       const windowMap = new Map();
-      tabs.forEach(tab => {
+      regularTabs.forEach(tab => {
         if (!windowMap.has(tab.windowId)) windowMap.set(tab.windowId, []);
         const url = gsUtils.isSuspendedUrl(tab.url)
           ? gsUtils.getOriginalUrl(tab.url)
@@ -52,11 +57,14 @@ export var gsBackup = {
 
       // Use offscreen document for <a download> trick (no `downloads` permission needed)
       console.log('[gsBackup] Step 0: chrome.offscreen exists?', !!chrome.offscreen);
-      console.log('[gsBackup] Step 0: chrome.offscreen.hasDocument exists?', typeof chrome.offscreen?.hasDocument);
-      console.log('[gsBackup] Step 1: checking offscreen document...');
+      console.log('[gsBackup] Step 1: checking offscreen document');
       const offscreenUrl = chrome.runtime.getURL('html/offscreen.html');
       console.log('[gsBackup] offscreen URL:', offscreenUrl);
-      const hasDoc = await chrome.offscreen.hasDocument();
+      const contexts = await chrome.runtime.getContexts({
+        contextTypes: ['OFFSCREEN_DOCUMENT'],
+        documentUrls: [offscreenUrl],
+      });
+      const hasDoc = contexts.some((context) => context.documentUrl === offscreenUrl);
       console.log('[gsBackup] Step 2: hasDocument =', hasDoc);
       if (!hasDoc) {
         await chrome.offscreen.createDocument({
@@ -77,6 +85,10 @@ export var gsBackup = {
   },
 
   setupAlarm: async function() {
+    if (!(await gsBackup.isEnabled())) {
+      await chrome.alarms.clear(ALARM_NAME);
+      return;
+    }
     const freq = await gsStorage.getOption(gsStorage.BACKUP_FREQUENCY);
     const minutes = parseInt(freq, 10);
 
@@ -93,6 +105,7 @@ export var gsBackup = {
 
   updateAlarm: async function(frequencyMinutes) {
     await chrome.alarms.clear(ALARM_NAME);
+    if (!(await gsBackup.isEnabled())) return;
     const minutes = parseInt(frequencyMinutes, 10);
     if (minutes > 0) {
       chrome.alarms.create(ALARM_NAME, {
@@ -104,6 +117,35 @@ export var gsBackup = {
   },
 
   isBackupAlarm: function(alarm) {
-    return alarm.name === ALARM_NAME;
+    return !!alarm && alarm.name === ALARM_NAME;
+  },
+
+  isEnabled: async function() {
+    const stored = await chrome.storage.local.get(BACKUP_ENABLED_KEY);
+    return stored[BACKUP_ENABLED_KEY] === true;
+  },
+
+  enable: async function(frequencyMinutes) {
+    await chrome.storage.local.set({ [BACKUP_ENABLED_KEY]: true });
+    await gsBackup.updateAlarm(frequencyMinutes);
+  },
+
+  disable: async function() {
+    await chrome.storage.local.set({ [BACKUP_ENABLED_KEY]: false });
+    await chrome.alarms.clear(ALARM_NAME);
+  },
+
+  showFirstRunNotice: async function() {
+    const stored = await chrome.storage.local.get(NOTICE_SHOWN_KEY);
+    if (stored[NOTICE_SHOWN_KEY]) return;
+    await chrome.storage.local.set({ [NOTICE_SHOWN_KEY]: true });
+    await new Promise((resolve) => chrome.tabs.create({
+      url: chrome.runtime.getURL('html/backup-setup.html'),
+      active: true,
+    }, resolve));
+  },
+
+  dismissFirstRunNotice: async function() {
+    await chrome.storage.local.set({ [NOTICE_SHOWN_KEY]: true });
   },
 };

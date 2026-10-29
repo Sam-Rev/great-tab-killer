@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link type="text/css" href="../styles/style.css" rel="stylesheet">
+  <title>Session backup setup</title>
+  <script type="module" src="../js/backup-setup.js"></script>
+</head>
+<body>
+  <div class="mainContent backupSetupPage">
+    <header class="pageHeader">
+      <div class="pageBrandHeader">
+        <img class="pageBrandMark" src="../images/icon-48x48.png" alt="">
+        <h1>Session backup</h1>
+      </div>
+    </header>
+    <main class="backupSetupContent">
+      <p>Automatic backup is off. If enabled, it writes a plain-text file containing the URLs of all open regular tabs to your Downloads folder at the frequency you choose. Incognito tabs are skipped.</p>
+      <div class="formRow">
+        <label class="topLabel" for="backupFrequency">Backup frequency</label>
+        <div class="select-wrapper">
+          <select id="backupFrequency" class="option">
+            <option value="60">Hourly</option>
+            <option value="1440">Daily</option>
+            <option value="10080" selected>Weekly</option>
+            <option value="43200">Monthly</option>
+          </select>
+        </div>
+      </div>
+      <div class="backupSetupActions">
+        <button class="btn" id="enableBackup" type="button">Enable backups</button>
+        <button class="btn btnSecondary" id="dismissNotice" type="button">Not now</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

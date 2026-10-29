@@ -1,6 +1,8 @@
 /*global chrome */
 "use strict";
 
+import {excludeIncognitoTabs} from "./excludeIncognitoTabs.js";
+
 /**
  * Per-tab memory measurement shared by the resource monitor page and the
  * background sampling alarm in the service worker.
@@ -16,7 +18,7 @@
  */
 
 const MEM_CACHE_STORAGE_KEY = "gsMonitorMemCache";
-const MONITOR_USED_STORAGE_KEY = "gsMonitorUsed";
+const MONITOR_SAMPLING_ENABLED_STORAGE_KEY = "gsMonitorSamplingEnabled";
 const MEM_CACHE_MAX_ENTRIES = 800;
 const MEM_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -275,7 +277,7 @@ function estimateBytes(agg, originGroupSize) {
 
 export const gsMemorySampler = {
   EST: EST,
-  MONITOR_USED_STORAGE_KEY: MONITOR_USED_STORAGE_KEY,
+  MONITOR_SAMPLING_ENABLED_STORAGE_KEY: MONITOR_SAMPLING_ENABLED_STORAGE_KEY,
 
   isInjectableUrl: function (url) {
     return /^(https?|file):/.test(url || "");
@@ -290,6 +292,7 @@ export const gsMemorySampler = {
   // a tab whose memory can be measured by script injection right now
   isMeasurableTab: function (tab) {
     return (
+      !tab.incognito &&
       gsMemorySampler.isInjectableUrl(tab.url) &&
       !tab.discarded &&
       !tab.frozen &&
@@ -303,6 +306,7 @@ export const gsMemorySampler = {
    * holds the individual components of the estimate (for tooltips).
    */
   measureTabs: async function (tabs) {
+    tabs = excludeIncognitoTabs(tabs);
     const measured = new Map();
     const aggByTabId = new Map();
 
@@ -378,10 +382,21 @@ export const gsMemorySampler = {
 
   setupAlarm: async function () {
     try {
+      const stored = await chrome.storage.local.get(MONITOR_SAMPLING_ENABLED_STORAGE_KEY);
+      if (!stored[MONITOR_SAMPLING_ENABLED_STORAGE_KEY]) {
+        await chrome.alarms.clear(SAMPLE_ALARM_NAME);
+        return;
+      }
       await chrome.alarms.create(SAMPLE_ALARM_NAME, {
         delayInMinutes: 2,
         periodInMinutes: SAMPLE_PERIOD_MINUTES,
       });
+    } catch (e) {}
+  },
+
+  clearAlarm: async function () {
+    try {
+      await chrome.alarms.clear(SAMPLE_ALARM_NAME);
     } catch (e) {}
   },
 
@@ -391,14 +406,14 @@ export const gsMemorySampler = {
 
   /**
    * Periodically measure all measurable tabs so the cache has a recent
-   * value when a tab later gets suspended or discarded. Only runs for
-   * users who have opened the resource monitor at least once, and skips
+   * value when a tab later gets suspended or discarded. Only runs after
+   * the user enables background sampling in the resource monitor, and skips
    * the cycle when a monitor page is open (it refreshes by itself).
    */
   runBackgroundSample: async function () {
     try {
-      const stored = await chrome.storage.local.get(MONITOR_USED_STORAGE_KEY);
-      if (!stored[MONITOR_USED_STORAGE_KEY]) return;
+      const stored = await chrome.storage.local.get(MONITOR_SAMPLING_ENABLED_STORAGE_KEY);
+      if (!stored[MONITOR_SAMPLING_ENABLED_STORAGE_KEY]) return;
 
       if (chrome.runtime.getContexts) {
         const contexts = await chrome.runtime
