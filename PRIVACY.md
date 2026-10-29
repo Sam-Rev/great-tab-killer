@@ -7,7 +7,7 @@ The Great Tab Killer stores browser-tab data locally to suspend tabs, restore se
 - Screen previews are off by default (`screenCapture: '0'`). If enabled in Options, the capture libraries are injected by `gsTabSuspendManager` into the page being captured; they may re-request page-referenced assets from that page's servers. This is page-origin activity, not a request to a project server.
 - Settings sync is off by default. If enabled, settings are copied to `chrome.storage.sync` and may be transferred by Chrome across signed-in browser profiles.
 - Session backup is off by default. It is offered once during setup and only starts after **Enable backups**. It writes a plain-text `.txt` file to Downloads containing the URLs of open regular tabs, grouped by window. Incognito tabs are excluded. Downloaded files are outside the extension's storage controls and are not automatically deleted.
-- The resource monitor and background sampling are off by default. System totals require optional `system.cpu` and `system.memory` permissions granted from a user click; estimates remain available without them.
+- The monitor is on-demand, and background sampling is off by default. System totals require optional `system.cpu` and `system.memory` permissions granted from a user click; estimates remain available without them.
 - Incognito tabs are excluded from sampler measurements, previews, backups, and saved sessions.
 
 ## Permissions
@@ -33,7 +33,7 @@ Host access is declared for `http://*/*`, `https://*/*`, and `file://*/*`. It su
 
 | Location | Data | Retention | Deletion today |
 |---|---|---|
-| `chrome.storage.local` | Settings (`gsSettings`), whitelist, schema/app versions, recovery timestamp, backup and notice flags, sampler opt-in/cache, session metrics, and focused/stationary tab and window IDs. | Sampler cache is capped at 800 URL entries and expires entries after 7 days. Other setting/state values have no general TTL. | Change settings in Options. No complete local-storage wipe is exposed. |
+| `chrome.storage.local` | Settings (`gsSettings`), whitelist, schema/app versions, recovery timestamp, backup and notice flags, sampler opt-in/cache, session metrics, and focused/stationary tab and window IDs. | Sampler cache is capped at 800 URL entries; entries older than 7 days are pruned when the cache is updated. Other setting/state values have no general TTL. | Change settings in Options. No complete local-storage wipe is exposed. |
 | `chrome.storage.sync` | Settings copied only when sync is enabled. | The extension does not clear synced settings when sync is disabled. Chrome's retention after disabling sync or uninstall is not verified. | Turn sync off in Options; removing existing synced values is not exposed by this extension. |
 | `chrome.storage.session` | Version marker for completed startup checks. | Browser-managed session storage; no extension-defined TTL. | Browser-managed; no extension deletion control. |
 | Extension-page `localStorage` | Resource monitor sort order and auto-refresh preference. | No extension-defined TTL. | No extension UI for clearing these preferences. |
