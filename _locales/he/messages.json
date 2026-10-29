@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "השהה לשוניות Chrome לא פעילות לחיסכון ב-RAM ולהאצת המהירות. Tab Suspender הטוב ביותר — מקפיא אוטומטית לשוניות שאינן בשימוש ומשחזר אותן מיידית."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

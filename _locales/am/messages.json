@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "RAM ለመቆጠብ እና ፍጥነትን ለመጨመር የማይሰሩ የChrome ታቦችን (tabs) ያቁሙ። ምርጥ የታብ ማቆሚያ — የማይሰሩ ታቦችን በራሱ ያቆማል እና ወዲያውኑ መልሶ ይከፍታል።"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

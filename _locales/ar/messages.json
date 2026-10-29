@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "علّق علامات تبويب Chrome غير النشطة لتوفير RAM. أفضل Tab Suspender — يجمّد التبويبات تلقائياً ويستعيدها بنقرة واحدة."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

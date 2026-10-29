@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Приостанавливает неактивные вкладки Chrome и освобождает оперативную память. Заморозка вкладок автоматически. Tab Suspender — быстрый браузер без лагов."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

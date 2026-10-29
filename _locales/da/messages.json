@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspendér inaktive Chrome-faner for at spare RAM og øge hastigheden. Bedste Tab Suspender — fryser automatisk ubrugte faner og gendanner dem øjeblikkeligt."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

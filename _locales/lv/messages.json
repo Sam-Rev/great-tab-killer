@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Apturiet neaktīvās Chrome cilnes, lai ietaupītu RAM un palielinātu ātrumu. Labākais Tab Suspender — automātiski iesaldē neizmantotās cilnes un uzreiz tās atjauno."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Chrome లో నిష్క్రియ Tabs ని Suspend చేసి RAM ఆదా చేయండి. Tab Suspender — స్వయంచాలకంగా Freeze అవుతాయి, ఒక్క క్లిక్‌తో తిరిగి వస్తాయి."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

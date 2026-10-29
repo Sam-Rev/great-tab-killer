@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Chrome-ലെ നിഷ്ക്രിയ ടാബുകൾ സസ്പെൻഡ് ചെയ്ത് RAM ലാഭിക്കുക. Tab Suspender — ടാബ് ഓട്ടോമാറ്റിക് ഫ്രീസ്, ഒറ്റ ക്ലിക്കിൽ തിരിച്ചെടുക്കാം."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

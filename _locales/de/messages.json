@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Inaktive Chrome-Tabs einfrieren und RAM freigeben. Bester Tab Suspender — friert ungenutzte Tabs automatisch ein und gibt Systemspeicher frei."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "未使用のChromeタブを自動凍結してRAMを節約。最高のTab Suspender — タブを自動的に一時停止し、ワンクリックで復元。"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

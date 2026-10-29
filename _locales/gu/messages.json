@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Chrome ના અનુપયોગી Tab સસ્પૅન્ડ કરો અને RAM બચાવો. Tab Suspender — ટૅબ ઑટોમૅટિક ફ્રીઝ, RAM ઓછી વાપરે, ઝડપી બ્રાઉઝર."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

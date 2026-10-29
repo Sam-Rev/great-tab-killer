@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Chrome-ல் பயன்படுத்தாத Tab-களை Suspend செய்து RAM சேமிக்கவும். Tab Suspender — தானாக Freeze, ஒரு கிளிக்கில் மீட்டெடுக்கவும்."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

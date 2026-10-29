@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspendez les onglets Chrome inactifs pour libérer la RAM. Le meilleur Tab Suspender — gèle automatiquement les onglets inutilisés et les restaure en un clic."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

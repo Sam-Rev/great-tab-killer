@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Sustabdykite neaktyvias Chrome skilteles, kad sutaupytumėte RAM ir padidintumėte greitį. Geriausias Tab Suspender — automatiškai įšaldo nenaudojamas skilteles ir iš karto jas atkuria."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

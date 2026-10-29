@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Suspenda abas inativas do Chrome para liberar RAM. O melhor Tab Suspender — suspende automaticamente as abas não utilizadas e as restaura com um clique."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

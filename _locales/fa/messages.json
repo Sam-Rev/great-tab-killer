@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "زبانه‌های غیرفعال Chrome را برای صرفه‌جویی در RAM و افزایش سرعت متوقف کنید. بهترین Tab Suspender — زبانه‌های استفاده‌نشده را به‌صورت خودکار فریز می‌کند و فوری بازیابی می‌کند."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

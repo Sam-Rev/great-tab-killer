@@ -20,7 +20,8 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 
 ## Privacy defaults
 
-- Shipped code has no telemetry, remote code, or network calls. Nothing leaves the machine.
+- The extension's own code makes no network requests to project-run servers and sends no data to them. Chrome-managed settings sync can transfer settings when enabled. Page previews are off by default; when enabled, bundled capture libraries run inside the captured page and may re-request resources that page already references (images, fonts, and stylesheets) from that page's own servers.
+- Page previews are created by the SHA-256-pinned capture libraries injected from `gsTabSuspendManager.js`; the guard excludes those files from first-party network-pattern scans only because the vendor hashes are checked.
 - Settings sync is opt-in and OFF by default.
 - Session backup is opt-in and OFF by default. Offer it once on the setup page with **Enable backups** and **Not now**; create its alarm only after Enable. Never enable it automatically at install.
 - Resource monitor and background sampling are OFF by default.
@@ -54,4 +55,5 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 
 - The automated Chrome 156 clean-profile smoke test is documented in `docs/TESTING.md`.
 - Brave and Chrome's internal Errors page are owner-manual checks; report anything not independently verified.
+- Every claim in `PRIVACY.md` must have an evidence row in `docs/audit/PRIVACY_CLAIMS.md`.
 - Use English and concise reports, at most 15 lines. Do not reread large files already summarized; prefer `git diff --stat` and targeted searches.

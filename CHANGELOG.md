@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 ## [0.1.0] - Unreleased
 
 ### Added
+- Evidence-backed privacy and security policies; the extension description is now neutral across locales.
 - Project legal, contribution, and key-management documentation.
 - A neutral placeholder icon for the extension and project pages.
 - One-time local session-backup setup page with enable and frequency controls.
 
 ### Changed
+- Privacy and security documentation now covers browser-history fragments, content-script data, incognito storage behavior, and release-integrity limits.
 - Removed unnecessary `web_accessible_resources`; extension assets are no longer exposed to web pages or other extensions.
 - Suspended URL fragments and session recovery now validate navigation URLs; untrusted page and session text is rendered with DOM text nodes.
 - Rebranded the extension as The Great Tab Killer.

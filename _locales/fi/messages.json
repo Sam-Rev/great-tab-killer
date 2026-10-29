@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Jäädytä Chrome-välilehdet automaattisesti, kun et käytä niitä, ja vapauta RAM-muistia. Paras Tab Suspender — nopeuttaa selainta ja säästää muistia."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

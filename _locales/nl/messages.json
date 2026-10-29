@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Zet inactieve Chrome-tabbladen in slaapstand om RAM te besparen. De beste Tab Suspender — bevriest automatisch ongebruikte tabbladen en herstelt ze direct."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

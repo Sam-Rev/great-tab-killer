@@ -48,6 +48,20 @@ These Gate B checks were not run in this environment.
 - Chrome Stable functional compatibility beyond the reported manifest warning; Windows/macOS; 200+ tabs; service-worker termination.
 - Brave Shields interaction and browser/OS/version-specific coverage.
 
+## Manual incognito privacy check
+
+This is a manual check; source-level filters and unit tests do not replace testing in a real incognito window.
+
+1. In the extension details page, enable **Allow in Incognito**.
+2. Open several ordinary websites in an incognito window and suspend those tabs.
+3. Inspect the extension's IndexedDB (`gsPreviews`, `gsSuspendedTabInfo`, and session stores) and `chrome.storage.local`; confirm no incognito URL, title, or preview was recorded. Check the extension session-history page as well.
+4. Enable session backup for the test, create a backup, and check that no URL line from the incognito tabs appears in the `.txt` file. Then disable backup again.
+5. Remember Chrome shares `chrome.storage.local` and `chrome.storage.sync` between regular and incognito extension contexts; the test is checking that the extension's code filters incognito tab data before storing it.
+
+## Release placeholder check
+
+Before publishing a release, run `node tools/check-release-ready.mjs`. It scans `PRIVACY.md`, `SECURITY.md`, `README.md`, and `docs/INSTALL.md` for unresolved `<OWNER:` placeholders and exits non-zero with each matching file and line. The current `<OWNER: repository URL>` in `SECURITY.md` is intentionally unresolved until the owner provides the repository URL.
+
 # Clean Brave profile checklist — privacy defaults and runtime errors
 
 Use a clean Brave profile with only this extension installed. Confirm:

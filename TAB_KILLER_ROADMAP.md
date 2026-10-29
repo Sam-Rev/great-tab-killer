@@ -40,8 +40,8 @@ Read this section before touching anything.
 **Deferred to v0.2.0 as accepted risks:** A-10, A-13, A-14, A-15 (local data retention and incomplete global wipe), A-22 (durable queue state), tasks 9.1, 9.2, 9.3, 9.6, 9.7, Tab Groups, export/import, privacy dashboard, and task 7.7. `PRIVACY.md` must state that full URLs and previews are stored locally with count caps and no TTL, and that there is not yet a single action that wipes all extension data.
 
 **Goals**
-- Fully auditable: no remote code, no external network access, minimal and documented permissions.
-- Privacy-first: nothing leaves the machine; user can see and wipe everything stored.
+- Fully auditable: no remote code or project-server requests, with minimal documented permissions; optional page previews may request page-referenced resources from the captured page's own servers.
+- Privacy-first: no data is sent to a project-run server. Optional Chrome Sync may transfer settings through the browser; optional previews may request resources from the captured page's own servers. The user can inspect stored data, but a single wipe is deferred to v0.2.0.
 - Reliable under MV3 (service worker can be killed at any time).
 - Professional repo hygiene: license, security policy, CI guards, pinned vendor libs, tagged releases.
 
@@ -272,13 +272,8 @@ First **audit what exists** (the extension already has timeout/whitelist/battery
 
 ### Phase 6 — Privacy documents and privacy-by-default behavior
 
-- [ ] **6.1 `PRIVACY.md`** — must state, accurately and from the Phase 1 audit:
-  - Everything is processed locally; **nothing is sent anywhere** (and the guard script/CI enforces no network code).
-  - A table: every stored item → where (`chrome.storage.local/sync/session`, IndexedDB store name, `localStorage`) → content → purpose → retention → how to delete. Include: settings, whitelist, sessions (URLs/titles), tab previews/screenshots (IndexedDB `gsPreviews`, keyed by URL), favicon cache, monitor cache (if kept), scroll positions, **suspended-page entries that remain in browser history (decision §5.1)**, and **backup `.txt` files written to the Downloads folder (task 9.14)**.
-  - `chrome.storage.sync` is OFF by default and opt-in only: say that Chrome itself may sync enabled settings to the user's Google account — this is browser behavior, not this extension sending data. Describe the Options privacy note and local-only default.
-  - One line per permission: why needed, what it is used for, what it is **not** used for.
-  - Incognito behavior (`"incognito": "split"`): what is stored.
-- [ ] **6.2 `SECURITY.md`** — how to report vulnerabilities (private email or GitHub Security Advisories — owner provides the contact), supported versions, the project's security principles (no remote code, no network, pinned libs, permission lock), and how to verify a release (checksum steps).
+- [x] **6.1 `PRIVACY.md`** — lists every storage location, contents, retention, deletion limits, permission purpose, sync/backup/monitor defaults, incognito exclusions, and the qualified page-preview resource requests. Claim evidence is in `docs/audit/PRIVACY_CLAIMS.md`; browser cleanup behavior that could not be verified is labelled.
+- [x] **6.2 `SECURITY.md`** — documents latest-release support, the GitHub private vulnerability reporting placeholder, the guard/permission lock, pinned libraries, manual update path, and release checksum verification. The repository currently has no CI workflow, so CI execution is not claimed.
 - [ ] **6.3 Monitor privacy fix (prerequisite for Phase 7.4):** monitor **off by default** (decision §5.4); sampler alarm registered only while enabled; no background `executeScript` unless enabled; cache keyed by **hostname or hash**, never full URL; short TTL (e.g. 24 h) and hard cap; excluded for incognito tabs; `management` removed. Turning the monitor off must also delete its cached data.
 - [ ] **6.4 Data minimization sweep.** Anywhere full URLs/titles are persisted, justify or reduce. Session history must be user-controllable (limit count, clear button).
 
@@ -324,7 +319,7 @@ These tasks make the project meet common standards and user expectations. They r
 - [ ] **9.12 Dependency & license inventory** in `NOTICE`/`vendor/README.md`: every bundled third-party file with name, version, license, hash, upstream URL. Anything unverifiable is labelled **UNVERIFIED** and listed for the owner.
 - [ ] **9.13 Debt gate.** Before tagging v0.1.0, `docs/AUDIT.md` must show every finding as Fixed / Won't fix (with owner-approved reason) / Accepted risk (owner-approved). No finding may remain "Open".
 - [ ] **9.14 Session backup files (Certain).** `gsBackup.js` writes a **plain-text `.txt` file containing non-incognito open-tab URLs, grouped by window, into Downloads**. Task 3.10 now gates backups OFF by default, registers an alarm only after opt-in, skips incognito tabs, and shows a one-time local extension page with frequency controls. Files are not deleted automatically; the product-name rename is complete. Remaining tasks: privacy registry coverage and removal of raw backup `console.log` steps. The notice makes no network call.
-- [ ] **9.15 Extension description.** Keep the English description accurate and neutral. The current `_locales/en` description is already neutral (`Suspend inactive browser tabs to save memory and restore them when needed.`); verify it during the task and revise only if needed. The exact inherited marketing wording was found in `en_AU`, `en_GB`, and `en_US`; search all other locale descriptions for equivalent claims such as “Best Tab Suspender” and “auto-freezes”. Record affected locales and use an owner-approved translation process rather than machine translation.
+- [x] **9.15 Extension description.** English description is neutral and factual: `Suspend inactive browser tabs and restore them later.` Non-English locale description keys were removed to fall back to English; extension names remain `The Great Tab Killer`. Locale JSON and integrity checks passed.
 
 ---
 

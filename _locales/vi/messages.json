@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Tạm dừng các tab Chrome không hoạt động để tiết kiệm RAM và tăng tốc độ. Tab Suspender tốt nhất — tự động đóng băng các tab không dùng và khôi phục ngay lập tức."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

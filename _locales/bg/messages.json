@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Спирайте неактивни раздели на Chrome за пестене на RAM и увеличаване на скоростта. Най-добрият Tab Suspender — автоматично замразява неизползваните раздели и ги възстановява незабавно."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

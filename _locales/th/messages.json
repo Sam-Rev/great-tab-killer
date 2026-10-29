@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "หยุดแท็บ Chrome ที่ไม่ได้ใช้เพื่อประหยัด RAM และเพิ่มความเร็ว Tab Suspender ที่ดีที่สุด — แช่แข็งแท็บที่ไม่ได้ใช้โดยอัตโนมัติและกู้คืนทันที"
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

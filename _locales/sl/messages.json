@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Zamrznite neaktivne zavihke Chrome in sprostite RAM. Najboljši Tab Suspender — samodejno zamrzne neuporabljene zavihke in jih obnovi z enim klikom."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

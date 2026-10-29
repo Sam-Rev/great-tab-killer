@@ -2,9 +2,6 @@
   "ext_extension_name": {
     "message": "The Great Tab Killer"
   },
-  "ext_extension_description": {
-    "message": "Kullanılmayan Chrome sekmelerini askıya alarak RAM tasarrufu sağlar. En iyi Tab Suspender — sekmeleri otomatik dondurur, tek tıkla geri yükler."
-  },
   "ext_default_title": {
     "message": "The Great Tab Killer"
   },

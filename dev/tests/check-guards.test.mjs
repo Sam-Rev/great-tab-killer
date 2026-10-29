@@ -26,6 +26,7 @@ async function fixture(source = 'const response = await fetch(chrome.runtime.get
   await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
   await writeFile(path.join(root, 'security/url-allowlist.txt'), '# empty\n');
   await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), '[]\n');
+  await writeFile(path.join(root, 'PRIVACY.md'), 'Permission: `tabs`\n');
   await writeFile(path.join(root, 'js/main.js'), source);
   await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./main.js";\n');
   await writeFile(path.join(root, 'html/page.html'), '<script src="../js/main.js"></script><img src="../icon.png">');
@@ -58,6 +59,30 @@ test('guard rejects a permission change from the lock', async () => {
     manifest.permissions.push('history');
     await writeFile(manifestPath, JSON.stringify(manifest));
     assert.match((await checkRoot(root)).join('\n'), /differ from security\/permissions\.lock/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard rejects manifest permissions missing from PRIVACY.md', async () => {
+  const root = await fixture();
+  try {
+    const manifestPath = path.join(root, 'manifest.json');
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+    manifest.permissions.push('contextMenus');
+    await writeFile(manifestPath, JSON.stringify(manifest));
+    await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
+    assert.match((await checkRoot(root)).join('\n'), /permission contextMenus is not mentioned in PRIVACY\.md/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard rejects optional permissions missing from PRIVACY.md', async () => {
+  const root = await fixture();
+  try {
+    const manifestPath = path.join(root, 'manifest.json');
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+    manifest.optional_permissions.push('system.memory');
+    await writeFile(manifestPath, JSON.stringify(manifest));
+    await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
+    assert.match((await checkRoot(root)).join('\n'), /permission system\.memory is not mentioned in PRIVACY\.md/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

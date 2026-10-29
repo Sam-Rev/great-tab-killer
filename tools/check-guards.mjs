@@ -415,6 +415,16 @@ export async function checkRoot(root) {
       !isDeepStrictEqual([...lock.absent_fields].sort(), ['externally_connectable', 'update_url'])) {
     errors.push('security/permissions.lock.json: absent_fields must list update_url and externally_connectable');
   }
+  let privacyText;
+  try { privacyText = await readFile(path.join(root, 'PRIVACY.md'), 'utf8'); }
+  catch (error) { errors.push(`PRIVACY.md could not be read for permission documentation checks: ${error.message}`); }
+  if (privacyText !== undefined) {
+    for (const permission of [...(manifest.permissions || []), ...(manifest.optional_permissions || [])]) {
+      if (!privacyText.includes(`\`${permission}\``)) {
+        errors.push(`manifest.json: permission ${permission} is not mentioned in PRIVACY.md`);
+      }
+    }
+  }
   errors.push(...await verifyVendorChecksums(root));
   errors.push(...await serviceWorkerGraphErrors(root));
   const csp = manifest.content_security_policy?.extension_pages || '';
