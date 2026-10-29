@@ -270,20 +270,31 @@ function chart(el, series, opts = {}) {
   max = niceMax(max * 1.05);
   const x = t => L + (t - t0) / (t1 - t0) * (W - L - R);
   const y = v => T + (1 - v / max) * (H - T - B);
-  let g = '';
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
+  const addSvg = (parent, tag, attrs = {}, text = null) => {
+    const node = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    if (text !== null) node.textContent = String(text);
+    parent.appendChild(node);
+    return node;
+  };
   for (let i = 0; i <= 4; i++) {
     const v = max * i / 4, yy = y(v);
-    g += `<line x1="${L}" x2="${W - R}" y1="${yy}" y2="${yy}" stroke="${css('--line')}"/>`;
-    g += `<text x="${L - 6}" y="${yy + 4}" text-anchor="end" font-size="11" fill="${css('--muted')}">${fmt(v, max < 10 ? 1 : 0)}</text>`;
+    addSvg(svg, 'line', {x1:L, x2:W-R, y1:yy, y2:yy, stroke:css('--line')});
+    addSvg(svg, 'text', {x:L-6, y:yy+4, 'text-anchor':'end', 'font-size':11, fill:css('--muted')}, fmt(v, max < 10 ? 1 : 0));
   }
   const span = t1 - t0, stepS = span <= 600 ? 60 : span <= 1800 ? 300 : span <= 7200 ? 900 : 3600;
   for (let t = Math.ceil(t0 / stepS) * stepS; t <= t1; t += stepS) {
     const d = new Date(t * 1000);
-    g += `<text x="${x(t)}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${d.toTimeString().slice(0, 5)}</text>`;
+    addSvg(svg, 'text', {x:x(t), y:H-6, 'text-anchor':'middle', 'font-size':11, fill:css('--muted')}, d.toTimeString().slice(0, 5));
   }
   (opts.marks || []).filter(m => m.t >= t0 && m.t <= t1).forEach(m => {
-    g += `<line x1="${x(m.t)}" x2="${x(m.t)}" y1="${T}" y2="${H - B}" stroke="${css('--warn')}" stroke-dasharray="3 3"><title>${esc(m.label)}</title></line>`;
-    g += `<text x="${x(m.t) + 3}" y="${T + 10}" font-size="10" fill="${css('--warn')}">${esc(m.label.slice(0, 24))}</text>`;
+    const line = addSvg(svg, 'line', {x1:x(m.t), x2:x(m.t), y1:T, y2:H-B, stroke:css('--warn'), 'stroke-dasharray':'3 3'});
+    addSvg(line, 'title', {}, m.label);
+    addSvg(svg, 'text', {x:x(m.t)+3, y:T+10, 'font-size':10, fill:css('--warn')}, m.label.slice(0,24));
   });
   series.forEach(s => {
     let d = '', pen = false, prevT = null;
@@ -293,24 +304,39 @@ function chart(el, series, opts = {}) {
       if (v != null) { d += (pen ? 'L' : 'M') + x(t).toFixed(1) + ' ' + y(v).toFixed(1); pen = true; }
       prevT = t;
     });
-    g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.6}" stroke-linejoin="round"/>`;
+    addSvg(svg, 'path', {d, fill:'none', stroke:s.color, 'stroke-width':s.width || 1.6, 'stroke-linejoin':'round'});
   });
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}<line class="cursor" y1="${T}" y2="${H - B}" stroke="${css('--muted')}" opacity="0"/></svg>
-    <div class="legend">${series.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join('')}</div>`;
-  const svg = $('svg', el);
+  const cursor = addSvg(svg, 'line', {y1:T, y2:H-B, stroke:css('--muted'), opacity:0});
+  cursor.setAttribute('class', 'cursor');
+  const legend = document.createElement('div'); legend.className = 'legend';
+  for (const item of series) {
+    const entry = document.createElement('span'), swatch = document.createElement('i');
+    swatch.style.backgroundColor = item.color;
+    entry.append(swatch, document.createTextNode(String(item.name)));
+    legend.appendChild(entry);
+  }
+  el.replaceChildren(svg, legend);
   svg.onmousemove = (e) => {
     const r = svg.getBoundingClientRect();
     const t = t0 + ((e.clientX - r.left) / r.width * W - L) / (W - L - R) * (t1 - t0);
-    let html = '', best = null;
+    const points = []; let best = null;
     series.forEach(s => {
       let p = null, bd = Infinity;
       for (const q of s.pts) { const d = Math.abs(q[0] - t); if (d < bd) { bd = d; p = q; } }
-      if (p && bd < 15) { best = p[0]; html += `<div><span style="color:${s.color}">●</span> ${esc(s.name)}: <b>${fmt(p[1])}</b> ${opts.unit || ''}</div>`; }
+      if (p && bd < 15) { best = p[0]; points.push({series:s, point:p}); }
     });
     let tip = $('.tip', el);
-    if (!html) { if (tip) tip.remove(); return; }
+    if (!points.length) { if (tip) tip.remove(); return; }
     if (!tip) { tip = document.createElement('div'); tip.className = 'tip'; el.appendChild(tip); }
-    tip.innerHTML = `<div class="muted">${new Date(best * 1000).toTimeString().slice(0, 8)}</div>` + html;
+    tip.replaceChildren();
+    const time = document.createElement('div'); time.className = 'muted'; time.textContent = new Date(best * 1000).toTimeString().slice(0, 8); tip.appendChild(time);
+    for (const {series:item, point} of points) {
+      const row = document.createElement('div'), dot = document.createElement('span'), value = document.createElement('b');
+      dot.textContent = '●'; dot.style.color = item.color;
+      value.textContent = fmt(point[1]);
+      row.append(dot, document.createTextNode(` ${item.name}: `), value, document.createTextNode(` ${opts.unit || ''}`));
+      tip.appendChild(row);
+    }
     const px = e.clientX - r.left;
     tip.style.left = Math.min(px + 12, r.width - tip.offsetWidth - 4) + 'px';
     tip.style.top = '8px';
@@ -327,7 +353,11 @@ function sysSeries(field) {
   return st.samples.filter(s => s.t >= st.now - st.range).map(s => [s.t, s.sys[field] ?? null]);
 }
 function card(k, v, s = '') {
-  return `<div class="card"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`;
+  const element = document.createElement('div'); element.className = 'card';
+  for (const [className, text] of [['k',k], ['v',v], ['s',s]]) {
+    const child = document.createElement('div'); child.className = className; child.textContent = String(text ?? ''); element.appendChild(child);
+  }
+  return element;
 }
 function renderMonitor() {
   if ($('#tab-monitor').hidden) return;
@@ -335,22 +365,22 @@ function renderMonitor() {
   if (!last) return;
   const i = last.inst[st.inst];
   const s = last.sys;
-  let html = '';
+  const cards = [];
   if (i) {
-    html += card('Chrome: вся память', mb(i.fp), `${i.nprocs} процессов`);
-    html += card('вкладки', mb(i.fp_renderer), `${i.n_renderer} процессов`);
-    html += card('расширения', mb(i.fp_extension), `${i.n_extension} процессов`);
-    html += card('GPU', mb(i.fp_gpu));
-    html += card('CPU Chrome', fmt(i.cpu_pct) + '%', '100% = одно ядро');
-    html += card('Пробуждения CPU', fmt(i.wakeups_ps, 0) + '/с');
+    cards.push(card('Chrome: вся память', mb(i.fp), `${i.nprocs} процессов`));
+    cards.push(card('вкладки', mb(i.fp_renderer), `${i.n_renderer} процессов`));
+    cards.push(card('расширения', mb(i.fp_extension), `${i.n_extension} процессов`));
+    cards.push(card('GPU', mb(i.fp_gpu)));
+    cards.push(card('CPU Chrome', fmt(i.cpu_pct) + '%', '100% = одно ядро'));
+    cards.push(card('Пробуждения CPU', fmt(i.wakeups_ps, 0) + '/с'));
   } else {
-    html += card('Chrome', 'не найден', 'запустите браузер');
+    cards.push(card('Chrome', 'не найден', 'запустите браузер'));
   }
-  html += card('Свободно памяти', (s.free_pct ?? '—') + '%', 'всего ' + mb(s.total));
-  html += card('Swap занят', mb(s.swap_used));
-  html += card('Сжатая память', mb(s.compressor));
-  html += card('Чтение из swap', fmt(s.swapins_ps, 0) + ' стр/с', 'распаковки ' + fmt(s.decompressions_ps, 0) + '/с');
-  $('#cards').innerHTML = html;
+  cards.push(card('Свободно памяти', (s.free_pct ?? '—') + '%', 'всего ' + mb(s.total)));
+  cards.push(card('Swap занят', mb(s.swap_used)));
+  cards.push(card('Сжатая память', mb(s.compressor)));
+  cards.push(card('Чтение из swap', fmt(s.swapins_ps, 0) + ' стр/с', 'распаковки ' + fmt(s.decompressions_ps, 0) + '/с'));
+  $('#cards').replaceChildren(...cards);
 
   const o = {t0: st.now - st.range, t1: st.now, marks: st.marks};
   chart($('#chMem'), [
@@ -375,8 +405,15 @@ function renderMonitor() {
   ], o);
 
   const rows = st.procs || [];
-  $('#procs').innerHTML = `<tr><th>PID</th><th>Тип</th><th class="num">Память</th><th class="num">RSS</th><th class="num">CPU, %</th></tr>` +
-    rows.map(r => `<tr><td>${r.pid}</td><td>${TYPE_NAMES[r.type] || r.type}</td><td class="num">${mb(r.fp)}</td><td class="num muted">${mb(r.rss)}</td><td class="num">${fmt(r.cpu)}</td></tr>`).join('');
+  const body = $('#procs'); body.replaceChildren();
+  const heading = document.createElement('tr');
+  for (const [text, cls] of [['PID',''],['Тип',''],['Память','num'],['RSS','num'],['CPU, %','num']]) { const th = document.createElement('th'); th.className = cls; th.textContent = text; heading.appendChild(th); }
+  body.appendChild(heading);
+  for (const row of rows) {
+    const tr = document.createElement('tr');
+    for (const [text, cls] of [[row.pid,''],[TYPE_NAMES[row.type] || row.type,''],[mb(row.fp),'num'],[mb(row.rss),'num muted'],[fmt(row.cpu),'num']]) { const td = document.createElement('td'); td.className = cls; td.textContent = String(text ?? ''); tr.appendChild(td); }
+    body.appendChild(tr);
+  }
 }
 
 $('#markBtn').onclick = async () => {
@@ -391,7 +428,7 @@ $('#mReset').onclick = () => api('/api/manual/reset', {});
 async function manualStart(phase) {
   try {
     await api('/api/manual', {phase, inst: st.inst, window: +$('#mWindow').value, settle: phase === 'B' ? +$('#mSettle').value : 0, label: $('#mLabel').value});
-  } catch (e) { $('#mStatus').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+  } catch (e) { const status = $('#mStatus'); status.textContent = e.message; status.className = 'err'; }
 }
 function renderManual() {
   const m = st.server && st.server.manual; if (!m) return;
@@ -404,7 +441,8 @@ function renderManual() {
   $('#mStatus').textContent = status;
   $('#mA').disabled = !!m.running;
   $('#mB').disabled = !!m.running || !m.A;
-  $('#mResult').innerHTML = m.A ? abTable(m.A, m.B) : '';
+  const result = $('#mResult');
+  result.replaceChildren(...(m.A ? [abTable(m.A, m.B)] : []));
 }
 function better(key, d) {
   if (d == null || Math.abs(d) < 1e-9) return '';
@@ -413,20 +451,32 @@ function better(key, d) {
 }
 function abTable(A, B) {
   const ms = st.meta ? st.meta.metrics : [];
-  return `<table><tr><th>Метрика</th><th class="num">A (до)</th><th class="num">B (после)</th><th class="num">Δ</th><th class="num">Δ %</th></tr>` +
-    ms.map(([k, label, unit]) => {
-      const a = A[k], b = B ? B[k] : null, d = (a != null && b != null) ? b - a : null;
-      const pct = d != null && a ? d / Math.abs(a) * 100 : null;
-      return `<tr><td>${esc(label)}${unit ? ', ' + unit : ''}</td><td class="num">${fmt(a)}</td><td class="num">${fmt(b)}</td>
-        <td class="num ${better(k, d)}">${fmtSigned(d)}</td><td class="num ${better(k, d)}">${pct == null ? '—' : fmtSigned(pct, 0) + '%'}</td></tr>`;
-    }).join('') + `</table><p class="small muted">Сэмплов: A ${A.n}${B ? ', B ' + B.n : ''}.</p>`;
+  const table = document.createElement('table'), header = document.createElement('tr');
+  for (const [text, cls] of [['Метрика',''],['A (до)','num'],['B (после)','num'],['Δ','num'],['Δ %','num']]) { const th=document.createElement('th'); th.className=cls; th.textContent=text; header.appendChild(th); }
+  table.appendChild(header);
+  for (const [key,label,unit] of ms) {
+    const a=A[key], b=B ? B[key] : null, delta=(a != null && b != null) ? b-a : null;
+    const pct=delta != null && a ? delta / Math.abs(a) * 100 : null, tr=document.createElement('tr');
+    const metric=document.createElement('td'); metric.textContent=String(label) + (unit ? `, ${unit}` : ''); tr.appendChild(metric);
+    for (const [text, className] of [[fmt(a),'num'],[fmt(b),'num'],[fmtSigned(delta),`num ${better(key,delta)}`],[pct == null ? '—' : fmtSigned(pct,0)+'%',`num ${better(key,delta)}`]]) {
+      const td=document.createElement('td'); td.className=className; td.textContent=text; tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  const wrapper = document.createElement('div'), note = document.createElement('p');
+  wrapper.appendChild(table); note.className='small muted'; note.textContent=`Сэмплов: A ${A.n}${B ? ', B ' + B.n : ''}.`; wrapper.appendChild(note);
+  return wrapper;
 }
 
 // ---------------- bench ----------------
 function initBenchForm() {
   const defaults = ['control', 'tgs', 'tgs_discard', 'discard'];
-  $('#variants').innerHTML = st.meta.variants.map(([k, name]) =>
-    `<label><input type="checkbox" value="${k}" ${defaults.includes(k) ? 'checked' : ''}> ${esc(name)}</label>`).join('');
+  const variants = $('#variants'); variants.replaceChildren();
+  for (const [key,name] of st.meta.variants) {
+    const label=document.createElement('label'), input=document.createElement('input');
+    input.type='checkbox'; input.value=String(key); input.checked=defaults.includes(key);
+    label.append(input, document.createTextNode(` ${name}`)); variants.appendChild(label);
+  }
   $('#bUrls').value = st.meta.urls.join('\n');
   ['#variants', '#bRepeats', '#bLoad', '#bSettle', '#bWindow'].forEach(s => $(s).addEventListener('input', benchEta));
   benchEta();
@@ -448,7 +498,7 @@ function benchEta() {
 $('#bStart').onclick = async () => {
   const c = benchCfg();
   if (!c.variants.length) return alert('Выберите хотя бы один вариант');
-  try { await api('/api/bench/start', c); } catch (e) { $('#bPhase').innerHTML = `<span class="err">${esc(e.message)}</span>`; }
+  try { await api('/api/bench/start', c); } catch (e) { const phase=$('#bPhase'); phase.textContent=e.message; phase.className='err'; }
 };
 $('#bStop').onclick = () => api('/api/bench/stop', {});
 function renderBench() {
@@ -469,44 +519,58 @@ function renderBench() {
 function renderResults() {
   if (!st.results || $('#tab-results').hidden) return;
   const ms = st.meta.metrics, names = Object.fromEntries(st.meta.variants);
-  let html = '';
+  const root = $('#results'), children = [];
   const sessions = st.results.sessions || [];
-  if (!sessions.length && !(st.results.manual || []).length) html = '<div class="panel muted">Пока нет результатов. Запустите автотест или ручной A/B.</div>';
+  const element = (tag, className, text) => { const node=document.createElement(tag); if(className) node.className=className; if(text !== undefined) node.textContent=String(text ?? ''); return node; };
+  const cell = (row, tag, className, text) => { const node=element(tag,className,text); row.appendChild(node); return node; };
+  const deleteButton = (kind,id) => { const button=element('button','btn danger small','Удалить'); button.dataset.del=kind; button.dataset.id=String(id); return button; };
+  if (!sessions.length && !(st.results.manual || []).length) children.push(element('div','panel muted','Пока нет результатов. Запустите автотест или ручной A/B.'));
   sessions.forEach(s => {
     const sum = s.summary || {};
     const vs = st.meta.variants.map(v => v[0]).filter(v => sum[v]);
     const c = s.config || {};
     const date = new Date(s.started * 1000).toLocaleString('ru');
-    html += `<div class="panel"><div class="row"><h2 style="margin:0">${esc(s.label || 'Автотест')}</h2>
-      <span class="small muted">${date} · ${(c.urls || []).length} вкладок · ${c.repeats} повт. · окно ${c.window} с${s.aborted ? ' · <span class="err">прерван</span>' : ''}${!s.finished ? ' · идёт…' : ''}</span>
-      <div class="spacer"></div><button class="btn danger small" data-del="sessions" data-id="${s.id}">Удалить</button></div>`;
-    if (!vs.length) { html += '<p class="muted small">Нет завершённых прогонов.</p></div>'; return; }
-    html += `<div class="scroll"><table><tr><th>Метрика</th>${vs.map(v => `<th class="num">${esc(names[v])}<div class="muted small">n=${sum[v].n}</div></th>`).join('')}</tr>`;
-    ms.forEach(([k, label, unit]) => {
-      html += `<tr><td>${esc(label)}${unit ? ', ' + unit : ''}</td>`;
+    const panel=element('div','panel'), header=element('div','row');
+    const heading=cell(header,'h2','',s.label || 'Автотест'); heading.style.margin='0';
+    const metaText=`${date} · ${(c.urls || []).length} вкладок · ${c.repeats} повт. · окно ${c.window} с${s.aborted ? ' · прерван' : ''}${!s.finished ? ' · идёт…' : ''}`;
+    cell(header,'span','small muted',metaText); cell(header,'div','spacer'); header.appendChild(deleteButton('sessions',s.id)); panel.appendChild(header);
+    if (!vs.length) { panel.appendChild(element('p','muted small','Нет завершённых прогонов.')); children.push(panel); return; }
+    const scroll=element('div','scroll'), table=document.createElement('table'), head=document.createElement('tr');
+    cell(head,'th','','Метрика');
+    for (const variant of vs) { const th=cell(head,'th','num',names[variant] || variant); cell(th,'div','muted small',`n=${sum[variant].n}`); }
+    table.appendChild(head);
+    ms.forEach(([k,label,unit]) => {
+      const tr=document.createElement('tr'); cell(tr,'td','',String(label)+(unit ? `, ${unit}` : ''));
       vs.forEach(v => {
         const row = sum[v], d = row.delta[k], net = row.net[k];
         const runs = s.runs.filter(r => r.variant === v && r.delta && r.delta[k] != null).map(r => r.delta[k]);
-        const spread = runs.length > 1 ? `<div class="muted small">разброс ${fmtSigned(Math.min(...runs))}…${fmtSigned(Math.max(...runs))}</div>` : '';
+        const spread = runs.length > 1 ? `разброс ${fmtSigned(Math.min(...runs))}…${fmtSigned(Math.max(...runs))}` : '';
         const main = v === 'control' || net == null ? d : net;
-        html += `<td class="num"><b class="${v === 'control' ? '' : better(k, main)}">${fmtSigned(main)}</b>
-          <div class="muted small">${fmt(row.A[k])} → ${fmt(row.B[k])}</div>${spread}</td>`;
+        const td=cell(tr,'td','num',''), bold=cell(td,'b',v === 'control' ? '' : better(k,main),fmtSigned(main));
+        bold.title=''; cell(td,'div','muted small',`${fmt(row.A[k])} → ${fmt(row.B[k])}`);
+        if (spread) cell(td,'div','muted small',spread);
       });
-      html += '</tr>';
+      table.appendChild(tr);
     });
-    html += `</table></div><p class="small muted">Крупно: ${sum.control ? 'чистый эффект (Δ варианта − Δ контроля)' : 'Δ (после − до); контроля нет, дрейф не вычтен'}. Мелко: медиана «до → после».</p>`;
-    html += `<details><summary>Прогоны (${s.runs.length})</summary><div class="scroll"><table class="small"><tr><th>Вариант</th><th>Повтор</th><th>До действия</th><th>Действие</th><th>После</th><th class="num">Δ память</th><th class="num">Δ CPU</th></tr>` +
-      s.runs.map(r => `<tr><td>${esc(names[r.variant])}</td><td>${r.rep + 1}</td><td>${tabState(r.state_before)}</td>
-        <td>${r.error ? `<span class="err">${esc(r.error)}</span>` : esc(JSON.stringify(r.apply || {}))}</td><td>${tabState(r.state_after)}</td>
-        <td class="num">${r.delta ? fmtSigned(r.delta.fp) : '—'}</td><td class="num">${r.delta ? fmtSigned(r.delta.cpu_pct) : '—'}</td></tr>`).join('') +
-      `</table></div></details></div>`;
+    scroll.appendChild(table); panel.append(scroll,element('p','small muted',`Крупно: ${sum.control ? 'чистый эффект (Δ варианта − Δ контроля)' : 'Δ (после − до); контроля нет, дрейф не вычтен'}. Мелко: медиана «до → после».`));
+    const details=document.createElement('details'); cell(details,'summary','',`Прогоны (${s.runs.length})`);
+    const runScroll=element('div','scroll'), runTable=document.createElement('table'); runTable.className='small';
+    const runHead=document.createElement('tr');
+    for (const [text,cls] of [['Вариант',''],['Повтор',''],['До действия',''],['Действие',''],['После',''],['Δ память','num'],['Δ CPU','num']]) cell(runHead,'th',cls,text);
+    runTable.appendChild(runHead);
+    for (const run of s.runs) {
+      const tr=document.createElement('tr');
+      for (const text of [names[run.variant] || run.variant,run.rep+1,tabState(run.state_before),run.error || JSON.stringify(run.apply || {}),tabState(run.state_after),run.delta ? fmtSigned(run.delta.fp) : '—',run.delta ? fmtSigned(run.delta.cpu_pct) : '—']) cell(tr,'td','',text);
+      if (run.error) tr.children[3].className='err'; tr.children[5].className='num'; tr.children[6].className='num'; runTable.appendChild(tr);
+    }
+    runScroll.appendChild(runTable); details.appendChild(runScroll); panel.appendChild(details); children.push(panel);
   });
   (st.results.manual || []).forEach(m => {
-    html += `<div class="panel"><div class="row"><h2 style="margin:0">Ручной: ${esc(m.label)}</h2><span class="small muted">${new Date(m.time * 1000).toLocaleString('ru')}</span>
-      <div class="spacer"></div><button class="btn danger small" data-del="manual" data-id="${m.id}">Удалить</button></div>
-      <details><summary>Таблица</summary><div class="scroll">${abTable(m.A, m.B)}</div></details></div>`;
+    const panel=element('div','panel'), header=element('div','row'), heading=cell(header,'h2','','Ручной: '+(m.label || ''));
+    heading.style.margin='0'; cell(header,'span','small muted',new Date(m.time * 1000).toLocaleString('ru')); cell(header,'div','spacer'); header.appendChild(deleteButton('manual',m.id)); panel.appendChild(header);
+    const details=document.createElement('details'); cell(details,'summary','','Таблица'); const scroll=element('div','scroll'); scroll.appendChild(abTable(m.A,m.B)); details.appendChild(scroll); panel.appendChild(details); children.push(panel);
   });
-  $('#results').innerHTML = html;
+  root.replaceChildren(...children);
 }
 function tabState(s) {
   if (!s) return '—';
@@ -528,8 +592,9 @@ function updateInstances(list) {
     else if (list.length) st.inst = list.slice().sort((a, b) => b.fp - a.fp)[0].key;
     if (st.instManual && !list.some(x => x.key === st.inst)) st.instManual = false;
   }
-  const html = list.map(x => `<option value="${x.key}" ${x.key === st.inst ? 'selected' : ''}>${esc(x.app)} — ${esc(x.label)}${x.key === benchPid ? ' (автотест)' : ''} — ${mb(x.fp)}</option>`).join('') || '<option>Chrome не найден</option>';
-  if (sel.innerHTML !== html) sel.innerHTML = html;
+  const options=list.map(x => { const option=document.createElement('option'); option.value=String(x.key); option.selected=x.key===st.inst; option.textContent=`${x.app} — ${x.label}${x.key===benchPid ? ' (автотест)' : ''} — ${mb(x.fp)}`; return option; });
+  if (!options.length) { const option=document.createElement('option'); option.textContent='Chrome не найден'; options.push(option); }
+  sel.replaceChildren(...options);
 }
 async function poll() {
   try {
