@@ -67,15 +67,15 @@ Run with Node 22 and an already-installed Google Chrome Stable:
 node dev/tools/smoke-test.mjs
 ```
 
-The script starts Chrome with a temporary profile and remote debugging, blocks non-local host resolution, loads the unpacked extension through CDP `Extensions.loadUnpacked`, serves five local-only HTTP pages, then suspends and restores them. It checks the service-worker and extension-page console for errors, the one-time welcome tab, backup opt-in state, and backup alarm state. `CHROME_BIN` can select another already-installed Chrome executable. No browser is downloaded or installed.
+The script starts Chrome with a temporary profile and remote debugging, blocks non-local host resolution, loads the unpacked extension through CDP `Extensions.loadUnpacked`, and serves local-only pages. It checks the service-worker and extension-page console, one-time setup, backup state, five-tab suspend/restore, the suspended page favicon, hostile fragments, and a local web page's `fetch()`, iframe, and image attempts against the suspended page, an icon, and `/_favicon/`. `CHROME_BIN` can select another already-installed Chrome executable. No browser is downloaded or installed.
 
-**Run result (2026-10-29):** Chrome 156.0.8078.73 loaded extension ID `odolpeeackiejlhdfpakabidhggghnlo`. The `options.html?firstTime` and `backup-setup.html` tabs each appeared once. Closing the backup tab left backup disabled and `tgs-session-backup` absent. A hostile `<img src=x onerror=alert(1)>` suspended-page title remained text, with no injected element. Five local tabs suspended and restored. Collected extension console errors/exceptions: none. `tabProperties.url not set`: no; `Failed to fetch`: no; `Failed to parse gsExtensionRecovery`: no.
+**Run result (2026-10-29):** Chrome 156.0.8078.73 loaded extension ID `odolpeeackiejlhdfpakabidhggghnlo`. The welcome and backup setup tabs each appeared once; closing setup left backup disabled and its alarm absent. The hostile title remained plain text. Five local tabs suspended/restored; as they had no site favicon, the suspended page displayed the data-URL fallback. From a local web origin, fetch/image requests for suspended.html, an icon, and `/_favicon/` failed; the iframe resolved to `chrome-error://chromewebdata/`, not the extension page. Extension console errors/exceptions: none. Earlier error signatures: none.
 
 **Limits:** this does not inspect Chrome's internal `chrome://extensions` Errors page, test Brave, test a competing suspender, or exercise every site-specific preview/favicons path. Browser UI appearance and repeat-install behavior still need owner verification.
 
 **Approved injected-page exceptions (2026-10-29):** Three narrowly keyed entries are in `security/service-worker-graph-allowlist.json`: `gsTabSuspendManager.js` / `runInjectedTabTask` / `document.` and `window.`, plus `gsMemorySampler.js` / `collectFrameStats` / `document.`. The guard verifies the functions are passed only to injection calls and rejects matching patterns elsewhere in the worker graph.
 
-**Final verification (2026-10-29):** `node tools/check-guards.mjs` passed; `node --test dev/tests/*.test.mjs` passed 56/56. Chrome 156 smoke passed with the hostile-title probe, five suspend/restore tabs, and no extension console errors. Sink classifications are in `docs/audit/DOM_SINK_REVIEW.md`. Brave and Chrome's internal Errors page were not inspected.
+**Sink classifications:** see `docs/audit/DOM_SINK_REVIEW.md`. Brave and Chrome's internal Errors page were not inspected.
 
 ## Earlier runtime-error evidence
 
