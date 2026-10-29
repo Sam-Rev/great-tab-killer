@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - One-time local session-backup setup page with enable and frequency controls.
 
 ### Changed
+- Suspended URL fragments and session recovery now validate navigation URLs; untrusted page and session text is rendered with DOM text nodes.
 - Rebranded the extension as The Great Tab Killer.
 - Reset the manifest version to `0.1.0`.
 - Favicon metadata now uses the browser favicon cache and falls back to the extension default; it no longer fetches `tabs.Tab.favIconUrl` directly.

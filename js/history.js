@@ -79,7 +79,7 @@ import {gsSession} from "./helpers/gsSession.js";
 
     //if toggled on already, then toggle off
     if (sessionContentsEl.childElementCount > 0) {
-      sessionContentsEl.innerHTML = '';
+      sessionContentsEl.replaceChildren();
       return;
     }
 
@@ -209,9 +209,9 @@ import {gsSession} from "./helpers/gsSession.js";
       importSessionActionEl = document.getElementById('importSessionAction'),
       firstSession = true;
 
-    currentDiv.innerHTML = '';
-    sessionsDiv.innerHTML = '';
-    historyDiv.innerHTML = '';
+    currentDiv.replaceChildren();
+    sessionsDiv.replaceChildren();
+    historyDiv.replaceChildren();
 
     gsIndexedDb.fetchCurrentSessions().then(function(currentSessions) {
       currentSessions.forEach(function(session, index) {

@@ -10,6 +10,7 @@ import { gsTabCheckManager } from "./gsTabCheckManager.js"
 import { gsTabDiscardManager } from "./gsTabDiscardManager.js"
 import { excludeIncognitoTabs } from "./excludeIncognitoTabs.js"
 import { gsBackup } from "./gsBackup.js"
+import { isAllowedNavigationUrl } from "./safeNavigationUrl.js"
 
 export var gsSession = (function () {
   "use strict";
@@ -758,6 +759,8 @@ export var gsSession = (function () {
     suspendMode
   ) {
     let url = sessionTab.url;
+    if (gsUtils.isSuspendedUrl(url)) url = gsUtils.getOriginalUrl(url);
+    if (!isAllowedNavigationUrl(url)) return;
     if (suspendMode === 1 && gsUtils.isNormalTab(sessionTab)) {
       url = gsUtils.generateSuspendedUrl(sessionTab.url, sessionTab.title);
     } else if (suspendMode === 2 && gsUtils.isSuspendedTab(sessionTab)) {

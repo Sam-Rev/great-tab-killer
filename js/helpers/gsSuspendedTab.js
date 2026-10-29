@@ -7,6 +7,7 @@ import {gsSession} from "./gsSession.js"
 import {gsUtils} from "./gsUtils.js"
 import {gsIndexedDb} from "./gsIndexedDb.js"
 import {tgs} from "../tgs.js"
+import {isAllowedNavigationUrl} from "./safeNavigationUrl.js"
 
 export var gsSuspendedTab = (function () {
   "use strict";
@@ -31,11 +32,6 @@ export var gsSuspendedTab = (function () {
 
     // Set title
     let title = gsUtils.getSuspendedTitle(suspendedUrl);
-    if (title.indexOf("<") >= 0) {
-      // Encode any raw html tags that might be used in the title
-      title = gsUtils.htmlEncode(title);
-    }
-
     setTitle(tab, title);
 
     // Set faviconMeta
@@ -101,6 +97,7 @@ export var gsSuspendedTab = (function () {
 
   function requestUnsuspendTab(tab) {
     const originalUrl = gsUtils.getOriginalUrl(tab.url);
+    if (!isAllowedNavigationUrl(originalUrl)) return;
     unsuspendTab(tab, originalUrl);
   }
 

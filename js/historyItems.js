@@ -4,6 +4,7 @@
 import {gsSession} from "./helpers/gsSession.js";
 import {gsUtils} from "./helpers/gsUtils.js";
 import {gsFavicon} from "./helpers/gsFavicon.js";
+import {isAllowedNavigationUrl} from "./helpers/safeNavigationUrl.js";
 
 export var historyItems = (function(global) {
   'use strict';
@@ -37,10 +38,8 @@ export var historyItems = (function(global) {
     } else {
       titleText = gsUtils.getHumanDate(session.date);
     }
-    titleText +=
-      '&nbsp;&nbsp;<small>(' +
-      winCnt +
-      pluralise(
+    const countText =
+      '(' + winCnt + pluralise(
         ' ' + gsUtils.getMessage('js_history_window').toLowerCase(),
         winCnt
       ) +
@@ -50,7 +49,7 @@ export var historyItems = (function(global) {
         ' ' + gsUtils.getMessage('js_history_tab').toLowerCase(),
         tabCnt
       ) +
-      ')</small>';
+      ')';
 
     sessionIcon = createEl('i', {
       class: 'sessionIcon icon icon-plus-squared-alt',
@@ -63,7 +62,10 @@ export var historyItems = (function(global) {
     sessionTitle = createEl('span', {
       class: 'sessionLink',
     });
-    sessionTitle.innerHTML = titleText;
+    sessionTitle.appendChild(document.createTextNode(titleText + '\u00A0\u00A0'));
+    const counts = document.createElement('small');
+    counts.textContent = countText;
+    sessionTitle.appendChild(counts);
 
     sessionSave = createEl(
       'a',
@@ -177,17 +179,18 @@ export var historyItems = (function(global) {
 
   async function createTabHtml(tab, showLinks) {
     var linksSpan, listImg, listLink, listHover;
+    const safeUrl = isAllowedNavigationUrl(tab.url) ? tab.url : '';
 
     if (tab.sessionId) {
       linksSpan = createEl('div', {
         class: 'tabContainer',
-        'data-tabId': tab.id || tab.url,
-        'data-url': tab.url,
+        'data-tabId': tab.id || safeUrl || '',
+        'data-url': safeUrl,
       });
     } else {
       linksSpan = createEl('div', {
         class: 'tabContainer',
-        'data-url': tab.url,
+        'data-url': safeUrl,
       });
     }
 
@@ -207,15 +210,10 @@ export var historyItems = (function(global) {
       width: '16px',
     });
 
-    listLink = createEl(
-      'a',
-      {
-        class: 'historyLink',
-        href: tab.url,
-        target: '_blank',
-      },
-      tab.title && tab.title.length > 1 ? tab.title : tab.url
-    );
+    const linkTitle = tab.title && tab.title.length > 1 ? tab.title : tab.url;
+    listLink = safeUrl
+      ? createEl('a', {class: 'historyLink', href: safeUrl, target: '_blank'}, linkTitle)
+      : createEl('span', {class: 'historyLink'}, linkTitle || '');
 
     if (showLinks) {
       linksSpan.appendChild(listHover);
@@ -231,7 +229,7 @@ export var historyItems = (function(global) {
     var el = document.createElement(elType);
     attributes = attributes || {};
     el = setElAttributes(el, attributes);
-    el.innerHTML = gsUtils.htmlEncode(text || '');
+    el.textContent = text || '';
     return el;
   }
   function setElAttributes(el, attributes) {
