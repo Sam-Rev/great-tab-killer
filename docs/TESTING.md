@@ -58,3 +58,25 @@ Use a clean Brave profile with only this extension installed. Confirm:
 - Open five regular tabs, suspend and restore them normally, and confirm the Brave Errors page, extension Errors page, and service-worker console show none of: `tabProperties.url not set`, `Failed to fetch`, or `Failed to parse gsExtensionRecovery`.
 
 Automated coverage verifies the local defaults, backup alarm gating, incognito tab filter, supported suspension URL schemes, recovery-state failure handling, and favicon fetch rejection propagation. Browser behavior remains a manual check.
+
+## Chrome Stable clean-profile smoke test
+
+Run with Node 22 and an already-installed Google Chrome Stable:
+
+```sh
+node dev/tools/smoke-test.mjs
+```
+
+The script starts Chrome with a temporary profile and remote debugging, blocks non-local host resolution, loads the unpacked extension through CDP `Extensions.loadUnpacked`, serves five local-only HTTP pages, then suspends and restores them. It checks the service-worker and extension-page console for errors, the one-time welcome tab, backup opt-in state, and backup alarm state. `CHROME_BIN` can select another already-installed Chrome executable. No browser is downloaded or installed.
+
+**Run result (2026-10-29):** Chrome 156.0.8078.73 loaded extension ID `odolpeeackiejlhdfpakabidhggghnlo`. The `options.html?firstTime` tab appeared exactly once; notice flag was set; backup enabled was false and `tgs-session-backup` alarm was absent. Five local tabs suspended and restored. Collected extension console errors/exceptions: none. `tabProperties.url not set`: no; `Failed to fetch`: no; `Failed to parse gsExtensionRecovery`: no.
+
+**Limits:** this does not inspect Chrome's internal `chrome://extensions` Errors page, test Brave, test a competing suspender, or exercise every site-specific preview/favicons path. Browser UI appearance and repeat-install behavior still need owner verification.
+
+**Guard and test run (2026-10-29):** `node --test dev/tests/*.test.mjs` passed all 44 tests. `node tools/check-guards.mjs` exited 1 with 14 service-worker graph hits: `window.` in `js/tgs.js`, `gsUtils.js`, `gsSession.js`, `gsTabCheckManager.js`, `gsTabSuspendManager.js`; `document.` in `gsUtils.js`, `gsTabSuspendManager.js`, `gsBackup.js`, `gsMemorySampler.js`; `localStorage` in `gsUtils.js`, `gsStorage.js`, `gsSession.js`, `gsTabCheckManager.js`, `gsTabDiscardManager.js`. There were no graph hits for dynamic `import(` or `sessionStorage`. The scanner follows files by static imports and reports every matching file even where a function body is later injected into a tab; these source hits remain for owner review.
+
+## Earlier runtime-error evidence
+
+- **Missing `tabProperties.url` — trigger Certain; conflicting-extension attribution Likely, not proven.** The upstream baseline's `saveSuspendData()` persisted `tab.url` without validating it. Current suspension rejects tabs with missing/unsupported URLs, rechecks the live tab after asynchronous work, and `saveSuspendData()` skips unsafe/missing URLs. A competing suspender can replace a page during this flow, but the original report had no tab ID or full stack to prove that was the cause. Clean-profile smoke: no occurrence.
+- **`Failed to fetch` — source Guess / unresolved.** The baseline already fetched favicons and vendored html2canvas could fetch page images. Commits `ccb4fbe` and `f688080` removed direct fetches of tab-provided favicon URLs and restricted the remaining favicon fetch to the extension's `chrome://favicon` resource; its caller catches fetch failures. Preview generation also catches canvas errors. With no stack, the old profile's source cannot be identified. Clean-profile smoke: no occurrence.
+- **`Failed to parse gsExtensionRecovery` — inherited; schema-version regression ruled out (Certain).** The upstream baseline parsed the same JSON timestamp key written with `JSON.stringify`; Phase 2 schema versioning did not change that key or format. Missing state previously entered the parse-error branch. Missing values now return empty state quietly; malformed values warn and return empty state, without changing stored data. Covered by `dev/tests/storage-schema.test.mjs`. Clean-profile smoke: no occurrence.

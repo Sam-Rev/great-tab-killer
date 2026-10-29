@@ -1,0 +1,193 @@
+#!/usr/bin/env node
+// Clean-profile Chrome smoke test. Uses only Node 22 built-ins and Chrome CDP.
+import { spawn } from 'node:child_process';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import http from 'node:http';
+import os from 'node:os';
+import path from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const chromeBin = process.env.CHROME_BIN || 'google-chrome';
+const errors = [];
+const timeoutMs = Number(process.env.SMOKE_TIMEOUT_MS || 90000);
+let profile;
+let chrome;
+let server;
+let cdp;
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+async function waitFor(fn, label, timeout = timeoutMs) {
+  const end = Date.now() + timeout;
+  while (Date.now() < end) {
+    const value = await fn();
+    if (value) return value;
+    await delay(250);
+  }
+  throw new Error(`Timed out waiting for ${label}`);
+}
+
+function connectCdp(url) {
+  const ws = new WebSocket(url);
+  const pending = new Map();
+  const listeners = new Set();
+  let nextId = 0;
+  ws.addEventListener('message', ({ data }) => {
+    const message = JSON.parse(data);
+    if (message.id && pending.has(message.id)) {
+      const { resolve, reject, method } = pending.get(message.id);
+      pending.delete(message.id);
+      if (message.error) reject(new Error(`${method}: ${message.error.code}: ${message.error.message}`));
+      else resolve(message.result || {});
+    } else {
+      for (const listener of listeners) listener(message);
+    }
+  });
+  const ready = new Promise((resolve, reject) => {
+    ws.addEventListener('open', resolve, { once: true });
+    ws.addEventListener('error', () => reject(new Error('CDP WebSocket connection failed')), { once: true });
+  });
+  return {
+    ready,
+    onMessage(listener) { listeners.add(listener); },
+    send(method, params = {}, sessionId) {
+      const id = ++nextId;
+      const promise = new Promise((resolve, reject) => pending.set(id, { resolve, reject, method }));
+      ws.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));
+      return promise;
+    },
+    close() { ws.close(); },
+  };
+}
+
+async function startServer() {
+  server = http.createServer((request, response) => {
+    const page = new URL(request.url, 'http://127.0.0.1').pathname;
+    if (!/^\/[1-5]$/.test(page)) { response.writeHead(404).end('not found'); return; }
+    response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+    response.end(`<!doctype html><title>Smoke ${page.slice(1)}</title><h1>Local page ${page.slice(1)}</h1>`);
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  return server.address().port;
+}
+
+async function main() {
+  const port = await startServer();
+  profile = await mkdtemp(path.join(os.tmpdir(), 'tgs-smoke-'));
+  chrome = spawn(chromeBin, [
+    `--user-data-dir=${profile}`, '--remote-debugging-port=0',
+    '--enable-unsafe-extension-debugging', '--no-first-run', '--no-default-browser-check',
+    '--disable-background-networking', '--disable-component-update', '--headless=new',
+    '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1',
+    'about:blank',
+  ], { stdio: 'ignore' });
+  const activePortPath = path.join(profile, 'DevToolsActivePort');
+  const activePort = await waitFor(async () => {
+    try { return (await readFile(activePortPath, 'utf8')).trim().split(/\r?\n/)[0]; }
+    catch { return null; }
+  }, 'Chrome remote debugging endpoint', 15000);
+  const version = await (await fetch(`http://127.0.0.1:${activePort}/json/version`)).json();
+  cdp = connectCdp(version.webSocketDebuggerUrl);
+  await cdp.ready;
+  await cdp.send('Target.setDiscoverTargets', { discover: true });
+  cdp.onMessage(async (message) => {
+    if (message.method === 'Target.targetCreated') {
+      const target = message.params.targetInfo;
+      if (target.type !== 'service_worker' && !target.url.startsWith('chrome-extension://')) return;
+      try {
+        const { sessionId } = await cdp.send('Target.attachToTarget', { targetId: target.targetId, flatten: true });
+        await cdp.send('Runtime.enable', {}, sessionId);
+        await cdp.send('Log.enable', {}, sessionId);
+        const collect = (text) => errors.push(`${target.type} ${target.url}: ${text}`);
+        // Events carry their sessionId in the outer protocol message.
+        cdp.onMessage((event) => {
+          if (event.sessionId !== sessionId) return;
+          if (event.method === 'Runtime.exceptionThrown') collect(event.params.exceptionDetails?.text || 'uncaught exception');
+          if (event.method === 'Runtime.consoleAPICalled' && event.params.type === 'error') {
+            collect(event.params.args?.map((arg) => arg.value || arg.description || '').join(' '));
+          }
+          if (event.method === 'Log.entryAdded' && event.params.entry.level === 'error') collect(event.params.entry.text);
+        });
+      } catch (error) { errors.push(`Could not attach to ${target.url}: ${error.message}`); }
+    }
+  });
+
+  let loaded;
+  try {
+    loaded = await cdp.send('Extensions.loadUnpacked', { path: root });
+  } catch (error) {
+    throw new Error(`Extensions.loadUnpacked unavailable/refused by Chrome ${version.Browser}: ${error.message}`);
+  }
+  const extensionId = loaded.id || loaded.extensionId;
+  assert(extensionId, `Extensions.loadUnpacked returned no extensionId: ${JSON.stringify(loaded)}`);
+  const extensionOrigin = `chrome-extension://${extensionId}/`;
+  const targets = () => cdp.send('Target.getTargets');
+  await waitFor(async () => (await targets()).targetInfos.some((target) => target.type === 'service_worker' && target.url.startsWith(extensionOrigin)), 'extension service worker');
+  const evalExtension = async (expression) => {
+    let lastError;
+    for (let attempt = 0; attempt < 12; attempt++) {
+      const page = (await targets()).targetInfos.find((target) => target.type === 'page' && target.url.startsWith(extensionOrigin));
+      if (!page) { await delay(200); continue; }
+      try {
+        const { sessionId } = await cdp.send('Target.attachToTarget', { targetId: page.targetId, flatten: true });
+        await cdp.send('Runtime.enable', {}, sessionId);
+        const result = await cdp.send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, sessionId);
+        if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
+        return result.result?.value;
+      } catch (error) { lastError = error; await delay(200); }
+    }
+    throw lastError || new Error('No stable extension page was available');
+  };
+  const welcomeUrl = `${extensionOrigin}html/options.html?firstTime`;
+  await waitFor(async () => (await targets()).targetInfos.filter((target) => target.url === welcomeUrl).length === 1, 'one first-run welcome tab');
+  await delay(1500);
+  assert((await targets()).targetInfos.filter((target) => target.url === welcomeUrl).length === 1, 'Welcome tab did not remain exactly once');
+  const initialState = await evalExtension(`(async()=>({backupEnabled:(await chrome.storage.local.get('gsBackupEnabled')).gsBackupEnabled===true,noticeShown:(await chrome.storage.local.get('gsBackupSetupNoticeShown')).gsBackupSetupNoticeShown===true,backupAlarm:!!(await chrome.alarms.get('tgs-session-backup'))}))()`);
+  assert(initialState.noticeShown && !initialState.backupEnabled && !initialState.backupAlarm, `Unexpected first-run backup state: ${JSON.stringify(initialState)}`);
+
+  const urls = Array.from({ length: 5 }, (_, index) => `http://127.0.0.1:${port}/${index + 1}`);
+  const ids = [];
+  for (const url of urls) ids.push((await cdp.send('Target.createTarget', { url })).targetId);
+  await waitFor(async () => {
+    const state = await evalExtension(`(async()=>{const wanted=${JSON.stringify(urls)};return (await chrome.tabs.query({})).filter(t=>wanted.includes(t.url)).map(t=>({id:t.id,url:t.url}))})()`);
+    if (state.length !== 5) return null;
+    await evalExtension(`(async()=>{for(const t of await chrome.tabs.query({})){if(${JSON.stringify(urls)}.includes(t.url))await chrome.runtime.sendMessage({function:'suspendTab',tab:t})}})()`);
+    return true;
+  }, 'five local test tabs');
+  const suspendedPattern = `${extensionOrigin}html/suspended.html`;
+  await waitFor(async () => {
+    const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
+    const matches = tabs.filter((tab) => tab.url.startsWith(suspendedPattern));
+    if (matches.length !== 5) return null;
+    await evalExtension(`(async()=>{for(const t of await chrome.tabs.query({})){if(t.url.startsWith(${JSON.stringify(suspendedPattern)}))await chrome.runtime.sendMessage({function:'unsuspendTab',tab:t})}})()`);
+    return true;
+  }, 'five suspended tabs');
+  await waitFor(async () => {
+    const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
+    return urls.every((url) => tabs.some((tab) => tab.url === url));
+  }, 'five restored tabs');
+  await delay(1500);
+  const priorErrors = {
+    missingSuspendedUrl: errors.some((entry) => entry.includes('tabProperties.url not set')),
+    failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
+    recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
+  };
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupState: initialState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
+}
+
+try {
+  await main();
+} catch (error) {
+  process.stderr.write(`SMOKE TEST STOPPED: ${error.stack || error}\n`);
+  process.exitCode = 1;
+} finally {
+  cdp?.close();
+  if (chrome && chrome.exitCode === null) { chrome.kill('SIGTERM'); await delay(500); }
+  if (server) await new Promise((resolve) => server.close(resolve));
+  if (profile) await rm(profile, { recursive: true, force: true });
+}
