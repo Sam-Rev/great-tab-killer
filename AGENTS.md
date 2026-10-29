@@ -1,48 +1,34 @@
-# AGENTS.md — Operating rules for coding agents
+# Agent operating rules
 
-Project: **The Great Tab Killer** — a Manifest V3 Chromium extension that suspends inactive tabs. Local-first, open source (GPL-2.0), distributed via GitHub only (unpacked / release zip). **Not** on the Chrome Web Store.
+## Before any task
 
-Full plan: `TAB_KILLER_ROADMAP.md`. Master task prompt: `CODEX_PROMPT.md`. If anything here conflicts with a chat instruction from the owner, the owner's latest explicit instruction wins — but ask before relaxing any rule marked **[HARD]**.
+- Read `docs/DECISIONS.md` first.
+- Never change a FINAL decision.
+- Work on one task at a time.
+- Do not merge, tag, push, or edit allowlists unless the task explicitly says so.
+- If a task conflicts with a decision or is ambiguous, stop and ask one question with 2–3 options and a recommended default.
+- Do not invent a different approach.
 
 ## Hard rules
 
-- **[HARD] No new permission, host permission, network call, remote script/style/font/image, telemetry, or runtime dependency** without explicit owner approval in the conversation. If a task seems to require one, stop and ask.
-- **[HARD] Never edit `security/*.lock.json`, `security/url-allowlist.txt`, `vendor/CHECKSUMS.sha256`, or `tools/check-guards.mjs` just to make a failing check pass.** Explain the failure and wait.
-- **[HARD] No AI-tool attribution** anywhere: no `Co-Authored-By:` trailers, no "Generated with ..." lines, no AI tool listed as author/contributor, in commits, PRs, or files.
-- **[HARD] No remote code execution paths:** no `eval`, `new Function`, string timers, `importScripts` of remote URLs, `document.write`, or data-driven `innerHTML`.
-- **[HARD] Never claim something works unless you ran it.** Report: done / verified (how) / not verified / not tested.
-- **[HARD] No build step for the shipped extension.** The repo folder must load directly via `chrome://extensions` → Load unpacked. Dev tooling (tests, guards) may use Node but must stay dependency-light and out of the release zip.
+- Never edit security locks, allowlists, vendor checksums, or guards just to make a failing check pass. Explain the failure and stop.
+- Never add remote execution, data-driven `innerHTML`, or a shipped build step.
+- Never claim a check passed unless it was run. Clearly label what was verified, not verified, or not tested.
+- Dev tooling must stay dependency-light and out of the shipped extension.
 
-## Working style
+## Working rules
 
-- One phase per branch (`phase-N-short-name`); small commits; Conventional Commits in English (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`, `ci:`).
-- Do not delete code on a hunch: follow the evidence method in Phase 2 of the roadmap and log removals in `docs/CLEANUP_LOG.md`.
-- Use confidence labels in docs and reports: **Certain** (verified), **Likely** (strong deduction), **Guess** (gap-filling). If most of a report is guesswork, say so in its first line.
-- If the environment has no network or no browser, mark network/browser-dependent verification as **UNVERIFIED / NOT RUN** and provide exact manual steps for the owner. Never fake it.
-- Prefer the smallest change that fully solves the problem. No drive-by refactors outside the current task.
-- Ask the owner one precise question when blocked, instead of guessing.
-- Do not reread large files already reviewed unless the task needs it; cite `file:line` from existing audit documentation when that is sufficient.
+- Use small Conventional Commits in English. Do not delete code without evidence; record removals in `docs/CLEANUP_LOG.md`.
+- Use **Certain**, **Likely**, and **Guess** confidence labels in findings and reports.
+- If browser or network verification is unavailable, say **UNVERIFIED / NOT RUN** and provide exact manual steps.
+- Prefer the smallest complete change. Do not make unrelated edits.
+- Do not reread large files already reviewed unless needed; use targeted searches and existing audit citations.
+- Keep repository content and owner communication in English and concise.
 
-## Communication with the owner
+## Architecture notes
 
-- Reply to the owner in **English**. Keep reasoning, reports, and all repository content in English.
-- Keep reports concise, about 25 lines maximum. Link to files instead of re-listing their contents. Do not restate earlier reports or unchanged roadmap items. Use the six-part report format in `CODEX_PROMPT.md` §8 only when something changed.
-- Be direct and rigorous. No flattery or filler agreement. If a request has a real flaw or risk, say it in the first sentence. Do not backtrack under pressure; change position only for new information or a better argument.
-- Short sentences, short bullets, one idea per bullet. Start with the most useful thing.
-- Everything that goes **into the repository** (code, comments, docs, commits, PR text) is in **English**.
-
-## Architecture notes (keep updated)
-
-- Service worker entry: `js/serviceWorker.js` (module). Core logic: `js/tgs.js` + `js/helpers/*`.
-- A suspended tab is a normal tab whose URL is replaced with `html/suspended.html#ttl=…&pos=…&uri=…` (see `gsUtils.generateSuspendedUrl`). Treat every one of those parameters as untrusted input.
-- The service worker can be terminated at any time: do not rely on in-memory timers/state for anything that must survive (use `chrome.alarms` + `chrome.storage`).
-- Content script `js/contentscript.js` runs on all pages: keep it minimal and never expose a bridge to the page.
-- Vendored libraries live in `js/helpers/` today (`html2canvas.min.js`, `dom-to-image.js`, `db.js`); they must be pinned with hashes and never edited in place.
-
-## Definition of done for any task
-
-1. Code/doc change committed with a clear message.
-2. Guards/tests relevant to the task run (state which).
-3. Docs updated (`CHANGELOG.md`, `PRIVACY.md`, `docs/*`) when behaviour, storage, or permissions change.
-4. Roadmap checkbox updated + status note.
-5. Final report in the required format (see `CODEX_PROMPT.md` §8).
+- Service worker entry: `js/serviceWorker.js`; core: `js/tgs.js` and `js/helpers/*`.
+- Suspended-page URL parameters are untrusted input.
+- Service workers can stop at any time; persistent timing/state uses alarms and storage.
+- Content scripts on web pages stay minimal and expose no page bridge.
+- Vendored libraries in `js/helpers/` are pinned and never edited in place.
