@@ -8,6 +8,7 @@ import "./helpers/db.js";
 import {gsIndexedDb} from "./helpers/gsIndexedDb.js";
 import {gsChrome} from "./helpers/gsChrome.js";
 import {gsUtils} from "./helpers/gsUtils.js";
+import {isAllowedNavigationUrl} from "./helpers/safeNavigationUrl.js";
 
 (function () {
   "use strict";
@@ -145,12 +146,15 @@ import {gsUtils} from "./helpers/gsUtils.js";
 
     for (var tabToRecover of tabsToRecover) {
       tabToRecover.title = gsUtils.getCleanTabTitle(tabToRecover);
-      tabToRecover.url = gsUtils.getOriginalUrl(tabToRecover.url);
+      tabToRecover.url = gsUtils.isSuspendedUrl(tabToRecover.url)
+        ? gsUtils.getOriginalUrl(tabToRecover.url)
+        : tabToRecover.url;
+      if (!isAllowedNavigationUrl(tabToRecover.url)) continue;
       tabEl = await historyItems.createTabHtml(tabToRecover, false);
       tabEl.onclick = function () {
         return function (e) {
           e.preventDefault();
-          chrome.tabs.create({ url: tabToRecover.url, active: false });
+          if (isAllowedNavigationUrl(tabToRecover.url)) chrome.tabs.create({ url: tabToRecover.url, active: false });
           removeTabFromList(tabToRecover);
         };
       };

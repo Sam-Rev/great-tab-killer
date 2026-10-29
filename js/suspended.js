@@ -1,12 +1,22 @@
 import {gsFavicon} from "./helpers/gsFavicon.js";
 import {gsStorage} from "./helpers/gsStorage.js";
 import {gsUtils} from "./helpers/gsUtils.js";
+import {isAllowedNavigationUrl} from "./helpers/safeNavigationUrl.js";
+
+// Display a fragment title immediately, before the worker finishes tab setup.
+const fragmentTitle = gsUtils.getSuspendedTitle(document.location.href);
+if (fragmentTitle) {
+  document.title = fragmentTitle;
+  document.getElementById("gsTitle").textContent = fragmentTitle;
+  document.getElementById("gsTopBarTitle").textContent = fragmentTitle;
+}
 
 function buildUnsuspendTabHandler() {
   const originalUrl = gsUtils.getOriginalUrl(document.location.href);
   return function (e) {
     e.preventDefault();
     e.stopPropagation();
+    if (!isAllowedNavigationUrl(originalUrl)) return;
     if (e.target.id === "setKeyboardShortcut") {
       chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
     } else if (e.which === 1) {
@@ -21,8 +31,7 @@ function buildImagePreview(previewUri) {
     const bodyEl = document.getElementsByTagName("body")[0];
     previewEl.setAttribute("id", "gsPreviewContainer");
     previewEl.classList.add("gsPreviewContainer");
-    previewEl.innerHTML =
-      document.getElementById("previewTemplate").innerHTML;
+    previewEl.appendChild(document.getElementById("previewTemplate").content.cloneNode(true));
     const unsuspendTabHandler = buildUnsuspendTabHandler();
     previewEl.onclick = unsuspendTabHandler;
     gsUtils.localiseHtml(previewEl);
@@ -84,12 +93,13 @@ function loadToastTemplate() {
   const toastEl = document.createElement("div");
   toastEl.setAttribute("id", "disconnectedNotice");
   toastEl.classList.add("toast-wrapper");
-  toastEl.innerHTML = document.getElementById("toastTemplate").innerHTML;
+  toastEl.appendChild(document.getElementById("toastTemplate").content.cloneNode(true));
   gsUtils.localiseHtml(toastEl);
   document.getElementsByTagName("body")[0].appendChild(toastEl);
 }
 
 function unsuspendTab(originalUrl) {
+  if (!isAllowedNavigationUrl(originalUrl)) return;
   if (document.body.classList.contains("img-preview-mode")) {
     document.getElementById("refreshSpinner").classList.add("spinner");
   } else {
@@ -151,7 +161,7 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
         sendResponse(!bodyEl.classList.contains('hide-initially'));
         return false;
       } else if (request.action === 'unsuspendTab') {
-        unsuspendTab(request.originalUrl);
+        if (isAllowedNavigationUrl(request.originalUrl)) unsuspendTab(request.originalUrl);
         sendResponse();
         return false;
       } else if (request.action === 'setSessionId') {
@@ -162,9 +172,10 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
         sendResponse(document.sessionId);
         return false;
       } else if (request.action === 'setTitle') {
-        document.title = request.title;
-        document.getElementById("gsTitle").innerHTML = request.title;
-        document.getElementById("gsTopBarTitle").innerHTML = request.title;
+        const title = typeof request.title === 'string' ? request.title : '';
+        document.title = title;
+        document.getElementById("gsTitle").textContent = title;
+        document.getElementById("gsTopBarTitle").textContent = title;
         // Prevent unsuspend by parent container
         // Using mousedown event otherwise click can still be triggered if
         // mouse is released outside of this element
@@ -224,27 +235,39 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
         sendResponse();
         return true;
       } else if (request.action === 'setUrl') {
-        document.getElementById("gsTopBarUrl").innerHTML = cleanUrl(request.url);
-        document.getElementById("gsTopBarUrl").setAttribute("href", request.url);
+        const urlLink = document.getElementById("gsTopBarUrl");
+        const safeUrl = isAllowedNavigationUrl(request.url) ? request.url : '';
+        urlLink.textContent = safeUrl ? cleanUrl(safeUrl) : String(request.url || '');
+        if (safeUrl) urlLink.setAttribute("href", safeUrl);
+        else urlLink.removeAttribute("href");
         document.getElementById("gsTopBarUrl").onmousedown = function (e) {
           e.stopPropagation();
         };
         const unsuspendTabHandler = buildUnsuspendTabHandler();
-        document.getElementById("gsTopBarUrl").onclick = unsuspendTabHandler;
-        document.getElementById("gsTopBar").onmousedown = unsuspendTabHandler;
-        document.getElementById("suspendedMsg").onclick = unsuspendTabHandler;
+        urlLink.onclick = unsuspendTabHandler;
+        if (safeUrl) {
+          document.getElementById("gsTopBar").onmousedown = unsuspendTabHandler;
+          document.getElementById("suspendedMsg").onclick = unsuspendTabHandler;
+        }
         sendResponse();
         return false;
       } else if (request.action === 'setCommand') {
         const hotkeyEl = document.getElementById("hotkeyWrapper");
+        hotkeyEl.replaceChildren();
         if (request.command) {
-          hotkeyEl.innerHTML =
-            '<span class="hotkeyCommand">(' + request.command + ")</span>";
+          const span = document.createElement('span');
+          span.className = 'hotkeyCommand';
+          span.textContent = `(${request.command})`;
+          hotkeyEl.appendChild(span);
         } else {
           const reloadString = gsUtils.getMessage(
             "js_suspended_hotkey_to_reload"
           );
-          hotkeyEl.innerHTML = `<a id="setKeyboardShortcut" href="#">${reloadString}</a>`;
+          const link = document.createElement('a');
+          link.id = 'setKeyboardShortcut';
+          link.href = '#';
+          link.textContent = reloadString;
+          hotkeyEl.appendChild(link);
         }
         sendResponse();
         return false;
@@ -261,7 +284,7 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
           const containerEl = document.getElementById("suspendedMsg-instr");
           containerEl.insertBefore(reasonMsgEl, containerEl.firstChild);
         }
-        reasonMsgEl.innerHTML = request.reason;
+        reasonMsgEl.textContent = typeof request.reason === 'string' ? request.reason : '';
 
         sendResponse();
         return false;

@@ -12,6 +12,7 @@ import {gsFavicon} from "./helpers/gsFavicon.js"
 import {gsTabSuspendManager} from "./helpers/gsTabSuspendManager.js"
 import {gsTabDiscardManager} from "./helpers/gsTabDiscardManager.js"
 import {gsSuspendedTab} from "./helpers/gsSuspendedTab.js"
+import {isAllowedNavigationUrl} from "./helpers/safeNavigationUrl.js"
 
 export var tgs = (function () {
   // eslint-disable-line no-unused-vars
@@ -250,11 +251,9 @@ export var tgs = (function () {
     getCurrentlyActiveTab(function (activeTab) {
       if (activeTab) {
         if (gsUtils.isSuspendedTab(activeTab)) {
-          let url = gsUtils.getRootUrl(
-            gsUtils.getOriginalUrl(activeTab.url),
-            includePath,
-            false
-          );
+          const originalUrl = gsUtils.getOriginalUrl(activeTab.url);
+          if (!isAllowedNavigationUrl(originalUrl)) return;
+          let url = gsUtils.getRootUrl(originalUrl, includePath, false);
           gsUtils.saveToWhitelist(url);
           unsuspendTab(activeTab);
         } else if (gsUtils.isNormalTab(activeTab)) {
@@ -379,6 +378,7 @@ export var tgs = (function () {
   }
 
   function openLinkInSuspendedTab(parentTab, linkedUrl) {
+    if (!isAllowedNavigationUrl(linkedUrl)) return;
     //imitate chromes 'open link in new tab' behaviour in how it selects the correct index
     chrome.tabs.query(
       { windowId: chrome.windows.WINDOW_ID_CURRENT },
@@ -647,7 +647,7 @@ export var tgs = (function () {
 
     // Reloading directly causes a history item for the suspended tab to be made in the tab history.
     let url = gsUtils.getOriginalUrl(tab.url);
-    if (url) {
+    if (isAllowedNavigationUrl(url)) {
       gsUtils.log(tab.id, "Unsuspending tab via chrome.tabs.update");
       chrome.tabs.update(tab.id, { url: url });
       return;

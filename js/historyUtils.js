@@ -3,6 +3,7 @@
 
 import {gsIndexedDb} from "./helpers/gsIndexedDb.js";
 import {gsUtils} from "./helpers/gsUtils.js";
+import {parseImportedSessionText} from "./helpers/safeNavigationUrl.js";
 
 export var historyUtils = (function(global) {
   'use strict';
@@ -45,47 +46,36 @@ export var historyUtils = (function(global) {
       }
 
       var sessionId = '_' + gsUtils.generateHashCode(sessionName);
-      var windows = [];
-
-      var createNextWindow = function() {
-        return {
-          id: sessionId + '_' + windows.length,
-          tabs: [],
-        };
-      };
-      var curWindow = createNextWindow();
-
-      for (const line of textContents.split('\n')) {
-        if (typeof line !== 'string') {
-          continue;
-        }
-        if (line === '') {
-          if (curWindow.tabs.length > 0) {
-            windows.push(curWindow);
-            curWindow = createNextWindow();
-          }
-          continue;
-        }
-        if (line.indexOf('://') < 0) {
-          continue;
-        }
-        const tabInfo = {
-          windowId: curWindow.id,
-          sessionId: sessionId,
-          id: curWindow.id + '_' + curWindow.tabs.length,
-          url: line,
-          title: line,
-          index: curWindow.tabs.length,
-          pinned: false,
-        };
-        const savedTabInfo = await gsIndexedDb.fetchTabInfo(line);
-        if (savedTabInfo) {
-          tabInfo.title = savedTabInfo.title;
-          tabInfo.favIconUrl = savedTabInfo.favIconUrl;
-        }
-        curWindow.tabs.push(tabInfo);
+      const parsed = parseImportedSessionText(textContents);
+      if (!parsed.entries.length) {
+        alert(`No valid URLs were imported. Skipped ${parsed.skipped} invalid URL line(s).`);
+        return;
       }
-      if (curWindow.tabs.length > 0) {
+      const grouped = new Map();
+      for (const entry of parsed.entries) {
+        if (!grouped.has(entry.windowIndex)) grouped.set(entry.windowIndex, []);
+        grouped.get(entry.windowIndex).push(entry.url);
+      }
+      const windows = [];
+      for (const urls of grouped.values()) {
+        const curWindow = {id: sessionId + '_' + windows.length, tabs: []};
+        for (const line of urls) {
+          const tabInfo = {
+            windowId: curWindow.id,
+            sessionId: sessionId,
+            id: curWindow.id + '_' + curWindow.tabs.length,
+            url: line,
+            title: line,
+            index: curWindow.tabs.length,
+            pinned: false,
+          };
+          const savedTabInfo = await gsIndexedDb.fetchTabInfo(line);
+          if (savedTabInfo) {
+            tabInfo.title = savedTabInfo.title;
+            tabInfo.favIconUrl = savedTabInfo.favIconUrl;
+          }
+          curWindow.tabs.push(tabInfo);
+        }
         windows.push(curWindow);
       }
 
@@ -96,6 +86,7 @@ export var historyUtils = (function(global) {
         date: new Date().toISOString(),
       };
       await gsIndexedDb.updateSession(session);
+      if (parsed.skipped) alert(`Skipped ${parsed.skipped} invalid URL line(s).`);
     }
   }
 

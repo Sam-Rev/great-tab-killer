@@ -5,6 +5,7 @@ import {gsStorage} from "./gsStorage.js"
 import {gsSession} from "./gsSession.js"
 import {gsMessages} from "./gsMessages.js"
 import {gsUtils} from "./gsUtils.js"
+import {isAllowedNavigationUrl} from "./safeNavigationUrl.js"
 import {gsChrome} from "./gsChrome.js"
 import {gsTabDiscardManager} from "./gsTabDiscardManager.js"
 import {GsTabQueue} from "./gsTabQueue.js"
@@ -392,7 +393,9 @@ export var gsTabCheckManager = (function() {
 
   async function unsuspendSuspendedTab(tab) {
     const originalUrl = gsUtils.getOriginalUrl(tab.url);
+    if (!isAllowedNavigationUrl(originalUrl)) return false;
     await gsChrome.tabsUpdate(tab.id, { url: originalUrl });
+    return true;
   }
 
   async function ensureSuspendedTabVisible(tab) {

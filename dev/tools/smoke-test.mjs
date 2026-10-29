@@ -127,6 +127,21 @@ async function main() {
   const extensionOrigin = `chrome-extension://${extensionId}/`;
   const targets = () => cdp.send('Target.getTargets');
   await waitFor(async () => (await targets()).targetInfos.some((target) => target.type === 'service_worker' && target.url.startsWith(extensionOrigin)), 'extension service worker');
+  const hostileTitle = '<img src=x onerror=alert(1)>';
+  const hostileFragment = `#ttl=${encodeURIComponent(hostileTitle)}&pos=0&uri=${encodeURIComponent('https://example.invalid/')}`;
+  const hostileTarget = await cdp.send('Target.createTarget', {url: `${extensionOrigin}html/suspended.html${hostileFragment}`});
+  await delay(1200);
+  const hostilePage = (await targets()).targetInfos.find((target) => target.targetId === hostileTarget.targetId);
+  assert(hostilePage?.url.includes('html/suspended.html'), 'Hostile-fragment page navigated away');
+  const hostileSession = await cdp.send('Target.attachToTarget', {targetId: hostileTarget.targetId, flatten: true});
+  await cdp.send('Runtime.enable', {}, hostileSession.sessionId);
+  const hostileProbe = await cdp.send('Runtime.evaluate', {
+    expression: `({injected:!!document.querySelector('#gsTopBarTitle img, img[src="x"]'), text:document.querySelector('#gsTopBarTitle')?.textContent || '', title:document.title})`,
+    returnByValue: true,
+  }, hostileSession.sessionId);
+  const hostileResult = hostileProbe.result?.value;
+  assert(hostileResult && !hostileResult.injected, `Hostile fragment injected an element: ${JSON.stringify(hostileResult)}`);
+  assert(hostileResult.text === hostileTitle || hostileResult.title === hostileTitle, `Hostile title was not rendered as plain text: ${JSON.stringify(hostileResult)}`);
   const evalExtension = async (expression) => {
     let lastError;
     for (let attempt = 0; attempt < 12; attempt++) {
@@ -164,13 +179,19 @@ async function main() {
     return true;
   }, 'five local test tabs');
   const suspendedPattern = `${extensionOrigin}html/suspended.html`;
-  await waitFor(async () => {
-    const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
-    const matches = tabs.filter((tab) => tab.url.startsWith(suspendedPattern));
-    if (matches.length !== 5) return null;
-    await evalExtension(`(async()=>{for(const t of await chrome.tabs.query({})){if(t.url.startsWith(${JSON.stringify(suspendedPattern)}))await chrome.runtime.sendMessage({function:'unsuspendTab',tab:t})}})()`);
-    return true;
-  }, 'five suspended tabs');
+  const isTestSuspendedTab = (tab) => urls.some((url) => tab.url.includes(encodeURIComponent(url)));
+  try {
+    await waitFor(async () => {
+      const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
+      const matches = tabs.filter((tab) => tab.url.startsWith(suspendedPattern) && isTestSuspendedTab(tab));
+      if (matches.length !== 5) return null;
+      await evalExtension(`(async()=>{const wanted=${JSON.stringify(urls)};for(const t of await chrome.tabs.query({})){if(t.url.startsWith(${JSON.stringify(suspendedPattern)})&&wanted.some(u=>t.url.includes(encodeURIComponent(u))))await chrome.runtime.sendMessage({function:'unsuspendTab',tab:t})}})()`);
+      return true;
+    }, 'five suspended tabs');
+  } catch (error) {
+    const currentTabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
+    throw new Error(`${error.message}; matching test tabs observed: ${currentTabs.filter((tab) => tab.url.startsWith(suspendedPattern) && isTestSuspendedTab(tab)).length}`);
+  }
   await waitFor(async () => {
     const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
     return urls.every((url) => tabs.some((tab) => tab.url === url));
@@ -181,7 +202,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 

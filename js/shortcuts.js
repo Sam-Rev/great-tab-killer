@@ -41,12 +41,13 @@ import {gsUtils} from "./helpers/gsUtils.js";
             ? (gsUtils.getMessage(msgKey) || command.description)
             : command.description;
           var addMarginBottom = groupingKeys.includes(command.name);
-          shortcutsEl.innerHTML += `<div ${
-            addMarginBottom ? ' class="bottomMargin"' : ''
-          }>${description}</div>
-            <div class="${
-              command.shortcut ? 'hotkeyCommand' : 'lesserText'
-            }">${shortcut}</div>`;
+          const descriptionEl = document.createElement('div');
+          if (addMarginBottom) descriptionEl.className = 'bottomMargin';
+          descriptionEl.textContent = description;
+          const shortcutEl = document.createElement('div');
+          shortcutEl.className = command.shortcut ? 'hotkeyCommand' : 'lesserText';
+          shortcutEl.textContent = shortcut;
+          shortcutsEl.append(descriptionEl, shortcutEl);
         }
       });
     });

@@ -6,8 +6,12 @@ const value = (n) => finite(n) ? n : 0;
 export const formatBytes = (bytes) => !finite(bytes) ? '—' : bytes >= 1024 * MIB
   ? `${(bytes / (1024 * MIB)).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} ГиБ`
   : `${(bytes / MIB).toLocaleString('ru-RU', { maximumFractionDigits: bytes < MIB ? 2 : 1 })} МиБ`;
-const num = (n) => value(n).toLocaleString('ru-RU', { maximumFractionDigits: 2 });
-const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const makeElement = (tag, className, text) => {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = String(text ?? '');
+  return element;
+};
 export function median(numbers) {
   const a = numbers.filter(Number.isFinite).sort((x, y) => x - y);
   return a.length ? (a[Math.floor((a.length - 1) / 2)] + a[Math.floor(a.length / 2)]) / 2 : null;
@@ -277,15 +281,45 @@ async function startMonitor() {
     if (ids.includes(Number(previous))) $('window-filter').value = previous;
   }
   function rowMemory(row) {
-    if (!row.estimate) return `<span class="na" title="${escapeHTML(row.error)}">—</span><span class="sub" title="${escapeHTML(row.error)}">${row.tab.discarded ? 'Уже выгружена' : 'Нет измерения'}</span>`;
+    if (!row.estimate) {
+      const cell = document.createElement('div');
+      const unavailable = makeElement('span', 'na', '—');
+      const reason = makeElement('span', 'sub', row.tab.discarded ? 'Уже выгружена' : 'Нет измерения');
+      reason.title = row.error || '';
+      unavailable.title = row.error || '';
+      cell.append(unavailable, reason);
+      return cell;
+    }
     const m = row.estimate;
     const groups = ['heap', 'dom', 'media', 'base'];
-    return `<button class="mem-button" data-inspect="estimate" data-id="${row.tab.id}" aria-haspopup="dialog" aria-label="Расчёт ${escapeHTML(formatBytes(m.bytes))}: ${escapeHTML(row.tab.title)}"><span class="mem-main">≈ ${formatBytes(m.bytes)}</span><span class="sub">${formatBytes(m.low)} – ${formatBytes(m.high)}</span><span class="stack" aria-hidden="true">${groups.map((group) => `<span class="${group}" style="width:${m.bytes > 0 ? m.parts.filter((p) => p.group === group).reduce((a, p) => a + p.bytes, 0) / m.bytes * 100 : 0}%"></span>`).join('')}</span><span class="sub">${row.stale ? 'Предыдущий замер · ' : m.partial ? 'Частичные данные · ' : ''}${time(m.sampledAt)}</span></button>`;
+    const button = makeElement('button', 'mem-button');
+    button.dataset.inspect = 'estimate'; button.dataset.id = String(row.tab.id);
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-label', `Расчёт ${formatBytes(m.bytes)}: ${row.tab.title || ''}`);
+    button.append(makeElement('span', 'mem-main', `≈ ${formatBytes(m.bytes)}`), makeElement('span', 'sub', `${formatBytes(m.low)} – ${formatBytes(m.high)}`));
+    const stack = makeElement('span', 'stack'); stack.setAttribute('aria-hidden', 'true');
+    for (const group of groups) {
+      const part = makeElement('span', group);
+      const amount = m.bytes > 0 ? m.parts.filter((item) => item.group === group).reduce((sum, item) => sum + item.bytes, 0) / m.bytes * 100 : 0;
+      part.style.width = `${Math.max(0, Math.min(100, amount))}%`;
+      stack.appendChild(part);
+    }
+    button.append(stack, makeElement('span', 'sub', `${row.stale ? 'Предыдущий замер · ' : m.partial ? 'Частичные данные · ' : ''}${time(m.sampledAt)}`));
+    return button;
   }
   function rowOfficial(row) {
     const o = row.official;
-    if (!o) return `<span class="na">—</span><span class="sub">${processEnabled ? 'Нет связанных процессов' : 'Нужен Dev / Canary'}</span>`;
-    return `<button class="mem-button" data-inspect="official" data-id="${row.tab.id}" aria-haspopup="dialog" aria-label="Процессы Chrome: ${escapeHTML(row.tab.title)}"><span class="mem-main">${formatBytes(o.bytes)}</span><span class="sub">${!o.complete ? 'Неполные данные' : o.shared ? 'Есть общие процессы' : 'Связанные процессы'} · ${o.processes.length}</span></button>`;
+    if (!o) {
+      const cell = document.createElement('div');
+      cell.append(makeElement('span', 'na', '—'), makeElement('span', 'sub', processEnabled ? 'Нет связанных процессов' : 'Нужен Dev / Canary'));
+      return cell;
+    }
+    const button = makeElement('button', 'mem-button');
+    button.dataset.inspect = 'official'; button.dataset.id = String(row.tab.id);
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-label', `Процессы Chrome: ${row.tab.title || ''}`);
+    button.append(makeElement('span', 'mem-main', formatBytes(o.bytes)), makeElement('span', 'sub', `${!o.complete ? 'Неполные данные' : o.shared ? 'Есть общие процессы' : 'Связанные процессы'} · ${o.processes.length}`));
+    return button;
   }
   function render() {
     const query = $('search').value.toLocaleLowerCase('ru').trim();
@@ -304,10 +338,31 @@ async function startMonitor() {
     });
     $('row-count').textContent = `${visible.length} / ${rows.length}`;
     const windowIds = [...new Set(rows.map((r) => r.tab.windowId))].sort((a, b) => a - b);
-    $('rows').innerHTML = visible.map((row) => {
+    const rowsEl = $('rows'); rowsEl.replaceChildren();
+    for (const row of visible) {
       const tab = row.tab, [label, css] = status(tab);
-      return `<tr data-id="${tab.id}"${inspectorId === tab.id ? ' class="selected"' : ''}><td><div class="tab-name"><img class="favicon" src="../images/ch-def-favicon-sml.png" alt=""><div class="tab-text"><button class="tab-link" data-go="${tab.id}" title="${escapeHTML(tab.title || tab.url)}">${escapeHTML(tab.title || 'Без названия')}</button><span class="domain" title="${escapeHTML(tab.url)}">${escapeHTML(hostname(tab.url))} · окно ${windowIds.indexOf(tab.windowId) + 1}</span></div></div></td><td><span class="badge ${css}">${label}</span></td><td>${rowMemory(row)}</td><td>${rowOfficial(row)}</td><td><button class="row-action" data-test="${tab.id}" ${canTest(tab) && !testing && !busy ? '' : 'disabled'} title="${canTest(tab) ? 'Выгрузить и сравнить изменение памяти' : 'Проверка доступна для загруженной фоновой вкладки без звука и закрепления'}">Проверить ↗</button></td></tr>`;
-    }).join('') || '<tr><td colspan="5" class="empty">Вкладки не найдены. Попробуйте изменить поиск или фильтры.</td></tr>';
+      const tr = document.createElement('tr'); tr.dataset.id = String(tab.id);
+      if (inspectorId === tab.id) tr.classList.add('selected');
+      const identity = makeElement('div', 'tab-name');
+      const image = document.createElement('img'); image.className = 'favicon'; image.src = '../images/ch-def-favicon-sml.png'; image.alt = '';
+      const textBox = makeElement('div', 'tab-text');
+      const go = makeElement('button', 'tab-link', tab.title || 'Без названия'); go.dataset.go = String(tab.id); go.title = tab.title || tab.url || '';
+      const domain = makeElement('span', 'domain', `${hostname(tab.url)} · окно ${windowIds.indexOf(tab.windowId) + 1}`); domain.title = tab.url || '';
+      textBox.append(go, domain); identity.append(image, textBox);
+      const identityCell = document.createElement('td'); identityCell.appendChild(identity);
+      const statusCell = document.createElement('td'); statusCell.appendChild(makeElement('span', `badge ${css}`, label));
+      const memoryCell = document.createElement('td'); memoryCell.appendChild(rowMemory(row));
+      const officialCell = document.createElement('td'); officialCell.appendChild(rowOfficial(row));
+      const actionCell = document.createElement('td');
+      const action = makeElement('button', 'row-action', 'Проверить ↗'); action.dataset.test = String(tab.id);
+      const availableTest = canTest(tab); action.disabled = !availableTest || testing || busy;
+      action.title = availableTest ? 'Выгрузить и сравнить изменение памяти' : 'Проверка доступна для загруженной фоновой вкладки без звука и закрепления';
+      actionCell.appendChild(action); tr.append(identityCell, statusCell, memoryCell, officialCell, actionCell); rowsEl.appendChild(tr);
+    }
+    if (!visible.length) {
+      const tr = document.createElement('tr'), cell = makeElement('td', 'empty', 'Вкладки не найдены. Попробуйте изменить поиск или фильтры.');
+      cell.colSpan = 5; tr.appendChild(cell); rowsEl.appendChild(tr);
+    }
     // Use Chrome's local favicon endpoint. Never fetch a page's favicon URL.
     if (available) for (const tr of $('rows').querySelectorAll('tr[data-id]')) {
       const tab = byTab.get(Number(tr.dataset.id))?.tab;
@@ -343,14 +398,26 @@ async function startMonitor() {
     if (pinned && !pin) return;
     clearTimeout(closeTimer); inspectorId = id; inspectorKind = kind; pinned = pin; anchor = target;
     const m = row.estimate;
-    let content;
-    if (kind === 'estimate') {
-      content = `<div class="inspect-total"><div><small>Модель возможного освобождения</small><strong>≈ ${formatBytes(m.bytes)}</strong></div><div><small>Вариация коэффициентов</small>${formatBytes(m.low)} – ${formatBytes(m.high)}</div></div><table class="calc"><thead><tr><th>Компонент</th><th>Данные × коэффициент</th><th>Вклад</th></tr></thead><tbody>${m.parts.map((p) => `<tr><td>${escapeHTML(p.name)}<small>${escapeHTML(p.note)}</small></td><td>${p.name === 'Узлы DOM' || p.name === 'Атрибуты DOM' ? `${num(p.raw)} × ${num(p.factor)} Б` : `${formatBytes(p.raw)} × ${num(p.factor)}`}<small>границы × ${num(p.lowFactor)} … ${num(p.highFactor)}</small></td><td>${formatBytes(p.bytes)}</td></tr>`).join('')}</tbody></table><p class="inspect-note">Расчёт: сумма вкладов справа. Диапазон: сумма исходных данных × нижние / верхние коэффициенты. Это не гарантированные пределы: воркеры, кучи отдельных iframe, GPU и кэши могут не учитываться.</p>${m.partial ? `<p class="warning">Неполный сбор. Недоступных фреймов как минимум: ${m.missingFrames}. Большие DOM ограничены 30 000 узлов / бюджетом 65 мс на фрейм.</p>` : ''}${row.stale ? '<p class="warning">Страница заморожена. Здесь сохранён предыдущий замер, не текущее значение.</p>' : ''}<details><summary>Исходные данные всех фреймов (${m.frames.length})</summary><p class="inspect-note">Размеры в байтах. heapUsed / heapTotal дочерних фреймов не добавляются повторно. Количество буферизованных секунд видео — наблюдение, не размер буфера в RAM.</p><pre>${escapeHTML(JSON.stringify(m.frames, null, 2))}</pre></details>`;
-    } else {
-      const o = row.official;
-      content = `<div class="inspect-total"><div><small>Сумма privateMemory · коэффициент 1</small><strong>${formatBytes(o.bytes)}</strong></div><span>${o.processes.length} процессов</span></div><table class="calc"><thead><tr><th>Процесс</th><th>Связи</th><th>Память × 1</th></tr></thead><tbody>${o.processes.map((p) => `<tr><td>PID ${escapeHTML(p.osProcessId ?? '—')}<small>ID Chrome ${escapeHTML(p.id)} · ${escapeHTML(p.type)}</small></td><td>Вкладки: ${p.tabIds.map(num).join(', ')}<small>Прочих задач: ${p.extraTasks}</small></td><td>${formatBytes(p.bytes)}</td></tr>`).join('')}</tbody></table><p class="warning">${o.shared ? 'Есть общий процесс. Его память показана целиком; она не освободится целиком при закрытии одной вкладки.' : 'Даже процесс с одной связанной вкладкой не гарантирует освобождение всей показанной памяти.'} Процессы без tabId могут быть пропущены. Это не число из подсказки Chrome.</p><details><summary>Исходные данные процессов</summary><pre>${escapeHTML(JSON.stringify(o.processes, null, 2))}</pre></details>`;
-    }
-    inspector.innerHTML = `<header><div><h2>${kind === 'estimate' ? 'Из чего складывается оценка' : 'Что сообщил Chrome'}</h2><p>${escapeHTML(row.tab.title)} · ${kind === 'estimate' ? time(m.sampledAt) : time(lastUpdate || Date.now())}</p></div><button class="close" aria-label="Закрыть расчёт">×</button></header>${content}<footer><button class="button" data-pin>${pinned ? 'Расчёт закреплён' : 'Закрепить расчёт'}</button><button class="button" data-copy>Скопировать JSON</button></footer><p class="inspect-note">Наведите для просмотра · нажмите на число для закрепления · Esc закрывает</p>`;
+    const o = row.official;
+    inspector.replaceChildren();
+    const header = document.createElement('header'), headerText = document.createElement('div');
+    headerText.append(makeElement('h2', '', kind === 'estimate' ? 'Из чего складывается оценка' : 'Что сообщил Chrome'));
+    headerText.appendChild(makeElement('p', '', `${row.tab.title || ''} · ${kind === 'estimate' ? time(m.sampledAt) : time(lastUpdate || Date.now())}`));
+    const closeButton = makeElement('button', 'close', '×'); closeButton.setAttribute('aria-label', 'Закрыть расчёт');
+    header.append(headerText, closeButton); inspector.appendChild(header);
+    const total = makeElement('div', 'inspect-total');
+    total.appendChild(makeElement('strong', '', kind === 'estimate' ? `≈ ${formatBytes(m.bytes)} (${formatBytes(m.low)} – ${formatBytes(m.high)})` : formatBytes(o.bytes)));
+    total.appendChild(makeElement('span', '', kind === 'estimate' ? `${m.frames.length} frames${m.partial ? ` · partial, ${m.missingFrames} missing` : ''}${row.stale ? ' · previous sample' : ''}` : `${o.processes.length} processes${o.shared ? ' · shared process' : ''}`));
+    inspector.appendChild(total);
+    const details = document.createElement('details'), summary = makeElement('summary', '', kind === 'estimate' ? 'Frame and estimate data' : 'Process data');
+    const data = document.createElement('pre'); data.textContent = JSON.stringify(kind === 'estimate' ? m : o, null, 2);
+    details.append(summary, data); inspector.appendChild(details);
+    inspector.appendChild(makeElement('p', 'inspect-note', 'Estimates are approximate. Process memory may be shared and is not guaranteed to be freed when a tab closes.'));
+    const footer = document.createElement('footer');
+    const pinButton = makeElement('button', 'button', pinned ? 'Расчёт закреплён' : 'Закрепить расчёт'); pinButton.dataset.pin = '';
+    const copyButton = makeElement('button', 'button', 'Скопировать JSON'); copyButton.dataset.copy = '';
+    footer.append(pinButton, copyButton); inspector.appendChild(footer);
+    inspector.appendChild(makeElement('p', 'inspect-note', 'Наведите для просмотра · нажмите на число для закрепления · Esc закрывает'));
     inspector.hidden = false;
     const rect = target?.isConnected ? target.getBoundingClientRect() : { left: innerWidth / 2, top: 80, bottom: 100 };
     const leftRoom = rect.left - 24, rightRoom = innerWidth - (rect.right || rect.left) - 24;
@@ -395,7 +462,21 @@ async function startMonitor() {
   const signedBytes = (n) => !Number.isFinite(n) ? '—' : `${n > 0 ? '+' : n < 0 ? '−' : ''}${formatBytes(Math.abs(n))}`;
   function renderResults() {
     $('results').hidden = !results.length;
-    $('experiments').innerHTML = results.map((r) => `<article class="experiment"><h3>${escapeHTML(r.title)} <span class="sub">${time(r.at)}</span></h3><div class="experiment-grid"><div><span class="label">Прогноз модели</span><strong>≈ ${formatBytes(r.estimate.bytes)}</strong><span class="sub">Chrome до: ${formatBytes(r.official?.bytes)}</span></div><div><span class="label">Доступная RAM системы</span><strong>${signedBytes(r.systemDelta)}</strong><span class="sub">Плюс — стало доступно больше</span></div><div><span class="label">Снижение private memory Chrome</span><strong>${signedBytes(r.processDelta)}</strong><span class="sub">Плюс — сумма процессов уменьшилась</span></div></div><p>${r.disturbed ? 'Во время проверки была другая активность или монитор скрывался — результат особенно ненадёжен. ' : ''}Медиана 3 замеров до и 3 после. Изменения других приложений, фоновые задачи Chrome и общие процессы влияют на результат. Системная RAM и private memory — разные метрики; автоматического «победителя» нет.</p><details><summary class="sub">Все исходные замеры</summary><pre style="white-space:pre-wrap;font-size:10px">${escapeHTML(JSON.stringify({ before: r.before, after: r.after }, null, 2))}</pre></details></article>`).join('');
+    const container = $('experiments'); container.replaceChildren();
+    for (const result of results) {
+      const article = makeElement('article', 'experiment');
+      article.appendChild(makeElement('h3', '', `${result.title || ''} · ${time(result.at)}`));
+      const grid = makeElement('div', 'experiment-grid');
+      for (const [label, value] of [
+        ['Прогноз модели', `≈ ${formatBytes(result.estimate.bytes)} · Chrome до: ${formatBytes(result.official?.bytes)}`],
+        ['Доступная RAM системы', signedBytes(result.systemDelta)],
+        ['Снижение private memory Chrome', signedBytes(result.processDelta)],
+      ]) { const cell = document.createElement('div'); cell.append(makeElement('span', 'label', label), makeElement('strong', '', value)); grid.appendChild(cell); }
+      article.append(grid, makeElement('p', '', `${result.disturbed ? 'Во время проверки была другая активность; результат менее надёжен. ' : ''}Сравниваются медианы трёх замеров до и после выгрузки.`));
+      const details = document.createElement('details'); details.append(makeElement('summary', 'sub', 'Все исходные замеры'));
+      const data = document.createElement('pre'); data.style.whiteSpace = 'pre-wrap'; data.style.fontSize = '10px'; data.textContent = JSON.stringify({before: result.before, after: result.after}, null, 2);
+      details.appendChild(data); article.appendChild(details); container.appendChild(article);
+    }
   }
   async function runExperiment(id) {
     if (busy || testing) return;
@@ -485,7 +566,8 @@ async function startMonitor() {
     $('process-status').textContent = 'Вне расширения API Chrome недоступны.';
     $('refresh').disabled = true; $('auto').disabled = true;
     $('progress').textContent = 'Нет подключения к расширению';
-    $('rows').innerHTML = '<tr><td colspan="5" class="empty">Откройте эту страницу внутри The Great Tab Killer.<br><span class="sub">Демонстрационные числа не подставляются вместо измерений.</span></td></tr>';
+    const emptyRow = document.createElement('tr'), emptyCell = makeElement('td', 'empty', 'Откройте эту страницу внутри The Great Tab Killer. Демонстрационные числа не подставляются вместо измерений.');
+    emptyCell.colSpan = 5; emptyRow.appendChild(emptyCell); $('rows').replaceChildren(emptyRow);
     return;
   }
   try { ownTabId = (await api.tabs.getCurrent())?.id ?? null; } catch { /* popup-style context */ }

@@ -10,6 +10,7 @@ import {gsTabDiscardManager} from "./gsTabDiscardManager.js"
 import {gsSuspendedTab} from "./gsSuspendedTab.js"
 import {gsFavicon} from "./gsFavicon.js"
 import {tgs} from "../tgs.js"
+import {isAllowedNavigationUrl, parseSuspendedFragment, createSuspendedFragment} from "./safeNavigationUrl.js"
 
 var debugError = true;
 var _customMessages = null;
@@ -432,19 +433,8 @@ export var gsUtils = {
   },
 
   generateSuspendedUrl: function (url, title, scrollPos) {
-    let encodedTitle = gsUtils.encodeString(title);
-    var args =
-      "#" +
-      "ttl=" +
-      encodedTitle +
-      "&" +
-      "pos=" +
-      (scrollPos || "0") +
-      "&" +
-      "uri=" +
-      url;
-
-    return chrome.runtime.getURL("html/suspended.html" + args);
+    const fragment = createSuspendedFragment({title, scrollPos: scrollPos || "0", uri: url});
+    return fragment ? chrome.runtime.getURL("html/suspended.html" + fragment) : null;
   },
 
   getRootUrl: function (url, includePath, includeScheme) {
@@ -489,37 +479,8 @@ export var gsUtils = {
   },
 
   getHashVariable: function (key, urlStr) {
-    var valuesByKey = {},
-      keyPairRegEx = /^(.+)=(.+)/,
-      hashStr;
-
-    if (!urlStr || urlStr.length === 0 || urlStr.indexOf("#") === -1) {
-      return false;
-    }
-
-    //extract hash component from url
-    hashStr = urlStr.replace(/^[^#]+#+(.*)/, "$1");
-
-    if (hashStr.length === 0) {
-      return false;
-    }
-
-    //handle possible unencoded final var called 'uri'
-    let uriIndex = hashStr.indexOf("uri=");
-    if (uriIndex >= 0) {
-      valuesByKey.uri = hashStr.substr(uriIndex + 4);
-      hashStr = hashStr.substr(0, uriIndex);
-    }
-
-    hashStr.split("&").forEach(function (keyPair) {
-      if (keyPair && keyPair.match(keyPairRegEx)) {
-        valuesByKey[keyPair.replace(keyPairRegEx, "$1")] = keyPair.replace(
-          keyPairRegEx,
-          "$2"
-        );
-      }
-    });
-    return valuesByKey[key] || false;
+    const values = parseSuspendedFragment(urlStr);
+    return values && values[key] ? values[key] : false;
   },
   getSuspendedTitle: function (urlStr) {
     return gsUtils.decodeString(gsUtils.getHashVariable("ttl", urlStr) || "");
@@ -528,10 +489,9 @@ export var gsUtils = {
     return gsUtils.decodeString(gsUtils.getHashVariable("pos", urlStr) || "");
   },
   getOriginalUrl: function (urlStr) {
-    return (
-      gsUtils.getHashVariable("uri", urlStr) ||
-      gsUtils.decodeString(gsUtils.getHashVariable("url", urlStr) || "")
-    );
+    const values = parseSuspendedFragment(urlStr);
+    const originalUrl = values && (values.uri || values.url);
+    return isAllowedNavigationUrl(originalUrl) ? originalUrl : false;
   },
   getCleanTabTitle: function (tab) {
     let cleanedTitle = gsUtils.decodeString(tab.title);

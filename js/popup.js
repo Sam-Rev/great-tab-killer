@@ -140,68 +140,62 @@ import {gsUtils} from "./helpers/gsUtils.js";
   function setStatus(status) {
     setSuspendCurrentVisibility(status);
 
-    var statusDetail = "";
+    let statusText = "";
+    let actionText = "";
 
     // Update status icon and text
     if (status === gsUtils.STATUS_NORMAL || status === gsUtils.STATUS_ACTIVE) {
-      statusDetail =
-        gsUtils.getMessage("js_popup_normal") +
-        " <a href='#'>" +
-        gsUtils.getMessage("js_popup_normal_pause") +
-        "</a>";
+      statusText = gsUtils.getMessage("js_popup_normal");
+      actionText = gsUtils.getMessage("js_popup_normal_pause");
     } else if (status === gsUtils.STATUS_SUSPENDED) {
-      statusDetail = gsUtils.getMessage("js_popup_suspended");
+      statusText = gsUtils.getMessage("js_popup_suspended");
     } else if (status === gsUtils.STATUS_NEVER) {
-      statusDetail = gsUtils.getMessage("js_popup_never");
+      statusText = gsUtils.getMessage("js_popup_never");
     } else if (status === gsUtils.STATUS_SPECIAL) {
-      statusDetail = gsUtils.getMessage("js_popup_special");
+      statusText = gsUtils.getMessage("js_popup_special");
     } else if (status === gsUtils.STATUS_WHITELISTED) {
-      statusDetail =
-        gsUtils.getMessage("js_popup_whitelisted") +
-        " <a href='#'>" +
-        gsUtils.getMessage("js_popup_whitelisted_remove") +
-        "</a>";
+      statusText = gsUtils.getMessage("js_popup_whitelisted");
+      actionText = gsUtils.getMessage("js_popup_whitelisted_remove");
     } else if (status === gsUtils.STATUS_AUDIBLE) {
-      statusDetail = gsUtils.getMessage("js_popup_audible");
+      statusText = gsUtils.getMessage("js_popup_audible");
     } else if (status === gsUtils.STATUS_FORMINPUT) {
-      statusDetail =
-        gsUtils.getMessage("js_popup_form_input") +
-        " <a href='#'>" +
-        gsUtils.getMessage("js_popup_form_input_unpause") +
-        "</a>";
+      statusText = gsUtils.getMessage("js_popup_form_input");
+      actionText = gsUtils.getMessage("js_popup_form_input_unpause");
     } else if (status === gsUtils.STATUS_PINNED) {
-      statusDetail = gsUtils.getMessage("js_popup_pinned");
+      statusText = gsUtils.getMessage("js_popup_pinned");
     } else if (status === gsUtils.STATUS_TEMPWHITELIST) {
-      statusDetail =
-        gsUtils.getMessage("js_popup_temp_whitelist") +
-        " <a href='#'>" +
-        gsUtils.getMessage("js_popup_temp_whitelist_unpause") +
-        "</a>";
+      statusText = gsUtils.getMessage("js_popup_temp_whitelist");
+      actionText = gsUtils.getMessage("js_popup_temp_whitelist_unpause");
     } else if (status === gsUtils.STATUS_NOCONNECTIVITY) {
-      statusDetail = gsUtils.getMessage("js_popup_no_connectivity");
+      statusText = gsUtils.getMessage("js_popup_no_connectivity");
     } else if (status === gsUtils.STATUS_CHARGING) {
-      statusDetail = gsUtils.getMessage("js_popup_charging");
+      statusText = gsUtils.getMessage("js_popup_charging");
     } else if (status === gsUtils.STATUS_BLOCKED_FILE) {
-      statusDetail =
-        gsUtils.getMessage("js_popup_blockedFile") +
-        " <a href='#'>" +
-        gsUtils.getMessage("js_popup_blockedFile_enable") +
-        "</a>";
+      statusText = gsUtils.getMessage("js_popup_blockedFile");
+      actionText = gsUtils.getMessage("js_popup_blockedFile_enable");
     } else if (
       status === gsUtils.STATUS_LOADING ||
       status === gsUtils.STATUS_UNKNOWN
     ) {
       if (gsSession.isInitialising()) {
-        statusDetail = gsUtils.getMessage("js_popup_initialising");
+        statusText = gsUtils.getMessage("js_popup_initialising");
       } else {
-        statusDetail = gsUtils.getMessage("js_popup_unknown");
+        statusText = gsUtils.getMessage("js_popup_unknown");
       }
     } else if (status === "error") {
-      statusDetail = gsUtils.getMessage("js_popup_error");
+      statusText = gsUtils.getMessage("js_popup_error");
     } else {
       gsUtils.warning("popup", "Could not process tab status of: " + status);
     }
-    document.getElementById("statusDetail").innerHTML = statusDetail;
+    const statusEl = document.getElementById("statusDetail");
+    statusEl.replaceChildren(document.createTextNode(statusText));
+    if (actionText) {
+      statusEl.appendChild(document.createTextNode(' '));
+      const actionLink = document.createElement('a');
+      actionLink.href = '#';
+      actionLink.textContent = actionText;
+      statusEl.appendChild(actionLink);
+    }
 
     document.getElementById("header").classList.remove("willSuspend");
     if (status === gsUtils.STATUS_NORMAL || status === gsUtils.STATUS_ACTIVE) {
