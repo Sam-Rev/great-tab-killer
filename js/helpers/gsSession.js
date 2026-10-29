@@ -9,6 +9,7 @@ import { gsChrome } from "./gsChrome.js"
 import { gsTabCheckManager } from "./gsTabCheckManager.js"
 import { gsTabDiscardManager } from "./gsTabDiscardManager.js"
 import { excludeIncognitoTabs } from "./excludeIncognitoTabs.js"
+import { gsBackup } from "./gsBackup.js"
 
 export var gsSession = (function () {
   "use strict";
@@ -64,7 +65,6 @@ export var gsSession = (function () {
 
     // Auto-backup before update
     try {
-      const { gsBackup } = await import("./gsBackup.js");
       await gsBackup.performBackup('pre-update');
     } catch (e) {
       gsUtils.warning("gsSession", "Pre-update backup failed:", e);
@@ -297,7 +297,6 @@ export var gsSession = (function () {
   async function handleNewInstall(curVersion) {
     gsStorage.setLastVersion(curVersion);
 
-    const { gsBackup } = await import("./gsBackup.js");
     await gsBackup.showFirstRunNotice();
 
     // Try to determine if this is a new install for the computer or for the whole profile
