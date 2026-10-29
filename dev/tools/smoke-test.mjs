@@ -225,11 +225,19 @@ async function main() {
   }, 'five local test tabs');
   const suspendedPattern = `${extensionOrigin}html/suspended.html`;
   const isTestSuspendedTab = (tab) => urls.some((url) => tab.url.includes(encodeURIComponent(url)));
+  let suspendedFavicon;
   try {
     await waitFor(async () => {
       const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
       const matches = tabs.filter((tab) => tab.url.startsWith(suspendedPattern) && isTestSuspendedTab(tab));
       if (matches.length !== 5) return null;
+      const suspendedPage = (await targets()).targetInfos.find((target) => target.type === 'page' && target.url.startsWith(suspendedPattern) && isTestSuspendedTab({url: target.url}));
+      if (!suspendedPage) return null;
+      const { sessionId: suspendedSession } = await cdp.send('Target.attachToTarget', {targetId: suspendedPage.targetId, flatten: true});
+      await cdp.send('Runtime.enable', {}, suspendedSession);
+      const faviconResult = await cdp.send('Runtime.evaluate', {expression: 'document.getElementById("gsFavicon")?.href || ""', returnByValue: true}, suspendedSession);
+      suspendedFavicon = faviconResult.result?.value;
+      if (!suspendedFavicon?.startsWith('data:image/')) return null;
       await evalExtension(`(async()=>{const wanted=${JSON.stringify(urls)};for(const t of await chrome.tabs.query({})){if(t.url.startsWith(${JSON.stringify(suspendedPattern)})&&wanted.some(u=>t.url.includes(encodeURIComponent(u))))await chrome.runtime.sendMessage({function:'unsuspendTab',tab:t})}})()`);
       return true;
     }, 'five suspended tabs');
@@ -247,7 +255,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 
