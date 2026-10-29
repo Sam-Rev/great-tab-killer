@@ -15,6 +15,11 @@ Use GitHub's private vulnerability reporting for this repository: `<OWNER: repos
 - Vendored capture libraries are pinned in `vendor/CHECKSUMS.sha256`. The guard verifies those hashes; their known capture-related network patterns are excluded from generic source scans only for those pinned files. When previews are enabled, these libraries execute in the captured page and may request resources already referenced by that page.
 - `web_accessible_resources` is absent. The manifest has no `update_url` or `externally_connectable` field.
 - The extension's own code does not send data to a project-operated server. Optional settings sync is handled by Chrome; optional page previews can cause page-origin resource requests as described in [PRIVACY.md](PRIVACY.md).
+- In v0.1.0, the release ZIP and `SHA256SUMS.txt` are not cryptographically signed. A checksum published beside the ZIP can detect file corruption, but cannot prove the release page or checksum was not compromised.
+- There is no CI workflow yet; checks are run locally.
+- The origin and version of vendored `db.js` are **UNVERIFIED**. It is pinned by SHA-256 only.
+- Broad `http://*/*`, `https://*/*`, and `file://*/*` host access means a code bug could affect a wide range of pages.
+- Vulnerability reports are handled on a best-effort basis. There is no guaranteed response time.
 
 ## Accepted limitations
 
