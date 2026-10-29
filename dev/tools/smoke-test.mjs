@@ -146,8 +146,13 @@ async function main() {
   await waitFor(async () => (await targets()).targetInfos.filter((target) => target.url === welcomeUrl).length === 1, 'one first-run welcome tab');
   await delay(1500);
   assert((await targets()).targetInfos.filter((target) => target.url === welcomeUrl).length === 1, 'Welcome tab did not remain exactly once');
+  const backupSetupTarget = (await targets()).targetInfos.filter((target) => target.url === `${extensionOrigin}html/backup-setup.html`);
+  assert(backupSetupTarget.length === 1, 'Expected exactly one first-run backup setup tab');
   const initialState = await evalExtension(`(async()=>({backupEnabled:(await chrome.storage.local.get('gsBackupEnabled')).gsBackupEnabled===true,noticeShown:(await chrome.storage.local.get('gsBackupSetupNoticeShown')).gsBackupSetupNoticeShown===true,backupAlarm:!!(await chrome.alarms.get('tgs-session-backup'))}))()`);
   assert(initialState.noticeShown && !initialState.backupEnabled && !initialState.backupAlarm, `Unexpected first-run backup state: ${JSON.stringify(initialState)}`);
+  await cdp.send('Target.closeTarget', { targetId: backupSetupTarget[0].targetId });
+  const closedNoticeState = await evalExtension(`(async()=>({backupEnabled:(await chrome.storage.local.get('gsBackupEnabled')).gsBackupEnabled===true,backupAlarm:!!(await chrome.alarms.get('tgs-session-backup'))}))()`);
+  assert(!closedNoticeState.backupEnabled && !closedNoticeState.backupAlarm, `Closing the setup tab enabled backups: ${JSON.stringify(closedNoticeState)}`);
 
   const urls = Array.from({ length: 5 }, (_, index) => `http://127.0.0.1:${port}/${index + 1}`);
   const ids = [];
@@ -176,7 +181,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupState: initialState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 

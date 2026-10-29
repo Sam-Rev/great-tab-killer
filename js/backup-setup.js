@@ -8,4 +8,7 @@ document.getElementById("enableBackup").addEventListener("click", async () => {
   window.close();
 });
 
-document.getElementById("dismissNotice").addEventListener("click", () => window.close());
+document.getElementById("dismissNotice").addEventListener("click", async () => {
+  await gsBackup.dismissFirstRunNotice();
+  window.close();
+});

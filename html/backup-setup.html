@@ -4,25 +4,34 @@
   <meta charset="UTF-8">
   <link type="text/css" href="../styles/style.css" rel="stylesheet">
   <title>Session backup setup</title>
-  <style>
-    body { display: block; padding: 32px; }
-    main { max-width: 620px; margin: 0 auto; }
-    button { margin-right: 8px; }
-  </style>
   <script type="module" src="../js/backup-setup.js"></script>
 </head>
 <body>
-  <main class="card">
-    <h1>Session backup</h1>
-    <p>Automatic backup is off. If enabled, it writes a plain-text file containing the URLs of all open regular tabs to your Downloads folder at the frequency you choose. Incognito tabs are skipped.</p>
-    <label for="backupFrequency">Backup frequency</label>
-    <select id="backupFrequency">
-      <option value="60">Hourly</option>
-      <option value="1440">Daily</option>
-      <option value="10080" selected>Weekly</option>
-      <option value="43200">Monthly</option>
-    </select>
-    <p><button id="enableBackup" type="button">Enable backups</button><button id="dismissNotice" type="button">Not now</button></p>
-  </main>
+  <div class="mainContent backupSetupPage">
+    <header class="pageHeader">
+      <div class="pageBrandHeader">
+        <img class="pageBrandMark" src="../images/icon-48x48.png" alt="">
+        <h1>Session backup</h1>
+      </div>
+    </header>
+    <main class="backupSetupContent">
+      <p>Automatic backup is off. If enabled, it writes a plain-text file containing the URLs of all open regular tabs to your Downloads folder at the frequency you choose. Incognito tabs are skipped.</p>
+      <div class="formRow">
+        <label class="topLabel" for="backupFrequency">Backup frequency</label>
+        <div class="select-wrapper">
+          <select id="backupFrequency" class="option">
+            <option value="60">Hourly</option>
+            <option value="1440">Daily</option>
+            <option value="10080" selected>Weekly</option>
+            <option value="43200">Monthly</option>
+          </select>
+        </div>
+      </div>
+      <div class="backupSetupActions">
+        <button class="btn" id="enableBackup" type="button">Enable backups</button>
+        <button class="btn btnSecondary" id="dismissNotice" type="button">Not now</button>
+      </div>
+    </main>
+  </div>
 </body>
 </html>

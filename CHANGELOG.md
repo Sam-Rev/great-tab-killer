@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Suspension skips stale, missing, and unsupported page URLs; background recovery and favicon fetch failures are handled without unhandled promise rejections.
 - Fresh-install setup uses only static service-worker imports; the service-worker module guard also rejects page-only globals and Web Storage APIs.
 - Recovery timestamps with missing or malformed storage fail closed without an uncaught error. The periodic local metrics-reset alarm is named `updateSessionMetricsJob`; it records local suspended/total tab counts only.
+- The first-run backup setup page shares the Options stylesheet and branded header; **Not now** records the one-time notice state, while backup remains disabled until **Enable backups** is clicked.
 
 ### Removed
 - The third-party uninstall survey URL and upstream fundraising links.

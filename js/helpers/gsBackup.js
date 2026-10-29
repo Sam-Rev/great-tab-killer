@@ -57,7 +57,7 @@ export var gsBackup = {
 
       // Use offscreen document for <a download> trick (no `downloads` permission needed)
       console.log('[gsBackup] Step 0: chrome.offscreen exists?', !!chrome.offscreen);
-      console.log('[gsBackup] Step 1: checking offscreen document...');
+      console.log('[gsBackup] Step 1: checking offscreen document');
       const offscreenUrl = chrome.runtime.getURL('html/offscreen.html');
       console.log('[gsBackup] offscreen URL:', offscreenUrl);
       const contexts = await chrome.runtime.getContexts({
@@ -143,5 +143,9 @@ export var gsBackup = {
       url: chrome.runtime.getURL('html/backup-setup.html'),
       active: true,
     }, resolve));
+  },
+
+  dismissFirstRunNotice: async function() {
+    await chrome.storage.local.set({ [NOTICE_SHOWN_KEY]: true });
   },
 };
