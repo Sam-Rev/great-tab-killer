@@ -25,29 +25,6 @@
       "file://*/*"
     ]
   ],
-  "web_accessible_resources": [
-    {
-      "resources": [
-        "html/suspended.html",
-        "/images/*",
-        "js/*.js"
-      ],
-      "matches": [
-        "<all_urls>"
-      ]
-    },
-    {
-      "resources": [
-        "_favicon/*"
-      ],
-      "matches": [
-        "<all_urls>"
-      ],
-      "extension_ids": [
-        "*"
-      ]
-    }
-  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; child-src 'self'; connect-src 'self' data:; img-src 'self' data: chrome:; style-src 'self' 'unsafe-inline'; default-src 'self'"
   },

@@ -16,6 +16,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 - `system.cpu` and `system.memory` are optional; request them only from a user click. Monitor estimates must work without them.
 - Host patterns, content-script matches, and CSP stay unchanged until task 3.11.
 - `minimum_chrome_version` is 116, required by `runtime.getContexts()`.
+- Final `web_accessible_resources` state: absent; extension pages and extension-initiated injections use their own resources without WAR.
 
 ## Privacy defaults
 

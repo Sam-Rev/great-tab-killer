@@ -11,6 +11,6 @@ Scope: extension JavaScript and HTML outside `dev/` and vendored libraries. The 
 | Fixed (1) | `js/popup.js`: status detail | Builds translated text plus a DOM-created action link. |
 | Fixed (1) | `js/shortcuts.js`: command description and shortcut rows | Builds each row with `textContent`. |
 | Static i18n (1) | `js/helpers/gsUtils.js` `localiseHtml` | Kept per instruction: it resolves static `data-i18n` keys from the extension's bundled locale catalogs and supports intentional localized markup. It does not receive tab/session values. |
-| Left (10, dev-only) | `dev/scripts/memlab/dashboard.html:298, 313, 353, 378, 394, 407, 428, 451, 509, 532` | Not extension pages or manifest entry points; retained in the isolated development benchmark dashboard. These are outside this task's shipped-page scope. |
+| Fixed (10, development dashboard) | `dev/scripts/memlab/dashboard.html:298, 313, 353, 378, 394, 407, 428, 451, 509, 532` | Although under `dev/` and not linked from extension UI or declared as WAR, the file is present in the unpacked project tree. Replaced all data-driven HTML strings with DOM construction/text nodes in `e47a237`. |
 
-**Totals:** 21 extension-page occurrences fixed; 1 static i18n renderer retained; 10 development-dashboard occurrences left with the reason above. Suspended-page static templates are cloned, so no template-to-`innerHTML` assignments remain.
+**Totals:** 31 data-driven HTML sink occurrences fixed across shipped-page code and the development dashboard; 1 static i18n renderer retained. Suspended-page static templates are cloned, so no template-to-`innerHTML` assignments remain.

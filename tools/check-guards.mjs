@@ -33,17 +33,42 @@ const FORBIDDEN = [
 ];
 
 export function projectManifest(manifest) {
-  return {
+  const projection = {
     permissions: manifest.permissions,
     optional_permissions: manifest.optional_permissions,
     host_permissions: manifest.host_permissions,
     content_scripts_matches: (manifest.content_scripts || []).map((entry) => entry.matches),
-    web_accessible_resources: manifest.web_accessible_resources,
     content_security_policy: manifest.content_security_policy,
     incognito: manifest.incognito,
     minimum_chrome_version: manifest.minimum_chrome_version,
     absent_fields: ['update_url', 'externally_connectable'],
   };
+  if (Object.hasOwn(manifest, 'web_accessible_resources')) {
+    projection.web_accessible_resources = manifest.web_accessible_resources;
+  }
+  return projection;
+}
+
+function webAccessibleResourceErrors(entries) {
+  if (entries === undefined) return [];
+  if (!Array.isArray(entries)) return ['manifest.json: web_accessible_resources must be an array'];
+  const errors = [];
+  for (const [index, entry] of entries.entries()) {
+    for (const match of entry.matches || []) {
+      if (match === '<all_urls>' || /:\/\/\*\//.test(match) || /:\/\/\*\./.test(match)) {
+        errors.push(`manifest.json: web_accessible_resources[${index}] has broad match ${match}`);
+      }
+    }
+    if ((entry.extension_ids || []).includes('*')) {
+      errors.push(`manifest.json: web_accessible_resources[${index}] has wildcard extension_ids`);
+    }
+    for (const resource of entry.resources || []) {
+      if (resource.includes('*')) {
+        errors.push(`manifest.json: web_accessible_resources[${index}] has wildcard resource ${resource}`);
+      }
+    }
+  }
+  return errors;
 }
 
 async function walk(root, directory = root) {
@@ -385,6 +410,7 @@ export async function checkRoot(root) {
   if (!isDeepStrictEqual(projectManifest(manifest), lock)) {
     errors.push('manifest.json: protected permission/host/CSP/WAR fields differ from security/permissions.lock.json');
   }
+  errors.push(...webAccessibleResourceErrors(manifest.web_accessible_resources));
   if (!Array.isArray(lock.absent_fields) ||
       !isDeepStrictEqual([...lock.absent_fields].sort(), ['externally_connectable', 'update_url'])) {
     errors.push('security/permissions.lock.json: absent_fields must list update_url and externally_connectable');
