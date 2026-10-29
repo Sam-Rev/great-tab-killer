@@ -27,6 +27,7 @@ async function fixture(source = 'const response = await fetch(chrome.runtime.get
   await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
   await writeFile(path.join(root, 'security/url-allowlist.txt'), '# empty\n');
   await writeFile(path.join(root, 'js/main.js'), source);
+  await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./main.js";\n');
   await writeFile(path.join(root, 'html/page.html'), '<script src="../js/main.js"></script><img src="../icon.png">');
   const pinned = [
     'js/helpers/html2canvas.min.js',
@@ -110,3 +111,29 @@ test('guard rejects an unpinned file in the excluded vendor directory', async ()
     assert.match((await checkRoot(root)).join('\n'), /vendor directory contains an unpinned file/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('service-worker graph accepts worker-safe static imports', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/main.js'), 'export const ready = true;');
+    assert.deepEqual(await checkRoot(root), []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+for (const [label, source, pattern] of [
+  ['dynamic import', 'import("./later.js");', /dynamic import/],
+  ['window access', 'window.location;', /window\./],
+  ['document access', 'document.title;', /document\./],
+  ['localStorage', 'localStorage.getItem("x");', /localStorage/],
+  ['sessionStorage', 'sessionStorage.getItem("x");', /sessionStorage/],
+]) {
+  test(`guard rejects ${label} in a transitive service-worker module`, async () => {
+    const root = await fixture();
+    try {
+      await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./helpers/entry.js";');
+      await writeFile(path.join(root, 'js/helpers/entry.js'), source);
+      const errors = (await checkRoot(root)).join('\n');
+      assert.match(errors, pattern);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+}

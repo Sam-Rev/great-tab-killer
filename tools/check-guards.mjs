@@ -60,6 +60,43 @@ async function walk(root, directory = root) {
   return files;
 }
 
+// The service worker must use only browser-worker-safe static module code.
+async function serviceWorkerGraphErrors(root) {
+  const errors = [];
+  const visited = new Set();
+  const forbidden = [
+    ['dynamic import(', /\bimport\s*\(/],
+    ['window.', /\bwindow\s*\./],
+    ['document.', /\bdocument\s*\./],
+    ['localStorage', /\blocalStorage\b/],
+    ['sessionStorage', /\bsessionStorage\b/],
+  ];
+  const entry = path.resolve(root, 'js/serviceWorker.js');
+  async function visit(file) {
+    if (visited.has(file)) return;
+    visited.add(file);
+    let source;
+    try { source = await readFile(file, 'utf8'); }
+    catch (error) { errors.push(`${path.relative(root, file)}: service-worker import could not be read: ${error.message}`); return; }
+    const relative = path.relative(root, file).split(path.sep).join('/');
+    for (const [label, pattern] of forbidden) {
+      if (pattern.test(source)) errors.push(`${relative}: service-worker graph contains ${label}`);
+    }
+    const imports = /(?:^|[;\n])\s*(?:import\s+(?:[^'";]*?\s+from\s*)?|export\s+[^'";]*?\s+from\s*)['"]([^'"]+)['"]/gm;
+    for (const match of source.matchAll(imports)) {
+      if (!match[1].startsWith('.')) continue;
+      const dependency = path.resolve(path.dirname(file), match[1]);
+      if (!dependency.startsWith(`${path.resolve(root)}${path.sep}`)) {
+        errors.push(`${relative}: service-worker static import escapes project root: ${match[1]}`);
+      } else {
+        await visit(dependency);
+      }
+    }
+  }
+  await visit(entry);
+  return errors;
+}
+
 function extractFetchExpressions(source) {
   const expressions = [];
   const matcher = /\bfetch\s*\(/g;
@@ -216,6 +253,7 @@ export async function checkRoot(root) {
     errors.push('security/permissions.lock.json: absent_fields must list update_url and externally_connectable');
   }
   errors.push(...await verifyVendorChecksums(root));
+  errors.push(...await serviceWorkerGraphErrors(root));
   const csp = manifest.content_security_policy?.extension_pages || '';
   const connect = csp.split(';').map((part) => part.trim()).filter((part) => part.startsWith('connect-src '));
   if (connect.length !== 1 || connect[0] !== "connect-src 'self' data:") {
