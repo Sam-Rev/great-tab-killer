@@ -99,9 +99,54 @@ function maskCommentsAndStrings(source) {
   return output.join('');
 }
 
+function findNamedFunctionSpans(source, functionName) {
+  const escapedName = functionName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const declaration = new RegExp(`\\b(?:async\\s+)?function\\s+${escapedName}\\s*\\(`, 'g');
+  const spans = [];
+  for (const match of source.matchAll(declaration)) {
+    let index = match.index + match[0].length;
+    let parenDepth = 1;
+    while (index < source.length && parenDepth) {
+      if (source[index] === '(') parenDepth++;
+      else if (source[index] === ')') parenDepth--;
+      index++;
+    }
+    while (/\s/.test(source[index] || '')) index++;
+    if (source[index] !== '{') continue;
+    const bodyStart = index;
+    let braceDepth = 1;
+    index++;
+    while (index < source.length && braceDepth) {
+      if (source[index] === '{') braceDepth++;
+      else if (source[index] === '}') braceDepth--;
+      index++;
+    }
+    spans.push({ declarationIndex: match.index + match[0].lastIndexOf(functionName), start: bodyStart, end: index });
+  }
+  return spans;
+}
+
+function isInjectionReference(source, index) {
+  const prefix = source.slice(Math.max(0, index - 300), index);
+  const scriptCalls = [...prefix.matchAll(/chrome\.scripting\s*\.\s*executeScript\s*\(/g)];
+  const scriptCall = scriptCalls.at(-1);
+  if (scriptCall) {
+    const beforeReference = prefix.slice(scriptCall.index + scriptCall[0].length);
+    if (!/[;)]/.test(beforeReference) && /\bfunc\s*:\s*$/.test(beforeReference)) return true;
+  }
+  const wrapperCall = 'gsMessages.executeCodeOnTab(';
+  const functionCall = prefix.lastIndexOf(wrapperCall);
+  if (functionCall >= 0) {
+    const beforeReference = prefix.slice(functionCall + wrapperCall.length);
+    if (!/[;)]/.test(beforeReference) && /^[^,]+,\s*$/.test(beforeReference)) return true;
+  }
+  return false;
+}
+
 async function serviceWorkerGraphErrors(root) {
   const errors = [];
   const visited = new Set();
+  const modules = new Map();
   const forbidden = [
     ['dynamic import(', /\bimport\s*\(/],
     ['window.', /\bwindow\s*\./],
@@ -110,6 +155,29 @@ async function serviceWorkerGraphErrors(root) {
     ['sessionStorage', /\bsessionStorage\b/],
   ];
   const entry = path.resolve(root, 'js/serviceWorker.js');
+  let exceptions;
+  try { exceptions = JSON.parse(await readFile(path.join(root, 'security/service-worker-graph-allowlist.json'), 'utf8')); }
+  catch (error) { exceptions = []; errors.push(`security/service-worker-graph-allowlist.json could not be read: ${error.message}`); }
+  if (!Array.isArray(exceptions)) {
+    errors.push('security/service-worker-graph-allowlist.json must contain an array');
+    exceptions = [];
+  }
+  const exceptionKeys = new Set();
+  for (const item of exceptions) {
+    const expectedKeys = ['file', 'function', 'pattern', 'reason'];
+    if (!item || typeof item !== 'object' || !isDeepStrictEqual(Object.keys(item).sort(), expectedKeys) ||
+        typeof item.file !== 'string' || typeof item.function !== 'string' || typeof item.pattern !== 'string' || typeof item.reason !== 'string') {
+      errors.push('security/service-worker-graph-allowlist.json: each entry must contain exactly file, function, pattern, and reason');
+      continue;
+    }
+    if (!['window.', 'document.'].includes(item.pattern) || !item.reason.trim()) {
+      errors.push(`security/service-worker-graph-allowlist.json: invalid pattern/reason for ${item.file}:${item.function}`);
+      continue;
+    }
+    const key = `${item.file}\0${item.function}\0${item.pattern}`;
+    if (exceptionKeys.has(key)) errors.push(`security/service-worker-graph-allowlist.json: duplicate entry ${item.file}:${item.function}:${item.pattern}`);
+    exceptionKeys.add(key);
+  }
   async function visit(file) {
     if (visited.has(file)) return;
     visited.add(file);
@@ -118,8 +186,14 @@ async function serviceWorkerGraphErrors(root) {
     catch (error) { errors.push(`${path.relative(root, file)}: service-worker import could not be read: ${error.message}`); return; }
     const relative = path.relative(root, file).split(path.sep).join('/');
     const executableSource = maskCommentsAndStrings(source);
+    modules.set(relative, { source, executableSource });
     for (const [label, pattern] of forbidden) {
-      if (pattern.test(executableSource)) errors.push(`${relative}: service-worker graph contains ${label}`);
+      const matcher = new RegExp(pattern.source, `${pattern.flags}g`);
+      for (const match of executableSource.matchAll(matcher)) {
+        const enclosingFunction = exceptions.find((item) => item.file === relative && item.pattern === label &&
+          findNamedFunctionSpans(executableSource, item.function).some((span) => match.index > span.start && match.index < span.end));
+        if (!enclosingFunction) errors.push(`${relative}: service-worker graph contains ${label}`);
+      }
     }
     const imports = /(?:^|[;\n])\s*(?:import\s+(?:[^'";]*?\s+from\s*)?|export\s+[^'";]*?\s+from\s*)['"]([^'"]+)['"]/gm;
     for (const match of source.matchAll(imports)) {
@@ -133,6 +207,30 @@ async function serviceWorkerGraphErrors(root) {
     }
   }
   await visit(entry);
+  for (const item of exceptions) {
+    const module = modules.get(item.file);
+    if (!module) { errors.push(`service-worker allowlist entry is outside the static module graph: ${item.file}:${item.function}`); continue; }
+    const functions = findNamedFunctionSpans(module.executableSource, item.function);
+    if (functions.length !== 1) {
+      errors.push(`service-worker allowlist function must be defined exactly once: ${item.file}:${item.function}`);
+      continue;
+    }
+    const functionSpan = functions[0];
+    const pattern = item.pattern === 'window.' ? /\bwindow\s*\./ : /\bdocument\s*\./;
+    if (!pattern.test(module.executableSource.slice(functionSpan.start, functionSpan.end))) {
+      errors.push(`service-worker allowlist pattern not found in function: ${item.file}:${item.function}:${item.pattern}`);
+    }
+    const escapedFunctionName = item.function.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    for (const [relative, graphModule] of modules) {
+      const references = [...graphModule.executableSource.matchAll(new RegExp(`\\b${escapedFunctionName}\\b`, 'g'))];
+      for (const reference of references) {
+        if (relative === item.file && reference.index === functionSpan.declarationIndex) continue;
+        if (!isInjectionReference(graphModule.executableSource, reference.index)) {
+          errors.push(`allowlisted function has a non-injection reference: ${relative}:${item.function}`);
+        }
+      }
+    }
+  }
   return errors;
 }
 

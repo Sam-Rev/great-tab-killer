@@ -73,7 +73,9 @@ The script starts Chrome with a temporary profile and remote debugging, blocks n
 
 **Limits:** this does not inspect Chrome's internal `chrome://extensions` Errors page, test Brave, test a competing suspender, or exercise every site-specific preview/favicons path. Browser UI appearance and repeat-install behavior still need owner verification.
 
-**Guard and test run (2026-10-29):** `node --test dev/tests/*.test.mjs` passed all 48 tests. `node tools/check-guards.mjs` exited 1 with 3 hits: `window.` and `document.` in `js/helpers/gsTabSuspendManager.js` (page-injected suspension/preview functions), and `document.` in `js/helpers/gsMemorySampler.js` (the all-frame injected sampler). These exact lines are classified in `docs/audit/SW_GRAPH_REVIEW.md`; no allowlist entry was added. Because the guard fails, the merge and local release tag were not created.
+**Approved injected-page exceptions (2026-10-29):** Three narrowly keyed entries are in `security/service-worker-graph-allowlist.json`: `gsTabSuspendManager.js` / `runInjectedTabTask` / `document.` and `window.`, plus `gsMemorySampler.js` / `collectFrameStats` / `document.`. The guard verifies the functions are passed only to injection calls and rejects matching patterns elsewhere in the worker graph.
+
+**Final verification (2026-10-29):** `node tools/check-guards.mjs` passed. `node --test dev/tests/*.test.mjs` passed all 52 tests. `node dev/tools/smoke-test.mjs` passed on Chrome 156.0.8078.73: one welcome tab, one backup setup tab, backup disabled and alarm absent (also after closing setup), five local tabs suspended and restored, prior error signatures absent, and extension console error/exception list empty. Brave and Chrome's internal Errors page were not inspected.
 
 ## Earlier runtime-error evidence
 

@@ -482,8 +482,8 @@ export var gsTabSuspendManager = (function () {
 
       gsMessages.executeCodeOnTab(
         tab.id,
-        fetchYouTubeTimestampContentScript,
-        [],
+        runInjectedTabTask,
+        ["youtubeTimestamp"],
         (error, response) => {
           if (error) {
             gsUtils.warning(
@@ -505,14 +505,6 @@ export var gsTabSuspendManager = (function () {
         }
       );
     });
-  }
-
-  function fetchYouTubeTimestampContentScript() {
-    const videoEl = document.querySelector(
-      "video.video-stream.html5-main-video"
-    );
-    const timestamp = videoEl ? videoEl.currentTime >> 0 : 0;
-    return timestamp;
   }
 
   async function saveSuspendData(tab) {
@@ -559,8 +551,8 @@ export var gsTabSuspendManager = (function () {
       }
       gsMessages.executeCodeOnTab(
         tab.id,
-        generatePreviewImageCanvasViaContentScript,
-        [ screenCaptureMode, forceScreenCapture, useAlternateScreenCaptureLib ],
+        runInjectedTabTask,
+        ["preview", screenCaptureMode, forceScreenCapture, useAlternateScreenCaptureLib],
         (error) => {
           if (error) {
             handlePreviewImageResponse(
@@ -575,15 +567,24 @@ export var gsTabSuspendManager = (function () {
     });
   }
 
-  // NOTE: This function below is run within the content script scope
-  // Therefore it must be self contained and not refer to any external functions
-  // such as references to gsUtils etc.
-  // eslint-disable-next-line no-unused-vars
-  async function generatePreviewImageCanvasViaContentScript(
+  // This single self-contained function is serialized into the tab's isolated
+  // world for either a YouTube timestamp query or preview capture.
+  function runInjectedTabTask(
+    task,
     screenCaptureMode,
     forceScreenCapture,
     useAlternateScreenCaptureLib
   ) {
+    if (task === "youtubeTimestamp") {
+      const videoEl = document.querySelector(
+        "video.video-stream.html5-main-video"
+      );
+      return videoEl ? videoEl.currentTime >> 0 : 0;
+    }
+    if (task !== "preview") return;
+    return generatePreviewImageCanvas();
+
+    async function generatePreviewImageCanvas() {
     const MAX_CANVAS_HEIGHT = forceScreenCapture ? 10000 : 5000;
     const IMAGE_TYPE = "image/webp";
     const IMAGE_QUALITY = forceScreenCapture ? 0.92 : 0.5;
@@ -683,6 +684,7 @@ export var gsTabSuspendManager = (function () {
       previewUrl: dataUrl,
       errorMsg: errorMsg,
     });
+    }
   }
 
   return {

@@ -26,6 +26,7 @@ async function fixture(source = 'const response = await fetch(chrome.runtime.get
   await writeFile(path.join(root, 'manifest.json'), JSON.stringify(manifest));
   await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
   await writeFile(path.join(root, 'security/url-allowlist.txt'), '# empty\n');
+  await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), '[]\n');
   await writeFile(path.join(root, 'js/main.js'), source);
   await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./main.js";\n');
   await writeFile(path.join(root, 'html/page.html'), '<script src="../js/main.js"></script><img src="../icon.png">');
@@ -125,6 +126,55 @@ test('service-worker graph ignores matching words in strings and comments', asyn
   try {
     await writeFile(path.join(root, 'js/main.js'), 'const label = "window.document localStorage"; // sessionStorage\n');
     assert.deepEqual(await checkRoot(root), []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard allows an exact DOM pattern only inside an injected function', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./helpers/entry.js";');
+    await writeFile(path.join(root, 'js/helpers/entry.js'), 'async function collectFrameStats(){return document.body;} chrome.scripting.executeScript({target:{tabId:1},func:collectFrameStats});');
+    await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), JSON.stringify([
+      { file: 'js/helpers/entry.js', function: 'collectFrameStats', pattern: 'document.', reason: 'Passed as func to chrome.scripting.executeScript for tab-frame measurement.' },
+    ]));
+    assert.deepEqual(await checkRoot(root), []);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard rejects the allowlisted pattern in another service-worker function', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./helpers/entry.js";');
+    await writeFile(path.join(root, 'js/helpers/entry.js'), 'function collectFrameStats(){return document.body;} function workerPath(){return document.title;} chrome.scripting.executeScript({target:{tabId:1},func:collectFrameStats});');
+    await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), JSON.stringify([
+      { file: 'js/helpers/entry.js', function: 'collectFrameStats', pattern: 'document.', reason: 'Passed as func to chrome.scripting.executeScript for tab-frame measurement.' },
+    ]));
+    assert.match((await checkRoot(root)).join('\n'), /service-worker graph contains document\./);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard rejects an allowlisted injected function referenced outside injection', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./helpers/entry.js";');
+    await writeFile(path.join(root, 'js/helpers/entry.js'), 'function collectFrameStats(){return document.body;} chrome.scripting.executeScript({target:{tabId:1},func:collectFrameStats}); const directCall = collectFrameStats;');
+    await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), JSON.stringify([
+      { file: 'js/helpers/entry.js', function: 'collectFrameStats', pattern: 'document.', reason: 'Passed as func to chrome.scripting.executeScript for tab-frame measurement.' },
+    ]));
+    assert.match((await checkRoot(root)).join('\n'), /non-injection reference/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('guard rejects an allowlisted function referenced outside injection in another graph file', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/serviceWorker.js'), 'import "./helpers/entry.js"; import "./other.js";');
+    await writeFile(path.join(root, 'js/helpers/entry.js'), 'function collectFrameStats(){return document.body;} chrome.scripting.executeScript({target:{tabId:1},func:collectFrameStats});');
+    await writeFile(path.join(root, 'js/other.js'), 'const strayReference = collectFrameStats;');
+    await writeFile(path.join(root, 'security/service-worker-graph-allowlist.json'), JSON.stringify([
+      { file: 'js/helpers/entry.js', function: 'collectFrameStats', pattern: 'document.', reason: 'Passed as func to chrome.scripting.executeScript for tab-frame measurement.' },
+    ]));
+    assert.match((await checkRoot(root)).join('\n'), /non-injection reference: js\/other\.js/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

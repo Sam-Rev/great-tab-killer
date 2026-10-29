@@ -1,0 +1,20 @@
+[
+  {
+    "file": "js/helpers/gsMemorySampler.js",
+    "function": "collectFrameStats",
+    "pattern": "document.",
+    "reason": "Passed only as func to chrome.scripting.executeScript for all-frame tab measurements."
+  },
+  {
+    "file": "js/helpers/gsTabSuspendManager.js",
+    "function": "runInjectedTabTask",
+    "pattern": "document.",
+    "reason": "Passed only to gsMessages.executeCodeOnTab, which injects it with chrome.scripting.executeScript."
+  },
+  {
+    "file": "js/helpers/gsTabSuspendManager.js",
+    "function": "runInjectedTabTask",
+    "pattern": "window.",
+    "reason": "Passed only to gsMessages.executeCodeOnTab, which injects it with chrome.scripting.executeScript."
+  }
+]

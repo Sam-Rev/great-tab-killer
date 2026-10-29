@@ -52,7 +52,7 @@ test('worker-executed module graph avoids window and document globals', async ()
     // These are local browser-window data variables, extension-page helpers,
     // or functions serialized for execution in the tab's isolated world.
     const allowedPageFunctions = file.endsWith('gsTabSuspendManager.js')
-      ? new Set(['fetchYouTubeTimestampContentScript', 'generatePreviewImageCanvasViaContentScript'])
+      ? new Set(['runInjectedTabTask', 'generatePreviewImageCanvas'])
       : file.endsWith('gsMemorySampler.js') ? new Set(['collectFrameStats'])
       : file.endsWith('gsUtils.js') ? new Set(['htmlEncode', 'createWindowAndWaitForFinishLoading'])
       : file.endsWith('gsSession.js') ? new Set(['buildCurrentSession', 'matchCurrentWindowsWithLastSessionWindows'])
