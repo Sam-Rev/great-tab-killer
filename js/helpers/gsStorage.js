@@ -356,10 +356,13 @@ export var gsStorage = {
   fetchLastExtensionRecoveryTimestamp: async function() {
     try {
       const result = await chrome.storage.local.get([gsStorage.LAST_EXTENSION_RECOVERY]);
+      const storedValue = result[gsStorage.LAST_EXTENSION_RECOVERY];
+      if (storedValue === undefined || storedValue === null || storedValue === '') return undefined;
       try {
-        return JSON.parse(result[gsStorage.LAST_EXTENSION_RECOVERY]);
+        const timestamp = JSON.parse(storedValue);
+        return Number.isFinite(timestamp) ? timestamp : undefined;
       } catch (e) {
-        gsUtils.error('gsStorage', 'Failed to parse ' + gsStorage.LAST_EXTENSION_RECOVERY);
+        gsUtils.warning('gsStorage', 'Ignoring invalid ' + gsStorage.LAST_EXTENSION_RECOVERY + ' state');
         return undefined;
       }
     } catch (e) {

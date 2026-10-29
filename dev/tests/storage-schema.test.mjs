@@ -36,9 +36,10 @@ function loadStorage(initial = {}, failGet = false) {
     },
     extension: { inIncognitoContext: false },
   };
-  const context = vm.createContext({ chrome, gsUtils: { error() {}, log() {}, errorIfInitialised() {} }, gsSession: { setSynchedSettingsOnInit() {} } });
+  const messages = [];
+  const context = vm.createContext({ chrome, gsUtils: { error(...args) { messages.push(['error', ...args]); }, warning(...args) { messages.push(['warning', ...args]); }, log() {}, errorIfInitialised() {} }, gsSession: { setSynchedSettingsOnInit() {} } });
   vm.runInContext(storageSource, context);
-  return { storage: context.gsStorageForTest, data, syncStats };
+  return { storage: context.gsStorageForTest, data, syncStats, messages };
 }
 
 test('fresh storage initializes the project schema at version 1', async () => {
@@ -73,8 +74,15 @@ test('settings sync storage is not read on fresh local defaults', async () => {
 });
 
 test('invalid or unreadable extension recovery state fails closed', async () => {
-  const { storage } = loadStorage({ gsExtensionRecovery: '{broken' });
+  const { storage, messages } = loadStorage({ gsExtensionRecovery: '{broken' });
   assert.equal(await storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+  assert.equal(messages.some(([level]) => level === 'error'), false);
   const unreadable = loadStorage({}, true);
   assert.equal(await unreadable.storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+});
+
+test('missing extension recovery state is a normal empty state', async () => {
+  const { storage, messages } = loadStorage();
+  assert.equal(await storage.fetchLastExtensionRecoveryTimestamp(), undefined);
+  assert.deepEqual(messages, []);
 });
