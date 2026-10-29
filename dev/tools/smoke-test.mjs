@@ -66,7 +66,23 @@ function connectCdp(url) {
 
 async function startServer() {
   server = http.createServer((request, response) => {
-    const page = new URL(request.url, 'http://127.0.0.1').pathname;
+    const parsed = new URL(request.url, 'http://127.0.0.1');
+    const page = parsed.pathname;
+    if (page === '/war-probe') {
+      const id = parsed.searchParams.get('id') || '';
+      response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+      response.end(`<!doctype html><title>WAR probe</title><body><script>
+        const base = 'chrome-extension://${id}/';
+        window.warProbe = { attempts: [] };
+        const urls = [base+'html/suspended.html#ttl=probe&pos=0&uri=https%3A%2F%2Fexample.com', base+'images/icon-16x16.png', base+'_favicon/?pageUrl=https%3A%2F%2Fexample.com&size=16'];
+        for (const url of urls) {
+          fetch(url).then(r => warProbe.attempts.push({kind:'fetch', url, outcome:'response', status:r.status})).catch(() => warProbe.attempts.push({kind:'fetch', url, outcome:'blocked'}));
+          const img = new Image(); img.onload = () => warProbe.attempts.push({kind:'img', url, outcome:'loaded'}); img.onerror = () => warProbe.attempts.push({kind:'img', url, outcome:'blocked'}); img.src = url;
+        }
+        const frame = document.createElement('iframe'); frame.src = urls[0]; frame.onload = () => warProbe.attempts.push({kind:'iframe', url:urls[0], outcome:'load-event'}); frame.onerror = () => warProbe.attempts.push({kind:'iframe', url:urls[0], outcome:'error-event'}); document.body.append(frame);
+      </script></body>`);
+      return;
+    }
     if (!/^\/[1-5]$/.test(page)) { response.writeHead(404).end('not found'); return; }
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
     response.end(`<!doctype html><title>Smoke ${page.slice(1)}</title><h1>Local page ${page.slice(1)}</h1>`);
@@ -142,6 +158,35 @@ async function main() {
   const hostileResult = hostileProbe.result?.value;
   assert(hostileResult && !hostileResult.injected, `Hostile fragment injected an element: ${JSON.stringify(hostileResult)}`);
   assert(hostileResult.text === hostileTitle || hostileResult.title === hostileTitle, `Hostile title was not rendered as plain text: ${JSON.stringify(hostileResult)}`);
+
+  const warTarget = await cdp.send('Target.createTarget', {url: 'about:blank'});
+  const warSession = await cdp.send('Target.attachToTarget', {targetId: warTarget.targetId, flatten: true});
+  await cdp.send('Runtime.enable', {}, warSession.sessionId);
+  const warResponses = [];
+  const warFrames = [];
+  const warListener = (message) => {
+    if (message.sessionId !== warSession.sessionId) return;
+    if (message.method === 'Page.frameNavigated') warFrames.push(message.params.frame.url);
+    if (message.method === 'Network.responseReceived' && message.params.response.url.startsWith(extensionOrigin)) warResponses.push({url: message.params.response.url, status: message.params.response.status});
+  };
+  cdp.onMessage(warListener);
+  await cdp.send('Network.enable', {}, warSession.sessionId);
+  await cdp.send('Page.enable', {}, warSession.sessionId);
+  await cdp.send('Page.navigate', {url: `http://127.0.0.1:${port}/war-probe?id=${extensionId}`}, warSession.sessionId);
+  const warProbe = await waitFor(async () => {
+    const result = await cdp.send('Runtime.evaluate', {expression: 'window.warProbe?.attempts || []', returnByValue: true}, warSession.sessionId);
+    const attempts = result.result?.value || [];
+    return attempts.length >= 6 ? attempts : null;
+  }, 'web-page WAR fetch/frame/image probe');
+  await delay(1800);
+  const warFrameCheck = await cdp.send('Runtime.evaluate', {expression: '({src:document.querySelector("iframe")?.src || null, attempts:window.warProbe?.attempts || []})', returnByValue: true}, warSession.sessionId);
+  const warFrameResult = warFrameCheck.result?.value;
+  assert(warFrameResult?.src?.startsWith(`${extensionOrigin}html/suspended.html`), `The web page did not attempt to frame suspended.html: ${JSON.stringify(warFrameResult)}`);
+  const completedWarProbe = warFrameResult.attempts;
+  assert(new Set(warProbe.map((attempt) => attempt.url.split('#')[0])).size === 3, `Probe did not try all three resource URLs: ${JSON.stringify(warProbe)}`);
+  assert(warProbe.filter((attempt) => attempt.kind !== 'iframe').every((attempt) => attempt.outcome === 'blocked'), `Web page loaded a WAR image/fetch resource: ${JSON.stringify(warProbe)}`);
+  assert(!warFrames.some((frameUrl) => frameUrl.startsWith(`${extensionOrigin}html/suspended.html`)), `Web page framed suspended.html successfully: frames=${JSON.stringify(warFrames)} probe=${JSON.stringify(completedWarProbe)}`);
+  assert(warResponses.every((entry) => entry.status >= 400), `Extension resource returned a success status: ${JSON.stringify(warResponses)}`);
   const evalExtension = async (expression) => {
     let lastError;
     for (let attempt = 0; attempt < 12; attempt++) {
@@ -202,7 +247,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 

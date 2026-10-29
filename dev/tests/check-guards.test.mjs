@@ -13,7 +13,6 @@ async function fixture(source = 'const response = await fetch(chrome.runtime.get
     optional_permissions: [],
     host_permissions: [],
     content_scripts: [{ matches: [] }],
-    web_accessible_resources: [],
     content_security_policy: { extension_pages: "script-src 'self'; connect-src 'self' data:" },
     incognito: 'split',
     minimum_chrome_version: '116',
@@ -72,6 +71,25 @@ test('guard rejects minimum Chrome version drift from the lock', async () => {
     assert.match((await checkRoot(root)).join('\n'), /differ from security\/permissions\.lock/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+for (const [name, war, expected] of [
+  ['all URLs', [{ resources: ['a.html'], matches: ['<all_urls>'] }], /broad match/],
+  ['wildcard hosts', [{ resources: ['a.html'], matches: ['https://*.example.com/*'] }], /broad match/],
+  ['wildcard extension IDs', [{ resources: ['a.html'], extension_ids: ['*'] }], /wildcard extension_ids/],
+  ['wildcard resource paths', [{ resources: ['js/*.js'], matches: ['https://example.com/*'] }], /wildcard resource/],
+]) {
+  test(`guard rejects WAR ${name}`, async () => {
+    const root = await fixture();
+    try {
+      const manifestPath = path.join(root, 'manifest.json');
+      const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+      manifest.web_accessible_resources = war;
+      await writeFile(manifestPath, JSON.stringify(manifest));
+      await writeFile(path.join(root, 'security/permissions.lock.json'), JSON.stringify(projectManifest(manifest)));
+      assert.match((await checkRoot(root)).join('\n'), expected);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+}
 
 test('guard rejects forbidden code and remote fetches', async () => {
   const root = await fixture('eval("x"); fetch("https://example.com/data.json");');
