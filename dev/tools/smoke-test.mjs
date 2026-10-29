@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Clean-profile Chrome smoke test. Uses only Node 22 built-ins and Chrome CDP.
 import { spawn } from 'node:child_process';
+import { deflateSync } from 'node:zlib';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import http from 'node:http';
 import os from 'node:os';
@@ -16,6 +17,44 @@ let profile;
 let chrome;
 let server;
 let cdp;
+
+function crc32(bytes) {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function pngChunk(type, data) {
+  const name = Buffer.from(type);
+  const payload = Buffer.concat([name, data]);
+  const header = Buffer.alloc(4);
+  header.writeUInt32BE(data.length);
+  const checksum = Buffer.alloc(4);
+  checksum.writeUInt32BE(crc32(payload));
+  return Buffer.concat([header, payload, checksum]);
+}
+
+function solidPng([red, green, blue]) {
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(32, 0);
+  header.writeUInt32BE(32, 4);
+  header[8] = 8; header[9] = 6;
+  const rows = Buffer.alloc(32 * (1 + 32 * 4));
+  for (let y = 0; y < 32; y++) {
+    const row = y * 129;
+    for (let x = 0; x < 32; x++) {
+      const pixel = row + 1 + x * 4;
+      rows[pixel] = red; rows[pixel + 1] = green; rows[pixel + 2] = blue; rows[pixel + 3] = 255;
+    }
+  }
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    pngChunk('IHDR', header), pngChunk('IDAT', deflateSync(rows)), pngChunk('IEND', Buffer.alloc(0)),
+  ]);
+}
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -65,9 +104,18 @@ function connectCdp(url) {
 }
 
 async function startServer() {
+  const redPng = solidPng([238, 32, 48]);
+  const bluePng = solidPng([24, 72, 232]);
+  const greenPng = solidPng([24, 200, 72]);
   server = http.createServer((request, response) => {
     const parsed = new URL(request.url, 'http://127.0.0.1');
     const page = parsed.pathname;
+    if (page === '/a.png' || page === '/b.png' || page === '/favicon.ico') {
+      if (page === '/favicon.ico' && request.headers.host?.startsWith('localhost:')) { response.writeHead(404).end(); return; }
+      const icon = page === '/b.png' ? bluePng : page === '/favicon.ico' ? greenPng : redPng;
+      response.writeHead(200, { 'content-type': 'image/png', 'cache-control': 'no-store' }).end(icon);
+      return;
+    }
     if (page === '/war-probe') {
       const id = parsed.searchParams.get('id') || '';
       response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
@@ -81,6 +129,17 @@ async function startServer() {
         }
         const frame = document.createElement('iframe'); frame.src = urls[0]; frame.onload = () => warProbe.attempts.push({kind:'iframe', url:urls[0], outcome:'load-event'}); frame.onerror = () => warProbe.attempts.push({kind:'iframe', url:urls[0], outcome:'error-event'}); document.body.append(frame);
       </script></body>`);
+      return;
+    }
+    if (page === '/a' || page === '/b') {
+      const icon = page === '/a' ? '/a.png' : '/b.png';
+      response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+      response.end(`<!doctype html><link rel="icon" href="${icon}"><title>Icon page ${page.slice(1)}</title><h1>Icon page ${page.slice(1)}</h1>`);
+      return;
+    }
+    if (page === '/ico' || page === '/no-icon') {
+      response.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+      response.end(`<!doctype html><title>${page === '/ico' ? 'ICO' : 'No icon'} page</title><h1>${page === '/ico' ? 'ICO' : 'No icon'} page</h1>`);
       return;
     }
     if (!/^\/[1-5]$/.test(page)) { response.writeHead(404).end('not found'); return; }
@@ -202,6 +261,60 @@ async function main() {
     }
     throw lastError || new Error('No stable extension page was available');
   };
+  const faviconCases = [
+    {name: 'a.png', host: '127.0.0.1', page: '/a', icon: '/a.png', rgb: [238, 32, 48]},
+    {name: 'b.png', host: '127.0.0.1', page: '/b', icon: '/b.png', rgb: [24, 72, 232]},
+    {name: 'favicon.ico', host: '127.0.0.1', page: '/ico', icon: '/favicon.ico', rgb: [24, 200, 72]},
+    {name: 'no icon', host: 'localhost', page: '/no-icon', icon: null, rgb: null},
+  ];
+  const faviconResults = [];
+  for (const item of faviconCases) {
+    const pageUrl = `http://${item.host}:${port}${item.page}`;
+    const target = await cdp.send('Target.createTarget', {url: pageUrl});
+    const before = await waitFor(async () => {
+      const state = await evalExtension(`(async()=>{const t=(await chrome.tabs.query({})).find(x=>x.url===${JSON.stringify(pageUrl)});return t&&t.status==='complete'?t:null})()`);
+      if (!state) return null;
+      if (item.icon && !state.favIconUrl?.endsWith(item.icon)) return null;
+      return state;
+    }, `${item.name} page and favicon loaded`);
+    if (item.icon) assert(before.favIconUrl.endsWith(item.icon), `${item.name}: original tab favicon was ${before.favIconUrl}`);
+    const suspendedUrlPrefix = `${extensionOrigin}html/suspended.html`;
+    const suspended = await evalExtension(`(async()=>{const t=(await chrome.tabs.query({})).find(x=>x.url===${JSON.stringify(pageUrl)});if(!t)return null;await chrome.runtime.sendMessage({function:'suspendTab',tab:t});return t.id})()`);
+    assert(suspended, `${item.name}: could not request suspension`);
+    const stateWhileSuspended = await waitFor(async () => {
+      const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
+      return tabs.find((t) => t.id === suspended && t.url.startsWith(suspendedUrlPrefix)) || null;
+    }, `${item.name} suspension`);
+    const suspendedTarget = await waitFor(async () => (await targets()).targetInfos.find((entry) => entry.type === 'page' && entry.url === stateWhileSuspended.url) || null, `${item.name} suspended page target`);
+    const {sessionId: suspendedSession} = await cdp.send('Target.attachToTarget', {targetId: suspendedTarget.targetId, flatten: true});
+    await cdp.send('Runtime.enable', {}, suspendedSession);
+    const iconProbe = await waitFor(async () => {
+      const result = await cdp.send('Runtime.evaluate', {
+        expression: `(async()=>{const href=document.getElementById('gsFavicon')?.href||'';if(!href.startsWith('data:image/'))return {href,loaded:false};const img=new Image();img.src=href;try{await img.decode();const c=document.createElement('canvas');c.width=c.height=32;const x=c.getContext('2d');x.drawImage(img,0,0,32,32);const d=x.getImageData(16,16,1,1).data;return {href,loaded:true,pixel:[d[0],d[1],d[2],d[3]]}}catch{return {href,loaded:false}}})()`,
+        awaitPromise: true, returnByValue: true,
+      }, suspendedSession);
+      const value = result.result?.value;
+      return value?.loaded ? value : null;
+    }, `${item.name} suspended favicon image`);
+    if (item.rgb) {
+      const channelMatches = iconProbe.pixel.slice(0, 3).every((channel, index) => Math.abs(channel - item.rgb[index]) < 35);
+      assert(channelMatches, `${item.name}: suspended favicon pixel ${JSON.stringify(iconProbe.pixel)} did not match ${JSON.stringify(item.rgb)}`);
+    } else {
+      assert(iconProbe.href.startsWith('data:image/'), 'No-icon page did not receive the documented data-URL fallback');
+      const redSiteIconPixel = [238, 32, 48];
+      const matchesRedSiteIcon = iconProbe.pixel.slice(0, 3).every((channel, index) => Math.abs(channel - redSiteIconPixel[index]) < 35);
+      assert(!matchesRedSiteIcon, 'No-icon page showed the extension test site red icon');
+    }
+    await evalExtension(`(async()=>{const t=(await chrome.tabs.query({})).find(x=>x.id===${suspended});if(t)await chrome.runtime.sendMessage({function:'unsuspendTab',tab:t})})()`);
+    const after = await waitFor(async () => {
+      const tab = (await evalExtension(`(async()=>await chrome.tabs.query({}))()`)).find((t) => t.id === suspended && t.url === pageUrl && t.status === 'complete');
+      if (!tab) return null;
+      if (item.icon && !tab.favIconUrl?.endsWith(item.icon)) return null;
+      return tab;
+    }, `${item.name} restoration and favicon`);
+    faviconResults.push({page: item.name, before: item.icon ? before.favIconUrl : 'no site icon', whileSuspended: item.rgb ? `site icon pixel ${iconProbe.pixel.slice(0, 3).join(',')}` : 'documented data-URL fallback', after: item.icon ? after.favIconUrl : 'restored without site icon'});
+    await cdp.send('Target.closeTarget', {targetId: target.targetId});
+  }
   const welcomeUrl = `${extensionOrigin}html/options.html?firstTime`;
   await waitFor(async () => (await targets()).targetInfos.filter((target) => target.url === welcomeUrl).length === 1, 'one first-run welcome tab');
   await delay(1500);
@@ -255,7 +368,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, faviconResults, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 
