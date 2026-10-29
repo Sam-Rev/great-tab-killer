@@ -38,7 +38,7 @@ export var tgs = (function () {
 
   const focusDelay = 500;
   const sessionMetricsCheckInterval = 15; // every 15 minutes
-  const analyticsCheckInterval = 60 * 23.5; // every 23.5 hours
+  const sessionMetricsResetInterval = 60 * 23.5; // reset local session metrics every 23.5 hours
 
   const _tabStateByTabId = {};
   const _currentFocusedTabIdByWindowId = {};
@@ -149,7 +149,7 @@ export var tgs = (function () {
 
   function startTimers() {
     startSessionMetricsJob();
-    startAnalyticsUpdateJob();
+    return updateSessionMetricsJob();
   }
 
   function getCurrentlyActiveTab(callback) {
@@ -1740,7 +1740,7 @@ export var tgs = (function () {
     if (alarm.name === 'updateSessionMetrics') {
       gsSession.updateSessionMetrics();
     }
-    else if (alarm.name === 'startAnalyticsUpdateJob') {
+    else if (alarm.name === 'updateSessionMetricsJob') {
       const reset = true;
       gsSession.updateSessionMetrics(reset);
     }
@@ -1761,8 +1761,11 @@ export var tgs = (function () {
     chrome.alarms && chrome.alarms.create('updateSessionMetrics', {periodInMinutes: sessionMetricsCheckInterval});
   }
 
-  function startAnalyticsUpdateJob() {
-    chrome.alarms && chrome.alarms.create('startAnalyticsUpdateJob', {periodInMinutes: analyticsCheckInterval});
+  async function updateSessionMetricsJob() {
+    if (!chrome.alarms) return;
+    await chrome.alarms.clear('startAnalyticsUpdateJob');
+    await chrome.alarms.clear('updateSessionMetricsJob');
+    await chrome.alarms.create('updateSessionMetricsJob', {periodInMinutes: sessionMetricsResetInterval});
   }
 
   return {
