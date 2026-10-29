@@ -21,6 +21,8 @@ The extension is local-first by design and the manifest has no update URL. The a
 
 The owner-provided roadmap has a measured Phase 9 baseline that changes the later work inventory. A key mismatch is task 9.14: `gsBackup.js` already uses “The Great Tab Killer” in its backup header and filename, so the rename was completed in Phase 0. Task 3.10 now makes backup opt-in, skips incognito tabs, and documents its Downloads output; enabled backup files still accumulate under user-managed Downloads retention, and raw backup debug logs remain outstanding.
 
+The strict service-worker module-graph guard findings are individually classified with source evidence and actions in [docs/audit/SW_GRAPH_REVIEW.md](audit/SW_GRAPH_REVIEW.md). The scanner exits non-zero on unresolved hits; no exceptions have been added to an allowlist.
+
 ## Owner decisions recorded after the initial audit
 
 These are approved design directions. Source status is recorded per finding below; Gate A approval is historical and does not authorize later phases.
