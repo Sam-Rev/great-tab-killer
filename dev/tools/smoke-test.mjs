@@ -312,6 +312,50 @@ async function main() {
     assert(screenshotDir || (expanded.result.value.minus !== 'none' && expanded.result.value.plus === 'none'), 'Expanded session minus mark is missing or plus mark remains');
     await saveScreenshot(sessionId, 'history-expanded.png');
   });
+  await captureUiPage(`${extensionOrigin}html/shortcuts.html`, 'shortcuts.png', async (sessionId) => {
+    await waitFor(async () => {
+      const result = await cdp.send('Runtime.evaluate', { expression: 'document.body.hidden === false && !!document.querySelector(".pageHeader h1")', returnByValue: true }, sessionId);
+      return result.result?.value;
+    }, 'localized shortcuts page');
+  });
+  const brandedPages = [
+    ['about', 'about.html', '.pageBrandMark'],
+    ['backup-setup', 'backup-setup.html', '.pageBrandMark'],
+    ['broken', 'broken.html', '.brand-logo'],
+    ['changelog', 'changelog.html', '.pageBrandMark'],
+    ['history', 'history.html', '.pageBrandMark'],
+    ['monitor', 'monitor.html', '.pageBrandMark'],
+    ['options', 'options.html', '.pageBrandMark'],
+    ['permissions', 'permissions.html', '.brand-logo'],
+    ['popup', 'popup.html', '.popupBrand'],
+    ['recovery', 'recovery.html', '.brand-logo'],
+    ['restoring-window', 'restoring-window.html', '.brand-logo'],
+    ['shortcuts', 'shortcuts.html', '.pageBrandMark'],
+    ['suspended', 'suspended.html', '.suspendedProductLogo'],
+    ['update', 'update.html', '.brand-logo'],
+  ];
+  const brandedPageResults = [];
+  for (const [name, file, selector] of brandedPages) {
+    const pageUrl = `${extensionOrigin}html/${file}`;
+    const url = file === 'suspended.html' ? `${extensionOrigin}html/${file}#ttl=Brand%20check&pos=0&uri=https%3A%2F%2Fexample.com%2F` : pageUrl;
+    const priorErrorCount = errors.length;
+    let logoResult;
+    await captureUiPage(url, null, async (sessionId) => {
+      await waitFor(async () => {
+        const result = await cdp.send('Runtime.evaluate', { expression: `document.readyState === 'complete' && Array.from(document.querySelectorAll(${JSON.stringify(selector)})).some(img => img.complete && img.naturalWidth > 0)`, returnByValue: true }, sessionId);
+        return result.result?.value;
+      }, `${name} logo image load`);
+      const result = await cdp.send('Runtime.evaluate', {
+        expression: `(()=>{const all=Array.from(document.querySelectorAll(${JSON.stringify(selector)}));const shown=all.filter(img=>img.getClientRects().length>0);return {naturalWidth:Math.max(0,...all.map(img=>img.naturalWidth)),visible:shown.length,rects:shown.map(img=>{const r=img.getBoundingClientRect();return {width:r.width,height:r.height}})}})()`,
+        returnByValue: true,
+      }, sessionId);
+      logoResult = result.result?.value;
+      assert(logoResult?.visible > 0 && logoResult.rects.some(({width, height}) => width > 0 && height > 0), `${name} logo has no rendered size: ${JSON.stringify(logoResult)}`);
+      await delay(350);
+      assert(errors.length === priorErrorCount, `${name} page emitted a console/runtime error: ${JSON.stringify(errors.slice(priorErrorCount))}`);
+    });
+    brandedPageResults.push({page: name, logo: logoResult});
+  }
   const faviconCases = [
     {name: 'a.png', host: '127.0.0.1', page: '/a', icon: '/a.png', rgb: [238, 32, 48]},
     {name: 'b.png', host: '127.0.0.1', page: '/b', icon: '/b.png', rgb: [24, 72, 232]},
@@ -419,7 +463,7 @@ async function main() {
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, faviconResults, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, brandedPages: brandedPageResults, faviconResults, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 
