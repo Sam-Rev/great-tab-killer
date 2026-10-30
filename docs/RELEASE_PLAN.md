@@ -1,13 +1,13 @@
 # v0.1.0 release readiness plan
 
-This audit was rechecked on `phase-4-release-prep` from `main` at `0ec1633` on 2026-10-30. No release has been published. The owner creates the GitHub repository and performs all pushes. No tag or release artifact was created in this task.
+This audit was updated on `phase-5-release` from `main` at `1f588ab` on 2026-10-30. The public repository is `https://github.com/Sam-Rev/great-tab-killer`; the owner reports it is empty and nothing has been pushed. The local release ZIP and checksum were prepared; no tag or GitHub release was created.
 
 ## Scope status
 
 | v0.1.0 item | Status | Evidence and remaining work |
 |---|---|---|
-| Missing `tabProperties.url` runtime error | Partial | Planned under the v0.1.0 minimal-scope runtime-error remediation (“fix the three reported runtime errors”). `gsTabSuspendManager.saveSuspendData()` rejects missing/unsafe URLs (`js/helpers/gsTabSuspendManager.js:510-512`); `gsIndexedDb.addSuspendedTabInfo()` has a defensive check (`js/helpers/gsIndexedDb.js:121-125`). Clean-profile smoke had no occurrence. The original cross-extension trigger was not reproduced or proven. |
-| `Failed to fetch` runtime error | Partial | Planned under v0.1.0's in-scope runtime-error remediation (roadmap §5). Favicon failures are caught and tested (`dev/tests/privacy-defaults.test.mjs`, `favicon fetch rejection is delivered to its caller`); Chrome smoke had no occurrence. The original stack/source remains unknown (see `docs/TESTING.md:97`). |
+| Missing `tabProperties.url` runtime error | Partial | Fixed to fail safely: suspension validates the live URL and IndexedDB rejects missing URLs (`js/helpers/gsTabSuspendManager.js:510-512`; `js/helpers/gsIndexedDb.js:121-125`). The trigger was not reproduced in a clean profile; a competing suspender is a likely cause, but unverified. |
+| `Failed to fetch` runtime error | Partial | Fixed to fail safely: favicon request failures are caught and tested (`dev/tests/privacy-defaults.test.mjs`, `favicon fetch rejection is delivered to its caller`); Chrome 156 clean-profile smoke did not reproduce it. The original trigger was not reproduced in a clean profile; a competing suspender is a likely cause, but unverified (see `docs/TESTING.md:97`). |
 | `Failed to parse gsExtensionRecovery` | Done | Missing/malformed recovery state fails safely; `dev/tests/storage-schema.test.mjs` covers both cases. |
 | A-21 service-worker `window.setTimeout` | Done | The worker path uses global `setTimeout` (`js/tgs.js:95`); `dev/tests/service-worker-globals.test.mjs` checks the worker module graph. Audit A-21 is Fixed in source. |
 | Task 3.10 privacy defaults | Partial | Planned follow-up: task 3.10's manual incognito verification. Sync and backup default off; sampling, preview, backup and session paths filter incognito; `dev/tests/privacy-defaults.test.mjs` covers code wiring. No real incognito-window test has been run; Chrome shares local and sync storage across incognito contexts. |
@@ -16,14 +16,17 @@ This audit was rechecked on `phase-4-release-prep` from `main` at `0ec1633` on 2
 | Task 3.11 web-accessible resources | Done | `web_accessible_resources` is absent; A-25 is Fixed. Web-origin probe and favicon/suspend/restore evidence are in `docs/TESTING.md`; removal commits `6d84040`, `e17c21b`, `9cf3c6b`, `bb5ceec`. |
 | Task 9.15 extension description | Done | English string is neutral; non-English description keys fall back to English. Commit `55e67f0`; 55 locale JSON files validated and unused-key scan found 0 candidates. |
 | `PRIVACY.md` and evidence register | Done | `PRIVACY.md` and `docs/audit/PRIVACY_CLAIMS.md` document storage, defaults, permissions, history, content-script data and limits. Browser-specific claims remain explicitly Unverified. |
-| `SECURITY.md` | Partial | Planned under roadmap task 6.2 and the ordered pre-publication repository-URL step below. Policy and controls are documented. `<OWNER: repository URL>` remains intentionally unresolved; private reporting URL and availability must be supplied by owner before publication. |
+| `SECURITY.md` | Partial | The repository URL is now set to `https://github.com/Sam-Rev/great-tab-killer`; task 6.2 policy text is present. The owner still needs to confirm GitHub private vulnerability reporting is enabled for the repository before publishing. |
 | GPL-2.0 `LICENSE` | Done | Tracked `LICENSE` is the complete GNU GPL version 2 text. No custom license is added; it was not edited. The owner-directed brand policy states explicitly that it does not restrict GPL code rights. |
-| `NOTICE` | Partial | Planned under roadmap task 9.12. SAM REV copyright and separated branding paragraphs have been appended without changing inherited notices. db.js and Fontello license evidence remains incomplete. |
+| `NOTICE` | Partial | SAM REV copyright and separated branding text are present. Task 9.12: db.js 0.15.0 MIT metadata and license text are verified from upstream; the specific Fontello source-font names and licenses remain unverified because the generated archive/config was not found. |
 | `BRANDING.md` | Done | States the GPL code grant separately from reserved name/logo use, lists shipped owner-created artwork, permits unmodified official-release redistribution, and makes no registration or endorsement claim. |
-| Vendored-library pins | Partial | Planned under roadmap task 9.12. `vendor/CHECKSUMS.sha256` and guard pin html2canvas, dom-to-image, and db.js. A-20 is now an owner-accepted risk: html2canvas's normalized output matches the official artifact, while runtime equivalence remains unverified. db.js provenance/version and Fontello provenance/license are still Unverified. |
-| Guard and tests | Done | `node tools/check-guards.mjs` passed; full Node suite passed 67/67 after A-12 fix on 2026-10-30. |
-| Chrome clean-profile smoke | Done | Chrome 156 smoke passed after A-12 fix on 2026-10-30; five pages suspended/restored, favicon checks and WAR probes passed, prior error signatures were absent, and extension error list was empty. Brave/incognito UI checks remain owner-manual. |
-| Release packaging and install materials | Missing | Planned by the v0.1.0 release-engineering scope and roadmap task 9.9 / ordered packaging steps below. `README.md` exists but was not edited here; `docs/INSTALL.md`, release ZIP, `SHA256SUMS.txt`, and public `v0.1.0` tag do not exist yet. |
+| Vendored-library pins | Partial | `vendor/CHECKSUMS.sha256` and the guard pin html2canvas, dom-to-image, and db.js. A-20 is owner-accepted: html2canvas's normalized output matches the official artifact; runtime equivalence remains unverified. db.js metadata/license are recorded in `NOTICE` and `vendor/README.md`; Fontello's specific source-font identity/license remains **UNVERIFIED** (task 9.12). |
+| `README.md` and `docs/INSTALL.md` | Done | Public repository links, supported browser/testing scope, privacy defaults, known risks, unpacked installation, checksum verification, update/uninstall, and migration order are documented. |
+| Release ZIP and checksum | Done | `great-tab-killer-v0.1.0.zip`: 650,777 bytes, 134 files, SHA-256 `6f55ddff85f3f60163f472b79d5d26bb3277a02df40e8f66398c0b0851d721a8`. Python package tests built twice and confirmed byte-identical ZIPs; archive tests verified root manifest, exact allowlist, excluded paths, and manifest references. `dist/SHA256SUMS.txt` matches. |
+| CI and release workflows | Partial | `.github/workflows/ci.yml` and `release.yml` use only verified `actions/checkout` v4.2.2 SHA `11bd71901bbe5b1630ceea73d27597364c9af683`; workflows were not run per instruction. |
+| Guard and tests | Done | `node tools/check-guards.mjs` passed; Node suite 67/67; Python package tests 3/3; `node tools/check-release-ready.mjs` passed. |
+| Chrome clean-profile smoke | Done | Chrome 156.0.8078.79 passed against both repository and extracted ZIP. Each run opened welcome/setup once, suspended/restored five local tabs, reported zero extension errors, and found none of the three prior error signatures. Brave/incognito UI checks remain owner-manual. |
+| Public v0.1.0 release | Missing | No tag, GitHub release, or push was made; these remain for the owner-approved publication step (roadmap task 9.9). |
 
 ### Current audit items not accepted as v0.2.0 risks
 
@@ -35,7 +38,7 @@ The owner directed that restrictions be stated as conditions on use of SAM REV b
 
 ## Shipped-tree size audit
 
-Method: tracked files only; exclude `dev/`, `docs/`, `tools/`, `assets/source/`, `.git/`, `tests/`, and Markdown other than `LICENSE` and `NOTICE`. This literal boundary includes repository metadata and security/vendor guard inputs, so it is conservative and not yet the final release-script file list. Untracked owner logo sources are excluded. Sizes are current working-tree bytes; the ZIP estimate uses Python's ZIP_DEFLATED level 9 and can vary by ZIP tool.
+The first size estimate below was a broad tracked-tree inventory, not the release contents. Actual packaging now follows the exact `tools/release-files.txt` allowlist; it excludes `dev/`, `docs/`, `tools/`, `tests/`, `assets/source/`, `.git*`, the developer-only monitor lab, and owner root logo files. The ZIP includes the extension runtime tree plus `LICENSE`, `NOTICE`, and `BRANDING.md`.
 
 - **141 files; 2,303,999 bytes (2.20 MiB) uncompressed.** Estimated compressed archive: **673,480 bytes (657.7 KiB)**.
 - `images/`: 198,567 bytes. `font/`: 6,408 bytes.
@@ -108,10 +111,10 @@ Files with no application-source reference are intentional inputs/metadata, not 
 
 | Order | Work | Owner / agent |
 |---:|---|---|
-| 1 | Create the GitHub repository; enable 2FA, private vulnerability reporting, branch protection, and secret scanning. Hide the personal e-mail and configure GitHub noreply for future commits. Decide history option A/B/C. | Owner |
-| 2 | Supply the repository URL to replace `<OWNER: repository URL>` and confirm private reporting is enabled after repository creation. | Owner |
-| 3 | Add or revise `README.md` and create `docs/INSTALL.md`; document manual unpacked install, file URL access, update/checksum procedure, and safe migration order. | Agent, after owner supplies repository details |
-| 4 | Add CI workflow for guard and tests. Verify each GitHub Action's full commit SHA from its real GitHub repository, grant least-privilege workflow permissions, and stop for owner input if any SHA cannot be verified. | Agent |
-| 5 | Add a release script using an explicit shipped-file list; build the ZIP and `SHA256SUMS.txt`, then verify the archive and file list. | Agent |
-| 6 | Run final clean-profile verification and review the completed release artifacts and notes. | Agent prepares; owner reviews |
-| 7 | Create/publish the `v0.1.0` tag and GitHub release only after owner approval. | Owner approval; agent can prepare local tag/artifacts when explicitly asked |
+| 1 | Confirm repository security settings (private vulnerability reporting, branch protection, secret scanning) and owner GitHub noreply config. | Owner; unverified |
+| 2 | Repository URL decision and placeholder replacement; confirm private vulnerability reporting. | URL replacement done: `https://github.com/Sam-Rev/great-tab-killer`; owner must confirm private reporting is enabled. |
+| 3 | README and unpacked-install instructions, including file URL access, checksum procedure, update and migration order. | Done on `phase-5-release` |
+| 4 | CI and release workflow definitions; verify the single external Action SHA and least-privilege permissions. | Done; checkout v4.2.2 SHA verified from upstream tag. Workflows not run. |
+| 5 | Build ZIP and `SHA256SUMS.txt` from a literal allowlist; test contents and reproducibility. | Done: 134 files, 650,777 bytes; SHA-256 `6f55ddff85f3f60163f472b79d5d26bb3277a02df40e8f66398c0b0851d721a8`; reproducible test passed. |
+| 6 | Run clean-profile smoke against repository and extracted ZIP; owner reviews release materials. | Done on Chrome 156.0.8078.79 for both paths; owner review remains. |
+| 7 | Create/publish tag `v0.1.0` and GitHub release only after explicit owner approval. | Owner approval; not done in this task |

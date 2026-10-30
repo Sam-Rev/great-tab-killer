@@ -6,8 +6,10 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 
 - Product name: The Great Tab Killer. Forked GPL-2.0 code remains GPL-2.0; no custom license.
 - Distribution is GitHub only, as unpacked files or a release ZIP; never the Chrome Web Store.
+- Public repository URL: `https://github.com/Sam-Rev/great-tab-killer` (no trailing `.git`); use it wherever repository links are needed.
 - Extension ID is fixed by manifest `key`: `odolpeeackiejlhdfpakabidhggghnlo`. Never put the private key in the repository.
 - Keep Git history as-is: no rewrite, squash, or filter. Docs may reference commit hashes. Future owner commits use `SAM REV` with a GitHub noreply address; the owner configures Git. Push only `main` and tag `v0.1.0`; never push `local-0.1.0` or `phase-*` branches, and never use `--tags` or `--all`.
+- Release automation uses no third-party GitHub Actions except `actions/checkout` pinned to a full commit SHA verified against its upstream tag. Release ZIP contents come from an explicit allowlist, never an exclude-all-except pattern.
 - No AI-tool attribution anywhere, including `Co-Authored-By` or “Generated with” lines.
 
 ## Permissions and compatibility
