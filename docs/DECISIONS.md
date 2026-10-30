@@ -7,7 +7,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 - Product name: The Great Tab Killer. Forked GPL-2.0 code remains GPL-2.0; no custom license.
 - Distribution is GitHub only, as unpacked files or a release ZIP; never the Chrome Web Store.
 - Extension ID is fixed by manifest `key`: `odolpeeackiejlhdfpakabidhggghnlo`. Never put the private key in the repository.
-- Do not push unless asked. Use merge commits; no squash or history rewriting. `local-0.1.0` is local only; `v0.1.0` is reserved for public release.
+- Keep Git history as-is: no rewrite, squash, or filter. Docs may reference commit hashes. Future owner commits use `SAM REV` with a GitHub noreply address; the owner configures Git. Push only `main` and tag `v0.1.0`; never push `local-0.1.0` or `phase-*` branches, and never use `--tags` or `--all`.
 - No AI-tool attribution anywhere, including `Co-Authored-By` or “Generated with” lines.
 
 ## Permissions and compatibility
@@ -38,6 +38,9 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 
 - Logo v2 is final; simplified 16/32 px icons are approved.
 - Show the logo on the suspended page. Keep the original site's favicon on the suspended tab.
+- Public copyright and branding name: **SAM REV**. The owner created the logo artwork and generated icons in Photoshop.
+- The owner accepts `BRANDING.md` and its corresponding `NOTICE` addition as written.
+- Anyone may use, modify, and fork the code under GPL-2.0. The product name **The Great Tab Killer** and logo/icon artwork are reserved branding of SAM REV and are not part of the code's GPL grant. The branding policy does not restrict any right granted by GPL-2.0 for the code. Users distributing modified versions may not use this name or these logo/icons; they must replace them with their own. Unmodified redistribution of an official release with its original branding is allowed. No endorsement may be implied, and no trademark registration is claimed.
 
 ## Scope
 

@@ -72,6 +72,40 @@ test('backup startup stays disabled and the one-time notice flag survives startu
   assert.match(createdTabs[0].url, /html\/backup-setup\.html$/);
 });
 
+test('backup failures log only a bounded static message, never a URL or title', async () => {
+  const secretUrl = 'https://private.example/path?token=secret';
+  const secretTitle = '<private tab title>';
+  const logCalls = [];
+  const chrome = {
+    storage: { local: { async get() { return { gsBackupEnabled: true }; } } },
+    tabs: { query(_query, callback) { callback([{ windowId: 1, url: secretUrl, title: secretTitle }]); } },
+    runtime: {
+      getURL(path) { return `chrome-extension://test-id/${path}`; },
+      async getContexts() { throw new Error(`${secretUrl} ${secretTitle}`); },
+    },
+  };
+  const source = (await readFile(new URL('../../js/helpers/gsBackup.js', import.meta.url), 'utf8'))
+    .replace(/^import .*;?\s*$/gm, '')
+    .replace('export var gsBackup =', 'var gsBackup =')
+    + '\nglobalThis.backupForTest = gsBackup;';
+  const context = vm.createContext({
+    chrome,
+    gsUtils: { log() {} },
+    gsStorage: {},
+    console: { error(...args) { logCalls.push(args); }, log(...args) { logCalls.push(args); } },
+  });
+  vm.runInContext(source, context);
+  await context.backupForTest.performBackup();
+
+  assert.equal(logCalls.length, 1);
+  assert.deepEqual(Array.from(logCalls[0]), ['[gsBackup] Backup failed']);
+  const loggedText = JSON.stringify(logCalls);
+  assert.equal(loggedText.includes(secretUrl), false);
+  assert.equal(loggedText.includes(secretTitle), false);
+  assert.ok(loggedText.length < 100, 'backup failure logging must remain bounded');
+  assert.doesNotMatch(source, /console\.log\s*\(/);
+});
+
 test('backup setup only enables and schedules after explicit Enable click', async () => {
   const localData = {};
   const alarms = [];

@@ -2,6 +2,24 @@
 
 The Great Tab Killer is derived from the GPL-2.0 project The Great Suspender and the GPL-2.0 project The Great Suspender Reloaded. The original project is attributed to Dean Oemcke. The Reloaded project is maintained under the GitHub account `tim-dim-ext`. Original notices and license terms remain applicable to the derived code.
 
+Copyright (c) 2026 SAM REV for original project contributions.
+
+## Branding
+
+The source code is licensed under GPL-2.0. The name “The Great Tab Killer” and the logo/icon files are NOT part of the GPL grant; they are the reserved branding of SAM REV. Nothing in this policy restricts any right granted by GPL-2.0 for the code.
+
+If you distribute a modified version, you may not use the name “The Great Tab Killer” or the logo and icon files; replace them with your own. Unmodified redistribution of an official release with its original branding is allowed. No endorsement may be implied. No trademark registration is claimed.
+
+The logo artwork and generated icons listed below were created by SAM REV in Photoshop and are copyright (c) 2026 SAM REV, all rights reserved.
+
+- `images/tab-killer-logo.png`
+- `images/icon-16x16.png`
+- `images/icon-16x16_grey.png`
+- `images/icon-32x32.png`
+- `images/icon-32x32_grey.png`
+- `images/icon-48x48.png`
+- `images/icon-128x128.png`
+
 ## Bundled third-party components
 
 | Component | Version | License | Verification and source |
@@ -15,5 +33,5 @@ The bundled dependency versions and file hashes must be pinned by the supply-cha
 
 ## Owner-provided project assets
 
-- `assets/source/Tab_Killer_logo.png` is the v1 owner-provided source and remains under `assets/source/`.
-- `assets/source/Tab_Killer_logo_v2.png`, `assets/source/Tab_Killer_logo_v2_original.jpg`, and `assets/source/Tab_Killer_logo_v2_master.png` are the owner-provided v2 PNG, original JPEG, and processed master. Generated files in `images/` derive from that master. The owner-provided artwork license is unconfirmed.
+- `assets/source/Tab_Killer_logo.png` is the v1 owner-created source and remains under `assets/source/`.
+- `assets/source/Tab_Killer_logo_v2.png`, `assets/source/Tab_Killer_logo_v2_original.jpg`, and `assets/source/Tab_Killer_logo_v2_master.png` are the owner-created v2 PNG, original JPEG, and processed master. Generated files in `images/` derive from that master.

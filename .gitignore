@@ -9,3 +9,8 @@ coverage/
 
 # Local visual approval sheets
 /dev/previews/
+
+# Owner-provided logo sources kept outside the shipped tree
+/Tab_Killer_logo.png
+/Tab_Killer_logo_2.png
+/Tab_Killer_logo 2.jpg

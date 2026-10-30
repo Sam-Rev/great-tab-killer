@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - One-time local session-backup setup page with enable and frequency controls.
 
 ### Changed
+- Backup diagnostics no longer log step details or exception text that may contain URLs or titles.
 - Privacy and security documentation now covers browser-history fragments, content-script data, incognito storage behavior, and release-integrity limits.
 - Removed unnecessary `web_accessible_resources`; extension assets are no longer exposed to web pages or other extensions.
 - Suspended URL fragments and session recovery now validate navigation URLs; untrusted page and session text is rendered with DOM text nodes.
