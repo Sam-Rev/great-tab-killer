@@ -17,8 +17,9 @@ This audit was rechecked on `phase-4-release-prep` from `main` at `0ec1633` on 2
 | Task 9.15 extension description | Done | English string is neutral; non-English description keys fall back to English. Commit `55e67f0`; 55 locale JSON files validated and unused-key scan found 0 candidates. |
 | `PRIVACY.md` and evidence register | Done | `PRIVACY.md` and `docs/audit/PRIVACY_CLAIMS.md` document storage, defaults, permissions, history, content-script data and limits. Browser-specific claims remain explicitly Unverified. |
 | `SECURITY.md` | Partial | Policy and controls are documented. `<OWNER: repository URL>` remains intentionally unresolved; private reporting URL and availability must be supplied by owner before publication. |
-| GPL-2.0 `LICENSE` | Done | Tracked `LICENSE` is the complete GNU GPL version 2 text. No custom license is added. Branding compatibility requires owner decision below before public-facing branding terms are written. |
-| `NOTICE` | Partial | Existing inherited attributions/notices are present. SAM REV copyright and branding additions are pending the GPL §6 issue below. db.js and Fontello license evidence remains incomplete. |
+| GPL-2.0 `LICENSE` | Done | Tracked `LICENSE` is the complete GNU GPL version 2 text. No custom license is added; it was not edited. The owner-directed brand policy states explicitly that it does not restrict GPL code rights. |
+| `NOTICE` | Partial | SAM REV copyright and separated branding paragraphs have been appended without changing inherited notices. db.js and Fontello license evidence remains incomplete. |
+| `BRANDING.md` | Done | States the GPL code grant separately from reserved name/logo use, lists shipped owner-created artwork, permits unmodified official-release redistribution, and makes no registration or endorsement claim. |
 | Vendored-library pins | Partial | `vendor/CHECKSUMS.sha256` and guard pin html2canvas, dom-to-image, and db.js. Audit A-20 remains Open because db.js provenance/version is unverified and capture behavior still needs browser testing. Fontello provenance/license is also Unverified in `NOTICE`. |
 | Guard and tests | Done | After this branch's safe cleanups, `node tools/check-guards.mjs` passed and the full Node suite passed 66/66 on 2026-10-30. |
 | Chrome clean-profile smoke | Done | Chrome smoke passed on 2026-10-30: extension loaded, setup shown once, backups stayed off/alarm absent, five tabs suspended/restored, WAR web requests blocked, no prior runtime signatures, and extension errors were empty. Brave/incognito UI checks remain owner-manual. |
@@ -28,15 +29,15 @@ This audit was rechecked on `phase-4-release-prep` from `main` at `0ec1633` on 2
 
 The only findings still **Open** outside the owner-accepted v0.2.0 list are A-06 (internal runtime dispatcher lacks universal sender validation), A-08 (foreign suspended-tab migration remains dormant and its conversion flow is deferred to task 7.7), A-12 (backup path still logs step details/error stack), and A-20 (vendored capture/dependency provenance and runtime behavior follow-up). A-21 is Fixed in source. A-11 is Mitigated in source; generated backup text files remain user-managed. Accepted v0.2.0 findings are A-10, A-13, A-14, A-15, and A-22.
 
-### Branding / GPL review gate
+### Branding / GPL separation
 
-The owner requested a policy that modified redistributions **must** use a different product name and replace the logo/icons. `LICENSE` §6 (lines 189–195) says recipients may copy, distribute, or modify under GPL-2.0 and that no further restrictions may be imposed on those rights. A mandatory rule for modified redistributions may be read as an additional restriction, even if the name and artwork are described as separate branding. This plan records a potential compatibility issue, not a legal conclusion. Do not publish the branding paragraph or add it to `NOTICE` until the owner chooses how to handle this apparent conflict. No trademark registration is claimed.
+The owner directed that restrictions be stated as conditions on use of SAM REV branding, not on GPL code rights. `BRANDING.md`, `NOTICE`, and `docs/DECISIONS.md` say the branding policy does not restrict any right granted by GPL-2.0 for the code. `LICENSE` was not edited; inherited copyright/license notices were retained unchanged. This is the owner's policy wording, not a legal conclusion or legal advice.
 
 ## Shipped-tree size audit
 
 Method: tracked files only; exclude `dev/`, `docs/`, `tools/`, `assets/source/`, `.git/`, `tests/`, and Markdown other than `LICENSE` and `NOTICE`. This literal boundary includes repository metadata and security/vendor guard inputs, so it is conservative and not yet the final release-script file list. Untracked owner logo sources are excluded. Sizes are current working-tree bytes; the ZIP estimate uses Python's ZIP_DEFLATED level 9 and can vary by ZIP tool.
 
-- **141 files; 2,303,072 bytes (2.20 MiB) uncompressed.** Estimated compressed archive: **673,097 bytes (657.3 KiB)**.
+- **141 files; 2,303,999 bytes (2.20 MiB) uncompressed.** Estimated compressed archive: **673,480 bytes (657.7 KiB)**.
 - `images/`: 198,567 bytes. `font/`: 6,408 bytes.
 - Largest tracked file in this payload: `js/helpers/html2canvas.min.js` (281,609 bytes). No tracked payload file exceeds 1 MiB.
 - Three untracked owner logo sources are each over 1 MiB and are excluded: `Tab_Killer_logo.png` (1,301,108 bytes), `Tab_Killer_logo_2.png` (1,147,323 bytes), and `Tab_Killer_logo 2.jpg` (1,082,937 bytes). They are now listed in `.gitignore`.
@@ -100,7 +101,7 @@ Files with no application-source reference are intentional inputs/metadata, not 
 
 - Before cleanup, one tracked documentation line exposed a local private-key path and account name in `docs/KEY_NOTES.md`. It was generalized in commit `90f0a4b`; a tracked-file rescan found no machine-specific local paths or owner account name. No tracked e-mail address or API-key/token pattern was found.
 - `git log` shows two distinct author/committer identities: the owner display name with a local-only address, and `Project Owner` with another local-only address. Neither uses the requested public name and GitHub noreply address. Current counts are obtained with `git log --format='%an <%ae> | %cn <%ce>' | sort | uniq -c`; exact local account identifiers are reported to the owner, not copied into tracked release docs.
-- No `.pem` or private-key-named file is tracked. `manifest.json` contains the extension's base64 public key only; the external private key path was removed from tracked docs. `LICENSE` is GPL-2.0. `NOTICE` retains inherited attributions and third-party entries; requested SAM REV copyright/branding additions await the GPL review gate above.
+- No `.pem` or private-key-named file is tracked. `manifest.json` contains the extension's base64 public key only; the external private key path was removed from tracked docs. `LICENSE` is GPL-2.0. `NOTICE` retains inherited attributions and third-party entries unchanged; SAM REV copyright and branding paragraphs are appended after those notices.
 - History identity choices for the owner, with no action taken: **A)** keep local identities public (transparent history, but exposes `localhost` addresses and inconsistent author name); **B)** publish a new single “initial import” commit authored as SAM REV while keeping full history private (clean public identity, but loses public change provenance/bisectability); **C)** rewrite existing authors before the first push (preserves commit graph/content but changes every affected hash and carries history-rewrite/collateral-risk). No history was rewritten.
 
 ## Ordered work before publication
@@ -108,8 +109,8 @@ Files with no application-source reference are intentional inputs/metadata, not 
 | Order | Work | Owner / agent |
 |---:|---|---|
 | 1 | Create the GitHub repository; enable 2FA, private vulnerability reporting, branch protection, and secret scanning. Hide the personal e-mail and configure GitHub noreply for future commits. Decide history option A/B/C. | Owner |
-| 2 | Resolve the GPL §6 / reserved-branding wording gate; supply the repository URL for `<OWNER: repository URL>`. | Owner |
-| 3 | Add or revise `README.md` and create `docs/INSTALL.md`; document manual unpacked install, file URL access, update/checksum procedure, and safe migration order. | Agent, after owner supplies repository details and branding decision |
+| 2 | Supply the repository URL to replace `<OWNER: repository URL>` and confirm private reporting is enabled after repository creation. | Owner |
+| 3 | Add or revise `README.md` and create `docs/INSTALL.md`; document manual unpacked install, file URL access, update/checksum procedure, and safe migration order. | Agent, after owner supplies repository details |
 | 4 | Add CI workflow for guard and tests. Verify each GitHub Action's full commit SHA from its real GitHub repository, grant least-privilege workflow permissions, and stop for owner input if any SHA cannot be verified. | Agent |
 | 5 | Add a release script using an explicit shipped-file list; build the ZIP and `SHA256SUMS.txt`, then verify the archive and file list. | Agent |
 | 6 | Run final clean-profile verification and review the completed release artifacts and notes. | Agent prepares; owner reviews |
