@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      # actions/checkout v4.2.2, verified with git ls-remote on 2026-10-30.
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check security and manifest guards
+        run: node tools/check-guards.mjs
+      - name: Run Node test suite
+        run: node --test dev/tests/*.test.mjs
+      - name: Run Python release-package tests
+        run: python3 -m unittest discover -s dev/tests -p 'test_*.py'
