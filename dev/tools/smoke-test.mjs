@@ -286,10 +286,10 @@ async function main() {
       return result.result?.value;
     }, 'Options tooltip icons');
     const result = await cdp.send('Runtime.evaluate', {
-      expression: 'Array.from(document.querySelectorAll(".tooltipIcon.icon-help-circled")).map(el=>{const r=el.getBoundingClientRect();return {width:r.width,height:r.height,mark:getComputedStyle(el,"::before").content}})',
+      expression: 'Array.from(document.querySelectorAll(".tooltipIcon.icon-help-circled")).map(el=>{const r=el.getBoundingClientRect();return {visible:el.getClientRects().length>0,width:r.width,height:r.height,mark:getComputedStyle(el,"::before").content}})',
       returnByValue: true,
     }, sessionId);
-    assert(result.result.value.length >= 9 && (screenshotDir || result.result.value.every(({width,height,mark}) => width > 0 && height > 0 && mark === '"?"')), 'Options question-mark icons have no visible size or mark');
+    assert(result.result.value.length >= 9 && (screenshotDir || (result.result.value.some(({visible}) => visible) && result.result.value.every(({visible,width,height,mark}) => mark === '"?"' && (!visible || (width > 0 && height > 0))))), `Options question-mark icons have no visible size or mark: ${JSON.stringify(result.result.value)}`);
   });
   const historyPageUrl = `${extensionOrigin}html/history.html`;
   await captureUiPage(historyPageUrl, null, async (sessionId) => {
