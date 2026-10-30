@@ -39,7 +39,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 - Logo v2 is final; simplified 16/32 px icons are approved.
 - Show the logo on the suspended page. Keep the original site's favicon on the suspended tab.
 - Public copyright and branding name: **SAM REV**. The owner created the logo artwork and generated icons in Photoshop.
-- Anyone may use, modify, and fork the code under GPL-2.0. The product name **The Great Tab Killer** and logo/icon artwork are reserved branding of SAM REV, outside the code's GPL grant for branding reuse. Owner policy: forks and modified redistributions use another name and replace the logo/icons; unmodified release redistribution may retain the original branding. No trademark registration is claimed, and endorsement may not be implied.
+- Anyone may use, modify, and fork the code under GPL-2.0. The product name **The Great Tab Killer** and logo/icon artwork are reserved branding of SAM REV and are not part of the code's GPL grant. The branding policy does not restrict any right granted by GPL-2.0 for the code. Users distributing modified versions may not use this name or these logo/icons; they must replace them with their own. Unmodified redistribution of an official release with its original branding is allowed. No endorsement may be implied, and no trademark registration is claimed.
 
 ## Scope
 
