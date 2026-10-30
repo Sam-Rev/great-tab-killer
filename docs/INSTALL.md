@@ -7,10 +7,16 @@ The Great Tab Killer is distributed from the [GitHub Releases page](https://gith
 1. Download `great-tab-killer-v0.1.0.zip` and `SHA256SUMS.txt` from the same release.
 2. Verify the ZIP checksum before extracting it.
 
-   Linux or macOS, with both files in the current directory:
+   Linux, with both files in the current directory:
 
    ```sh
    sha256sum -c SHA256SUMS.txt
+   ```
+
+   macOS, with both files in the current directory:
+
+   ```sh
+   shasum -a 256 -c SHA256SUMS.txt
    ```
 
    Windows Command Prompt:
@@ -23,9 +29,9 @@ The Great Tab Killer is distributed from the [GitHub Releases page](https://gith
 
 ## Load the extension
 
-1. Extract the ZIP into a folder that you will keep in place.
+1. Create a new, empty folder (for example, `great-tab-killer`) and extract the ZIP into it. The ZIP contains `manifest.json` at its root, so the extracted folder itself is the folder to load.
 2. In Chrome, open `chrome://extensions` (in Brave, open `brave://extensions`). Enable **Developer mode**.
-3. Select **Load unpacked**, choose the extracted `great-tab-killer` folder containing `manifest.json`, and confirm the extension appears.
+3. Select **Load unpacked**, choose the new folder containing `manifest.json`, and confirm the extension appears.
 
 Chromium browsers may show warnings because this is an unpacked extension loaded in Developer mode. This project is not listed in the Chrome Web Store. Use Chromium version 116 or newer.
 
@@ -40,7 +46,12 @@ The extension opens its welcome page and a local backup setup page on first run.
 
 ## Update
 
-Download the next release ZIP and verify its checksum. Close browser windows using the extension, extract the new ZIP to the folder used by the unpacked extension (replace its files), then open the browser's extensions page and select **Reload**. If you choose a different folder, remove the old unpacked entry and use **Load unpacked** on the new folder. The extension ID is fixed by the public manifest key, so the same installation identity is retained.
+Download the next release ZIP and verify its checksum. Choose either update method:
+
+- **Keep the existing installation data:** delete the old folder's contents, extract the new ZIP into that same folder, then select **Reload** on the browser's extensions page. Keeping the same folder and reloading keeps the extension's stored settings and saved sessions.
+- **Use a new folder:** extract the new ZIP into a new folder, remove the old extension entry on the browser's extensions page, then select **Load unpacked** and choose the new folder. Removing the old extension deletes its `chrome.storage.local` settings and makes its saved sessions unavailable. Chrome documents that local settings are cleared on removal; cleanup of saved-session IndexedDB records has not been verified, as noted in [PRIVACY.md](../PRIVACY.md). Backup `.txt` files in Downloads and suspended entries in browser history are separate and are not removed with the extension.
+
+The extension ID is fixed by the public manifest key in either method. For the storage and deletion limits, see [PRIVACY.md](../PRIVACY.md).
 
 ## Move from another suspender
 

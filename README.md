@@ -1,5 +1,7 @@
 # The Great Tab Killer
 
+![The Great Tab Killer logo](images/icon-128x128.png)
+
 The Great Tab Killer is a local-first Chromium extension that suspends inactive tabs and restores them when you return to them. It is distributed on GitHub as an unpacked extension or release ZIP; it is **not** on the Chrome Web Store.
 
 ## Features
@@ -22,9 +24,16 @@ Settings sync, session backup, page previews, and the resource monitor are off b
 
 ## Known limits
 
-- Accepted risks planned for v0.2.0: A-10, A-13, A-14, A-15, and A-22. Full URLs and previews can remain locally stored with count caps and no TTL; there is no one-step wipe for all extension data.
+- Full page URLs and optional previews are stored on this device with size caps but no expiry. There is not yet one button to erase all extension data; that is planned for v0.2.0. See the [audit](docs/AUDIT.md) for finding details.
 - The extension has no automatic update mechanism. Updates are installed manually from a new ZIP.
+- Releases are not cryptographically signed; the checksum only detects accidental file corruption.
 - The exact source-font licenses represented by `font/fontello.woff` and `font/fontello.woff2` remain **UNVERIFIED** because their Fontello project configuration and generated license file were not found. Upstream metadata declares MIT for `db.js` v0.15.0, but equivalence of the bundled file to that source is **UNVERIFIED**; see [NOTICE](NOTICE) for sources and limits.
+
+## Project links
+
+- [GitHub Releases](https://github.com/Sam-Rev/great-tab-killer/releases)
+- [Security policy](SECURITY.md)
+- [Branding policy](BRANDING.md)
 
 ## Development
 
