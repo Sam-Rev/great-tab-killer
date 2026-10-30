@@ -76,3 +76,9 @@ For each row, the pre-removal revision was searched in `js/`, `html/`, and `mani
 | 2.10 | `chrome.history.onVisited`/`deleteUrl` was a direct listener with no message dispatch or HTML selector. IndexedDB-backed session history remained separate and was preserved. |
 | 2.11 | `onMessageExternal` handled only `suspend`/`unsuspend`; the search found no internal sender or HTML selector for that external-only interface. |
 | 2.12 | `initExtensionsSection()`, `refreshExtensions()`, and `toggleExtension()` formed the only management flow; `extGrant*`/`extTable*` IDs and `data-i18n` entries were confined to the removed section in `html/monitor.html`. No other page used them. |
+
+## Phase 5b icon-asset cleanup
+
+| Removed or replaced | Evidence | Action | Commit |
+|---|---|---|---|
+| Two bundled WOFF assets and the shared icon-font stylesheet; the stylesheet was referenced by Options, History, and Monitor, and its CSS selectors were used by the help marks, session toggles, checkbox marks, and select chevrons. | Replaced consumers with CSS-drawn shapes and removed the three asset paths from the literal release allowlist. `dev/tests/no-web-fonts.test.mjs` checks the shipped file list and CSS declarations. | Removed font assets and stylesheet; retained only the historical attribution note in `NOTICE`. | `3186a76` |
