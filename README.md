@@ -27,7 +27,7 @@ Settings sync, session backup, page previews, and the resource monitor are off b
 - Full page URLs and optional previews are stored on this device with size caps but no expiry. There is not yet one button to erase all extension data; that is planned for v0.2.0. See the [audit](docs/AUDIT.md) for finding details.
 - The extension has no automatic update mechanism. Updates are installed manually from a new ZIP.
 - Releases are not cryptographically signed; the checksum only detects accidental file corruption.
-- The exact source-font licenses represented by `font/fontello.woff` and `font/fontello.woff2` remain **UNVERIFIED** because their Fontello project configuration and generated license file were not found. Upstream metadata declares MIT for `db.js` v0.15.0, but equivalence of the bundled file to that source is **UNVERIFIED**; see [NOTICE](NOTICE) for sources and limits.
+- The bundled `db.js` v0.15.0 source equivalence remains **UNVERIFIED**; see [NOTICE](NOTICE) for its metadata and limits.
 
 ## Project links
 

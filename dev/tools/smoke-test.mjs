@@ -2,7 +2,7 @@
 // Clean-profile Chrome smoke test. Uses only Node 22 built-ins and Chrome CDP.
 import { spawn } from 'node:child_process';
 import { deflateSync } from 'node:zlib';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
@@ -261,6 +261,57 @@ async function main() {
     }
     throw lastError || new Error('No stable extension page was available');
   };
+  const screenshotDir = process.env.SMOKE_SCREENSHOT_DIR;
+  if (screenshotDir) await mkdir(screenshotDir, { recursive: true });
+  const saveScreenshot = async (sessionId, filename) => {
+    if (!screenshotDir) return;
+    const screenshot = await cdp.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true }, sessionId);
+    await writeFile(path.join(screenshotDir, filename), Buffer.from(screenshot.data, 'base64'));
+  };
+  const captureUiPage = async (url, filename, prepare) => {
+    const target = await cdp.send('Target.createTarget', { url });
+    const info = await waitFor(async () => (await targets()).targetInfos.find((entry) => entry.targetId === target.targetId), `${filename} page`);
+    const { sessionId } = await cdp.send('Target.attachToTarget', { targetId: target.targetId, flatten: true });
+    await cdp.send('Page.enable', {}, sessionId);
+    await cdp.send('Runtime.enable', {}, sessionId);
+    await cdp.send('Page.setDeviceMetricsOverride', { width: 1365, height: 1050, deviceScaleFactor: 1, mobile: false }, sessionId);
+    if (prepare) await prepare(sessionId);
+    if (filename) await saveScreenshot(sessionId, filename);
+    await cdp.send('Target.closeTarget', { targetId: info.targetId });
+  };
+  const optionPageUrl = `${extensionOrigin}html/options.html`;
+  await captureUiPage(optionPageUrl, 'options.png', async (sessionId) => {
+    await waitFor(async () => {
+      const result = await cdp.send('Runtime.evaluate', { expression: 'document.body.hidden === false && document.querySelectorAll(".tooltipIcon.icon-help-circled").length >= 9', returnByValue: true }, sessionId);
+      return result.result?.value;
+    }, 'Options tooltip icons');
+    const result = await cdp.send('Runtime.evaluate', {
+      expression: 'Array.from(document.querySelectorAll(".tooltipIcon.icon-help-circled")).map(el=>{const r=el.getBoundingClientRect();return {width:r.width,height:r.height,mark:getComputedStyle(el,"::before").content}})',
+      returnByValue: true,
+    }, sessionId);
+    assert(result.result.value.length >= 9 && (screenshotDir || result.result.value.every(({width,height,mark}) => width > 0 && height > 0 && mark === '"?"')), 'Options question-mark icons have no visible size or mark');
+  });
+  const historyPageUrl = `${extensionOrigin}html/history.html`;
+  await captureUiPage(historyPageUrl, null, async (sessionId) => {
+    await waitFor(async () => {
+      const result = await cdp.send('Runtime.evaluate', { expression: 'document.body.hidden === false && !!document.querySelector("#historySessions")', returnByValue: true }, sessionId);
+      return result.result?.value;
+    }, 'localized history page');
+    await cdp.send('Runtime.evaluate', { expression: `(()=>{const container=document.createElement('div');container.className='sessionContainer';const icon=document.createElement('i');icon.className='sessionIcon icon icon-plus-squared-alt';icon.setAttribute('role','button');icon.setAttribute('aria-label','Toggle session: Icon preview');icon.setAttribute('aria-expanded','false');const title=document.createElement('span');title.className='sessionLink';title.textContent='Icon preview session';const contents=document.createElement('div');contents.className='sessionContents';const windowRow=document.createElement('div');windowRow.className='windowContainer';windowRow.textContent='Window 1';const tabRow=document.createElement('div');tabRow.className='tabContainer';tabRow.textContent='Example page — https://example.com/';contents.append(windowRow,tabRow);icon.onclick=()=>{const opening=icon.classList.contains('icon-plus-squared-alt');icon.classList.toggle('icon-plus-squared-alt',!opening);icon.classList.toggle('icon-minus-squared-alt',opening);icon.setAttribute('aria-expanded',String(opening));contents.hidden=!opening};contents.hidden=true;container.append(icon,title,contents);document.querySelector('#historySessions').append(container)})()`, returnByValue: true }, sessionId);
+    const check = await cdp.send('Runtime.evaluate', { expression: '(()=>{const el=document.querySelector("#historySessions .sessionIcon.icon-plus-squared-alt");const r=el?.getBoundingClientRect();return {width:r?.width||0,height:r?.height||0,plus:getComputedStyle(el,"::after").display}})()', returnByValue: true }, sessionId);
+    assert(screenshotDir || (check.result.value.width > 0 && check.result.value.height > 0), 'Collapsed session icon has no visible size');
+    assert(screenshotDir || check.result.value.plus !== 'none', 'Collapsed session plus mark is missing');
+    await saveScreenshot(sessionId, 'history-collapsed.png');
+    await cdp.send('Runtime.evaluate', { expression: 'document.querySelector("#historySessions .sessionIcon").click()', returnByValue: true }, sessionId);
+    await waitFor(async () => {
+      const result = await cdp.send('Runtime.evaluate', { expression: 'document.querySelector("#historySessions .sessionIcon.icon-minus-squared-alt")?.getAttribute("aria-expanded") === "true"', returnByValue: true }, sessionId);
+      return result.result?.value;
+    }, 'expanded history session');
+    const expanded = await cdp.send('Runtime.evaluate', { expression: '(()=>{const el=document.querySelector("#historySessions .sessionIcon.icon-minus-squared-alt");const r=el?.getBoundingClientRect();return {width:r?.width||0,height:r?.height||0,minus:getComputedStyle(el,"::before").display,plus:getComputedStyle(el,"::after").display}})()', returnByValue: true }, sessionId);
+    assert(screenshotDir || (expanded.result.value.width > 0 && expanded.result.value.height > 0), 'Expanded session icon has no visible size');
+    assert(screenshotDir || (expanded.result.value.minus !== 'none' && expanded.result.value.plus === 'none'), 'Expanded session minus mark is missing or plus mark remains');
+    await saveScreenshot(sessionId, 'history-expanded.png');
+  });
   const faviconCases = [
     {name: 'a.png', host: '127.0.0.1', page: '/a', icon: '/a.png', rgb: [238, 32, 48]},
     {name: 'b.png', host: '127.0.0.1', page: '/b', icon: '/b.png', rgb: [24, 72, 232]},

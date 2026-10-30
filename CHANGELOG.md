@@ -3,7 +3,6 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.1.0] - 2026-10-30
-
 ### Added
 - Evidence-backed privacy and security policies; the extension description is now neutral across locales.
 - Project legal, contribution, and key-management documentation.
@@ -13,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - README, unpacked-install guide, and GitHub CI/release workflow definitions.
 
 ### Changed
+- Replaced icon-font glyphs with original CSS-drawn shapes and removed the font files.
 - Backup diagnostics no longer log step details or exception text that may contain URLs or titles.
 - Privacy and security documentation now covers browser-history fragments, content-script data, incognito storage behavior, and release-integrity limits.
 - Removed unnecessary `web_accessible_resources`; extension assets are no longer exposed to web pages or other extensions.

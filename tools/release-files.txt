@@ -58,8 +58,6 @@ _locales/uk/messages.json
 _locales/vi/messages.json
 _locales/zh_CN/messages.json
 _locales/zh_TW/messages.json
-font/fontello.woff
-font/fontello.woff2
 html/about.html
 html/backup-setup.html
 html/broken.html
@@ -130,7 +128,6 @@ js/suspended.js
 js/tgs.js
 js/update.js
 manifest.json
-styles/fontello.css
 styles/popup.css
 styles/style.css
 styles/suspended.css

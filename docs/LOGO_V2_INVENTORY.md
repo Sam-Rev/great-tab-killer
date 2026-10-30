@@ -20,7 +20,6 @@ Search performed before replacing any logo files: image-path references in `mani
 
 - `images/ch-def-favicon*.png` and `images/ch-dev-def-favicon*.png`: generic Chromium/site favicons used by `gsFavicon.js`, `monitor.js`, and `monitor-lab.js`.
 - `images/snz_tab.svg` and `images/snz_tab_awake.svg`: suspended/awake illustrations, not product-logo placements.
-- `font/fontello.svg`: icon font source referenced by `styles/fontello.css`, not a product logo.
 
 The pre-replacement search found no image-reference strings in locale files. `html/popup.html`, `html/about.html`, `html/changelog.html`, and `html/monitor.html` had no logo placement at search time; add the v2 brand in their visible headers. The suspended page also needs a separate 64–96 px product mark near the suspension message. Its site-favicon element and assignment behavior must stay separate and unchanged.
 

@@ -72,9 +72,11 @@ import {gsSession} from "./helpers/gsSession.js";
     if (sessionIcon.classList.contains('icon-plus-squared-alt')) {
       sessionIcon.classList.remove('icon-plus-squared-alt');
       sessionIcon.classList.add('icon-minus-squared-alt');
+      sessionIcon.setAttribute('aria-expanded', 'true');
     } else {
       sessionIcon.classList.remove('icon-minus-squared-alt');
       sessionIcon.classList.add('icon-plus-squared-alt');
+      sessionIcon.setAttribute('aria-expanded', 'false');
     }
 
     //if toggled on already, then toggle off
@@ -124,12 +126,19 @@ import {gsSession} from "./helpers/gsSession.js";
   function createSessionElement(session) {
     var sessionEl = historyItems.createSessionHtml(session, true);
 
+    const sessionIcon = sessionEl.getElementsByClassName('sessionIcon')[0];
     addClickListenerToElement(
-      sessionEl.getElementsByClassName('sessionIcon')[0],
+      sessionIcon,
       function() {
         toggleSession(sessionEl, session.sessionId); //async. unhandled promise
       }
     );
+    sessionIcon.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleSession(sessionEl, session.sessionId);
+      }
+    });
     addClickListenerToElement(
       sessionEl.getElementsByClassName('sessionLink')[0],
       function() {

@@ -53,6 +53,11 @@ export var historyItems = (function(global) {
 
     sessionIcon = createEl('i', {
       class: 'sessionIcon icon icon-plus-squared-alt',
+      role: 'button',
+      tabindex: '0',
+      'aria-expanded': 'false',
+      'aria-label': 'Toggle session: ' + titleText,
+      title: 'Toggle session: ' + titleText,
     });
 
     sessionDiv = createEl('div', {
