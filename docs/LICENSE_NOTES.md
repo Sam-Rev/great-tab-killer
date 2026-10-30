@@ -10,7 +10,7 @@ The full GNU General Public License version 2 text is in [`LICENSE`](../LICENSE)
 
 - `html2canvas` is version `1.0.0-alpha.10`; its file header identifies MIT, and the upstream tag contains the MIT license.
 - `dom-to-image` is version `2.6.0`; its upstream tag contains the MIT license. The local file notes project patches.
-- `db.js` is version `0.15.0`; the upstream package metadata declares MIT and names Aaron Powell as author. The upstream tag has no separate license file, so the license text and the provenance of the bundled copy remain UNVERIFIED.
-- The license and source configuration for `font/fontello.woff` and `font/fontello.woff2` are UNVERIFIED.
+- `db.js` is version `0.15.0`; the upstream package metadata declares MIT and names Aaron Powell as author. The upstream tag's `LICENSE.md` contains the MIT text. Exact source equivalence of the bundled copy remains UNVERIFIED.
+- The license and source configuration for `font/fontello.woff` and `font/fontello.woff2` are UNVERIFIED. The upstream Fontello guidance explains that generated archives include selected-font license details, but this repository lacks its generated archive/configuration.
 
-These gaps must be resolved before a public release. See [`NOTICE`](../NOTICE).
+See [`NOTICE`](../NOTICE) for the verified facts, upstream links, and remaining unverified items.

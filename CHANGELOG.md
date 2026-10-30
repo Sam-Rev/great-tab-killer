@@ -2,13 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-10-30
 
 ### Added
 - Evidence-backed privacy and security policies; the extension description is now neutral across locales.
 - Project legal, contribution, and key-management documentation.
-- A neutral placeholder icon for the extension and project pages.
+- Final project logo and generated extension icons.
 - One-time local session-backup setup page with enable and frequency controls.
+- A literal release-file allowlist, deterministic ZIP builder, and SHA-256 manifest.
+- README, unpacked-install guide, and GitHub CI/release workflow definitions.
 
 ### Changed
 - Backup diagnostics no longer log step details or exception text that may contain URLs or titles.

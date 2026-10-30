@@ -60,7 +60,7 @@ This is a manual check; source-level filters and unit tests do not replace testi
 
 ## Release placeholder check
 
-Before publishing a release, run `node tools/check-release-ready.mjs`. It scans `PRIVACY.md`, `SECURITY.md`, `README.md`, and `docs/INSTALL.md` for unresolved `<OWNER:` placeholders and exits non-zero with each matching file and line. The current `<OWNER: repository URL>` in `SECURITY.md` is intentionally unresolved until the owner provides the repository URL.
+Before publishing a release, run `node tools/check-release-ready.mjs`. It scans `PRIVACY.md`, `SECURITY.md`, `README.md`, and `docs/INSTALL.md` for unresolved `<OWNER:` placeholders and exits non-zero with each matching file and line.
 
 # Clean Brave profile checklist — privacy defaults and runtime errors
 
@@ -80,6 +80,27 @@ Run with Node 22 and an already-installed Google Chrome Stable:
 ```sh
 node dev/tools/smoke-test.mjs
 ```
+
+To smoke-test the release ZIP after extracting it into a clean directory, pass that directory as `EXTENSION_PATH`:
+
+```sh
+release_dir="$(mktemp -d)"
+unzip -q dist/great-tab-killer-v0.1.0.zip -d "$release_dir"
+EXTENSION_PATH="$release_dir" node dev/tools/smoke-test.mjs
+```
+
+The smoke test loads that path with `Extensions.loadUnpacked`; it needs an installed Chrome and a clean temporary profile.
+
+## Release packaging checks
+
+`tools/release-files.txt` is the literal file allowlist for distribution. Build the archive and checksum with `python3 tools/make-release.py --output-dir dist`. The builder uses sorted paths, fixed ZIP timestamps, normalized file modes, and standard-library DEFLATE. Run the test suites with:
+
+```sh
+node --test dev/tests/*.test.mjs
+python3 -m unittest discover -s dev/tests -p 'test_*.py'
+```
+
+The CI and release workflows are committed but were not executed as part of this task. `node tools/check-release-ready.mjs` is a local pre-publication check and is intentionally not run in CI.
 
 The script starts Chrome with a temporary profile and remote debugging, blocks non-local host resolution, loads the unpacked extension through CDP `Extensions.loadUnpacked`, and serves local-only pages. It checks the service-worker and extension-page console, one-time setup, backup state, five-tab suspend/restore, the suspended page favicon, hostile fragments, and a local web page's `fetch()`, iframe, and image attempts against the suspended page, an icon, and `/_favicon/`. `CHROME_BIN` can select another already-installed Chrome executable. No browser is downloaded or installed.
 

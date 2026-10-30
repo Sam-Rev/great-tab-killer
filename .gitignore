@@ -5,7 +5,10 @@
 *.key
 node_modules/
 coverage/
+__pycache__/
+*.py[cod]
 *.zip
+/dist/
 
 # Local visual approval sheets
 /dev/previews/
