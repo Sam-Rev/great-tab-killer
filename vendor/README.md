@@ -14,9 +14,7 @@ The previous Phase 1 comparison found html2canvas's normalized Terser output ide
 
 - The local html2canvas file differs byte-for-byte from the official npm `1.0.0-alpha.10` `dist/html2canvas.min.js` (official SHA-256 `745d277f4148a4bddc9805d16e31048935cc9885da561cae4329fe2c2006bb89`) because it is expanded/formatted. Terser 5.39.0 with matching compression/mangling options produced identical normalized output (SHA-256 `9d948037534f3f5a78453d385bd54d6a487e61ecdd9d56f461d89b55ff6d1eb6`). This does not establish runtime equivalence.
 - The local dom-to-image `2.6.0` fork differs from upstream to expose `toCanvas` and adjust promise rejection handling; its upstream source SHA-256 was `4f0d3f817e9a14331eb1ee861d02452ff66317e7fb79dc85f68905558fc1f685`.
-- Fontello identifies its generated archives as carrying each selected source font's attribution/license file ([license guidance](https://github.com/fontello/fontello/wiki/What-about-license%3F)). This repository has no Fontello configuration or generated license archive; the underlying font names and their specific licenses remain **UNVERIFIED**.
 
 ## Remaining vendor follow-up
 
-- Recover the missing Fontello configuration/archive and verify each selected icon font's identity and license before release.
 - Browser-test screenshot capture and its resource behavior; not run as part of Phase 3.6.

@@ -39,6 +39,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 ## Branding
 
 - Logo v2 is final; simplified 16/32 px icons are approved.
+- The unverified icon font is removed. Help, session expand/collapse, and checkbox marks use original CSS-drawn shapes; do not trace, copy, or convert any font outlines.
 - Show the logo on the suspended page. Keep the original site's favicon on the suspended tab.
 - Public copyright and branding name: **SAM REV**. The owner created the logo artwork and generated icons in Photoshop.
 - The owner accepts `BRANDING.md` and its corresponding `NOTICE` addition as written.

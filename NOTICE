@@ -27,9 +27,8 @@ The logo artwork and generated icons listed below were created by SAM REV in Pho
 | html2canvas | 1.0.0-alpha.10 | MIT | Version from the bundled file header; license checked in the upstream tagged source: https://github.com/niklasvh/html2canvas/tree/1.0.0-alpha.10 |
 | dom-to-image | 2.6.0 (patched local copy) | MIT | Version and local patches from the bundled file header; license checked in upstream tag 2.6.0: https://github.com/tsayen/dom-to-image/tree/2.6.0 |
 | db.js | 0.15.0 | MIT, verified in upstream package metadata and license file | Upstream package metadata and bundled source version: https://github.com/aaronpowell/db.js/blob/0.15.0/package.json; full MIT text: https://github.com/aaronpowell/db.js/blob/0.15.0/LICENSE.md. |
-| Fontello icon font | UNVERIFIED | UNVERIFIED | `font/fontello.woff` and `font/fontello.woff2`. Fontello says generated archives include the selected fonts' attribution/license file, but this project's generated archive/config was not found, so the underlying font names and licenses remain unverified: https://github.com/fontello/fontello/wiki/What-about-license%3F |
 
-The bundled dependency versions and file hashes must be pinned by the supply-chain inventory before release. `db.js` v0.15.0's MIT license is recorded with upstream sources above. Fontello's specific source-font licenses remain unverified because the generated archive and its license/configuration files are unavailable.
+Earlier work-in-progress builds used Fontello glyphs; the font was removed and replaced with original CSS-drawn icons. The bundled dependency versions and file hashes are recorded in the supply-chain inventory. `db.js` v0.15.0's MIT license is recorded with upstream sources above.
 
 ## Owner-provided project assets
 

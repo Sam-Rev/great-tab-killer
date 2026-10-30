@@ -16,7 +16,7 @@ Use GitHub's private vulnerability reporting for this repository: https://github
 - `web_accessible_resources` is absent. The manifest has no `update_url` or `externally_connectable` field.
 - The extension's own code does not send data to a project-operated server. Optional settings sync is handled by Chrome; optional page previews can cause page-origin resource requests as described in [PRIVACY.md](PRIVACY.md).
 - In v0.1.0, the release ZIP and `SHA256SUMS.txt` are not cryptographically signed. A checksum published beside the ZIP can detect file corruption, but cannot prove the release page or checksum was not compromised.
-- The vendored `db.js` v0.15.0 version and upstream MIT license are verified in package metadata and `LICENSE.md`; exact source equivalence of the bundled copy is **UNVERIFIED**. Fontello's specific source-font identities/licenses are **UNVERIFIED**.
+- The vendored `db.js` v0.15.0 version and upstream MIT license are verified in package metadata and `LICENSE.md`; exact source equivalence of the bundled copy is **UNVERIFIED**.
 - Broad `http://*/*`, `https://*/*`, and `file://*/*` host access means a code bug could affect a wide range of pages.
 - Vulnerability reports are handled on a best-effort basis. There is no guaranteed response time.
 

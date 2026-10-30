@@ -107,10 +107,13 @@ select {
 .select-wrapper::after {
   position: absolute;
   inset-inline-end: 15px;
-  top: 6px;
-  font-family: 'fontello';
-  text-decoration: none;
-  content: '\f0dd';
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  border: solid #3477db;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
   color: #3477db;
   pointer-events: none;
 }
@@ -403,23 +406,37 @@ input[type='checkbox'] {
 }
 input[type='checkbox'] + label {
   position: relative;
-  padding-left: 30px;
+  padding-inline-start: 30px;
   cursor: pointer;
 }
 input[type='checkbox'] + label:before {
   position: absolute;
-  left: 0;
-  top: -2px;
-  font-family: 'fontello';
-  text-decoration: none;
-  content: '\f096';
+  inset-inline-start: 0;
+  top: 1px;
+  content: '';
+  width: 19px;
+  height: 19px;
+  border: 1px solid #888;
+  border-radius: 3px;
+  background: #fff;
   color: #888;
-  font-size: 24px;
   cursor: pointer;
 }
 input[type='checkbox']:checked + label:before {
-  content: '\f14a';
-  color: #3477db;
+  border-color: #3477db;
+  background: #3477db;
+}
+input[type='checkbox']:checked + label:after {
+  position: absolute;
+  content: '';
+  inset-inline-start: 7px;
+  top: 4px;
+  width: 6px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  pointer-events: none;
 }
 
 /* custom radio btns */
@@ -481,7 +498,58 @@ input[type='checkbox']:checked + label:before {
 }
 
 .tooltipIcon {
-  color: #444;
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: inherit;
+  font: 600 0.72em/1 system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  vertical-align: 0.08em;
+}
+.tooltipIcon.icon-help-circled::before {
+  content: '?';
+}
+.sessionIcon {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-inline-end: 0.2em;
+  border: 1px solid currentColor;
+  color: inherit;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.sessionIcon::before,
+.sessionIcon::after {
+  position: absolute;
+  content: '';
+  background: currentColor;
+}
+.sessionIcon::before {
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+.sessionIcon::after {
+  top: 2px;
+  bottom: 2px;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+.sessionIcon.icon-minus-squared-alt::after {
+  display: none;
+}
+.sessionIcon:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 /* Tooltips */
 [data-i18n-tooltip] {
