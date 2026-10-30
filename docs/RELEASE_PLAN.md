@@ -25,7 +25,7 @@ This audit was updated on `phase-5-release` from `main` at `1f588ab` on 2026-10-
 | `README.md` and `docs/INSTALL.md` | Done | Public repository links, supported browser/testing scope, privacy defaults, known risks, unpacked installation, checksum verification, update/uninstall, and migration order are documented. |
 | Release ZIP and checksum | Done | `great-tab-killer-v0.1.0.zip`: 643,540 bytes, 131 files, SHA-256 `6caba436cdd36083d1678c9bfc7d37fc06eb307bf0feee0249e2439a3aedfdd5`. Two consecutive builds were byte-identical; archive tests verified root manifest, exact allowlist, excluded paths, and manifest references. `dist/SHA256SUMS.txt` matches. |
 | CI and release workflows | Partial | `.github/workflows/ci.yml` and `release.yml` use only verified `actions/checkout` v4.2.2 SHA `11bd71901bbe5b1630ceea73d27597364c9af683`; workflows were not run per instruction. |
-| Guard and tests | Done | `node tools/check-guards.mjs` passed; Node suite 67/67; Python package tests 3/3; `node tools/check-release-ready.mjs` passed. |
+| Guard and tests | Done | `node tools/check-guards.mjs` passed; Node suite 68/68; Python package tests 3/3; `node tools/check-release-ready.mjs` passed. |
 | Chrome clean-profile smoke | Done | Chrome 156.0.8078.79 passed against both repository and extracted ZIP. Each run opened welcome/setup once, suspended/restored five local tabs, reported zero extension errors, and found none of the three prior error signatures. Brave/incognito UI checks remain owner-manual. |
 | Public v0.1.0 release | Missing | No tag, GitHub release, or push was made; these remain for the owner-approved publication step (roadmap task 9.9). |
 
