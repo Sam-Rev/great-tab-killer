@@ -9,7 +9,7 @@ import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const root = path.resolve(process.env.EXTENSION_PATH || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..'));
 const chromeBin = process.env.CHROME_BIN || 'google-chrome';
 const errors = [];
 const timeoutMs = Number(process.env.SMOKE_TIMEOUT_MS || 90000);
