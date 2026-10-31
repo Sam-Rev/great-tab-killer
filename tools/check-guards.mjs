@@ -5,16 +5,14 @@ import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { createHash } from 'node:crypto';
 
-// Exclusions from shipped-source scanning:
-// - dev/, docs/, tools/, assets/, vendor/, security/: development, documentation,
-//   source assets, or policy inputs rather than executable extension files.
-// - html2canvas.min.js and dom-to-image.js: vendored screenshot libraries;
-//   known third-party XMLHttpRequest behavior is needed for image capture.
-// - db.js: vendored IndexedDB shim; vendor provenance/checksum work is task 3.6.
+// Exclude non-shipped/development paths and the exact hash-pinned vendor files below.
 const EXCLUDED_DIRS = new Set(['dev', 'docs', 'tools', 'assets', 'vendor', 'security', '.git']);
 const EXCLUDED_FILES = new Set([
+  // Hash-pinned; html2canvas logs only its version and renderer geometry.
   'js/helpers/html2canvas.min.js',
+  // Hash-pinned; dom-to-image logs a stylesheet href and CSS access exception on blocked cross-origin rules.
   'js/helpers/dom-to-image.js',
+  // Hash-pinned db.js vendor source; no console output.
   'js/helpers/db.js',
 ]);
 const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES);
@@ -444,6 +442,10 @@ export async function checkRoot(root) {
       if (pattern.test(source)) errors.push(`${relative}: forbidden pattern ${label}`);
     }
     if (relative.endsWith('.js')) {
+      const uncommented = maskCommentsAndStrings(source);
+      if (/\b(?:window\s*\.\s*)?console\s*\.\s*(?:log|debug|info)\s*\(/.test(uncommented)) {
+        errors.push(`${relative}: raw console.log/debug/info is forbidden`);
+      }
       for (const { expression, index } of extractFetchExpressions(source)) {
         if (!isSafeFetch(expression, source, index)) {
           errors.push(`${relative}: fetch() must use chrome.runtime.getURL() or a local relative path (found ${expression})`);

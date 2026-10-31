@@ -51,6 +51,32 @@ test('guard accepts a matching manifest and local extension fetch', async () => 
   finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test('guard rejects raw console output in a new shipped JavaScript file', async () => {
+  const root = await fixture();
+  try {
+    await writeFile(path.join(root, 'js/extra.js'), 'console.log("diagnostic");\n');
+    assert.match((await checkRoot(root)).join('\n'), /js\/extra\.js: raw console\.log\/debug\/info is forbidden/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('pinned vendor exclusions remain active only while hashes match', async () => {
+  const root = await fixture();
+  try {
+    const vendorPath = path.join(root, 'js/helpers/dom-to-image.js');
+    const changed = Buffer.from('console.log("pinned vendor internal diagnostic");\n');
+    await writeFile(vendorPath, changed);
+    const checksumPath = path.join(root, 'vendor/CHECKSUMS.sha256');
+    const checksums = (await readFile(checksumPath, 'utf8')).replace(
+      /^(?:[a-f\d]{64})(\s+js\/helpers\/dom-to-image\.js)$/m,
+      `${createHash('sha256').update(changed).digest('hex')}$1`,
+    );
+    await writeFile(checksumPath, checksums);
+    assert.deepEqual(await checkRoot(root), []);
+    await writeFile(vendorPath, Buffer.from('console.log("changed again");\n'));
+    assert.match((await checkRoot(root)).join('\n'), /dom-to-image\.js: SHA-256 differs/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test('guard rejects a permission change from the lock', async () => {
   const root = await fixture();
   try {

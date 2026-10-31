@@ -379,8 +379,6 @@ export var gsFavicon = (function () {
                   transparentDataUrl: transparentDataUrlResult
                 };
 
-                console.log(faviconMetaData);
-
                 resolve(faviconMetaData);
               });
             });

@@ -336,7 +336,7 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
       sendResponse();
       return false;
     }
-    console.log('suspended.js dont handle ', request.action)
+    gsUtils.warning("suspended", "Unhandled message action", request.action);
   }
 
   // No async response pending; default to false

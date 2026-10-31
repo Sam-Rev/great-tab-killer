@@ -114,8 +114,7 @@
         return true;
       }
       return false;
-    } catch (e) {
-      console.log("Couldn't connect to background");
+    } catch {
       return false;
     }
   }
