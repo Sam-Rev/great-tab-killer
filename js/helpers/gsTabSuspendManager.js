@@ -608,7 +608,6 @@ export var gsTabSuspendManager = (function () {
 
     let generateCanvas;
     if (useAlternateScreenCaptureLib) {
-      // console.log('Generating via dom-to-image..');
       generateCanvas = () => {
         return domtoimage.toCanvas(document.body, {}).then((canvas) => {
           const croppedCanvas = document.createElement("canvas");
@@ -620,7 +619,6 @@ export var gsTabSuspendManager = (function () {
         });
       };
     } else {
-      // console.log('Generating via html2canvas..');
       generateCanvas = () => {
         return html2canvas(document.body, {
           height: height,
@@ -675,7 +673,6 @@ export var gsTabSuspendManager = (function () {
     if (!dataUrl && !errorMsg) {
       errorMsg = "Failed to generate dataUrl";
     }
-    // console.log('saving previewData..');
     chrome.runtime.sendMessage({
       action: "savePreviewData",
       previewUrl: dataUrl,
