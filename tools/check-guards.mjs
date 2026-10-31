@@ -7,15 +7,21 @@ import { createHash } from 'node:crypto';
 
 // Exclude non-shipped/development paths and the exact hash-pinned vendor files below.
 const EXCLUDED_DIRS = new Set(['dev', 'docs', 'tools', 'assets', 'vendor', 'security', '.git']);
-const EXCLUDED_FILES = new Set([
-  // Hash-pinned; html2canvas logs only its version and renderer geometry.
-  'js/helpers/html2canvas.min.js',
-  // Hash-pinned; dom-to-image logs a stylesheet href and CSS access exception on blocked cross-origin rules.
-  'js/helpers/dom-to-image.js',
-  // Hash-pinned db.js vendor source; no console output.
-  'js/helpers/db.js',
+const EXCLUDED_FILES = new Map([
+  ['js/helpers/html2canvas.min.js', {
+    consoleOutputExempt: true,
+    reason: 'Hash-pinned; html2canvas logs only its version and renderer geometry.',
+  }],
+  ['js/helpers/dom-to-image.js', {
+    consoleOutputExempt: true,
+    reason: 'Hash-pinned; dom-to-image logs a stylesheet href and CSS access exception when cross-origin rules block CSS access.',
+  }],
+  ['js/helpers/db.js', {
+    consoleOutputExempt: false,
+    reason: 'Hash-pinned db.js vendor source; raw console output remains forbidden.',
+  }],
 ]);
-const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES);
+const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES.keys());
 const FORBIDDEN = [
   ['eval(', /\beval\s*\(/i],
   ['new Function', /\bnew\s+Function\b/i],
@@ -456,6 +462,15 @@ export async function checkRoot(root) {
       }
     } else {
       errors.push(...htmlRemoteSourceErrors(source, relative));
+    }
+  }
+  for (const [relative, exclusion] of EXCLUDED_FILES) {
+    if (exclusion.consoleOutputExempt) continue;
+    let source;
+    try { source = await readFile(path.join(root, relative), 'utf8'); }
+    catch { continue; } // verifyVendorChecksums reports the missing pinned source above.
+    if (/\b(?:window\s*\.\s*)?console\s*\.\s*(?:log|debug|info)\s*\(/.test(maskCommentsAndStrings(source))) {
+      errors.push(`${relative}: raw console.log/debug/info is forbidden`);
     }
   }
   return errors;
