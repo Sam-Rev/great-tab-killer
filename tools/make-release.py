@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Build a deterministic extension ZIP from tools/release-files.txt."""
+"""Build a normalized extension ZIP from tools/release-files.txt.
+
+Compatibility: Python 3.9 or newer, using only the standard library. ZIP
+metadata and member contents are normalized; DEFLATE bytes can vary by zlib
+version, so cross-machine byte-for-byte identity is not promised.
+"""
 
 from __future__ import annotations
 
@@ -87,12 +92,15 @@ def build_release(output_dir: Path, root: Path = ROOT) -> tuple[Path, Path, int,
             info = zipfile.ZipInfo(entry, date_time=(1980, 1, 1, 0, 0, 0))
             info.create_system = 3
             info.external_attr = (stat.S_IFREG | 0o644) << 16
-            info.compress_type = zipfile.ZIP_DEFLATED
-            info.compress_level = 9
             info.flag_bits = 0
             info.extra = b""
             info.comment = b""
-            archive.writestr(info, (root / entry).read_bytes())
+            archive.writestr(
+                info,
+                (root / entry).read_bytes(),
+                compress_type=zipfile.ZIP_DEFLATED,
+                compresslevel=9,
+            )
 
     digest = hashlib.sha256(zip_path.read_bytes()).hexdigest()
     sums_path.write_text(f"{digest}  {zip_path.name}\n", encoding="ascii", newline="\n")
