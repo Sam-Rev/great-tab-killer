@@ -1,4 +1,4 @@
-# CODEX_PROMPT.md — Master prompt for the "The Great Tab Killer" project
+# docs/project/CODEX_PROMPT.md — Master prompt for the "The Great Tab Killer" project
 
 Copy everything below the line into Codex as the first message, with this folder as the working directory.
 
@@ -15,7 +15,7 @@ The owner will use it personally and publish it on GitHub for anyone to use and 
 ## 2. Files you must read first (in this order)
 
 1. `AGENTS.md` — standing rules (they apply for the whole session).
-2. `TAB_KILLER_ROADMAP.md` — the complete plan: decisions, baseline audit findings, phases 0–9 with tasks and acceptance criteria, definition of done.
+2. `docs/project/TAB_KILLER_ROADMAP.md` — the complete plan: decisions, baseline audit findings, phases 0–9 with tasks and acceptance criteria, definition of done.
 3. `manifest.json`, `js/serviceWorker.js`, `js/tgs.js`, `js/helpers/*`, `js/contentscript.js`, `js/suspended.js`, `js/monitor.js`, `js/helpers/gsMemorySampler.js` — read them in full during Phase 1, not before it is your turn to audit. Do not skim and do not assume.
 
 ## 3. Decisions already made by the owner (non-negotiable unless the owner changes them)

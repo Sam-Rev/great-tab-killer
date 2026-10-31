@@ -78,7 +78,7 @@ Read this section before touching anything.
 | 20 | Remove `onMessageExternal` / the external "API for other extensions" entirely |
 | 21 | Resource monitor is **OFF by default** (opt-in) |
 | 22 | Every issue found in the pre-audit must be **fixed, not deferred**: "no known debt at v0.1.0" |
-| 23 | The roadmap is executed by an AI coding agent (Codex) → `AGENTS.md` + `CODEX_PROMPT.md` define its operating rules |
+| 23 | The roadmap is executed by an AI coding agent (Codex) → `AGENTS.md` + `docs/project/CODEX_PROMPT.md` define its operating rules |
 
 ---
 
@@ -176,7 +176,7 @@ Each task has an ID, a description, and **Acceptance** criteria. Mark tasks `[x]
 - [ ] **0.6 Version reset.** `manifest.json` version → `0.1.0`. Add `CHANGELOG.md` (Keep a Changelog format). Acceptance: version consistent across manifest, README, changelog.
 - [ ] **0.7 `.gitignore`, `CODEOWNERS`, `CONTRIBUTING.md`, PR template** with a checklist item: "Does this PR add a permission, URL, or dependency? If yes, explain".
 - [x] **0.8 Stable extension ID (mandatory, see §5.1).** Added a `key` field with only the public key in the repo; private key remains outside. Owner reports that the ID `odolpeeackiejlhdfpakabidhggghnlo` matched when loaded from two different folders in Brave with Developer mode. This manual result was not independently rerun. Chrome comparison remains untested. See `docs/KEY_NOTES.md` and `docs/TESTING.md`.
-- [ ] **0.9 Agent files.** Keep `AGENTS.md` and `CODEX_PROMPT.md` at repo root (or `docs/agent/`); they are part of the project's governance. Neither ships in the release zip.
+- [ ] **0.9 Agent files.** Keep `AGENTS.md` at repo root and `docs/project/CODEX_PROMPT.md` plus `docs/project/TAB_KILLER_ROADMAP.md` in `docs/project/`; they are part of the project's governance. None ships in the release zip.
 
 ### Phase 1 — Security & code audit (deliverable: `docs/AUDIT.md`)
 
@@ -346,10 +346,10 @@ These tasks make the project meet common standards and user expectations. They r
 
 ## 8. Starter prompts (copy-paste)
 
-> The full master prompt is in `CODEX_PROMPT.md`; persistent agent rules are in `AGENTS.md`. The short prompts below are for starting or resuming a specific phase.
+> The full master prompt is in `docs/project/CODEX_PROMPT.md`; persistent agent rules are in `AGENTS.md`. The short prompts below are for starting or resuming a specific phase.
 
 **Kickoff**
-> Read `TAB_KILLER_ROADMAP.md` fully. Follow section 0 strictly. Do not start coding yet: summarize in 10 lines what you understood, list the open decisions from section 5 that block Phase 0–2, and ask me those questions. No Co-Authored-By trailers and no "Generated with Claude Code" lines anywhere.
+> Read `docs/project/TAB_KILLER_ROADMAP.md` fully. Follow section 0 strictly. Do not start coding yet: summarize in 10 lines what you understood, list the open decisions from section 5 that block Phase 0–2, and ask me those questions. No Co-Authored-By trailers and no "Generated with Claude Code" lines anywhere.
 
 **Phase 0**
 > Execute Phase 0 on a branch `phase-0-legal-branding`. One commit per task. After finishing, report: what changed, what you verified and how, what you could not verify (for example, license text of bundled libs if you have no network).
@@ -364,7 +364,7 @@ These tasks make the project meet common standards and user expectations. They r
 > Execute Phase 3. Never edit `security/*.lock.json` or the URL allowlist to make a failing guard pass; if a guard fails, tell me why and wait for my approval.
 
 **Phase 4+**
-> Execute Phase N from the roadmap, same rules as before. At the end, update the checkboxes in `TAB_KILLER_ROADMAP.md` and append a short status note under the phase.
+> Execute Phase N from the roadmap, same rules as before. At the end, update the checkboxes in `docs/project/TAB_KILLER_ROADMAP.md` and append a short status note under the phase.
 
 ---
 

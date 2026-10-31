@@ -16,6 +16,8 @@ jobs:
       # actions/checkout v4.2.2, verified with git ls-remote on 2026-10-30.
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
       - name: Check security and manifest guards
         run: node tools/check-guards.mjs
       - name: Run Node test suite
@@ -23,33 +25,10 @@ jobs:
       - name: Run Python release-package tests
         run: python3 -m unittest discover -s dev/tests -p 'test_*.py'
       - name: Verify tag and prepare release notes
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          import re
-          from pathlib import Path
-
-          tag = os.environ['RELEASE_TAG']
-          version = json.loads(Path('manifest.json').read_text(encoding='utf-8'))['version']
-          if tag != f'v{version}':
-              raise SystemExit(f'tag {tag!r} does not match manifest version v{version}')
-          changelog = Path('CHANGELOG.md').read_text(encoding='utf-8')
-          match = re.search(rf'(?m)^## \[{re.escape(version)}\][^\n]*\n', changelog)
-          if not match:
-              raise SystemExit(f'CHANGELOG.md has no section for {version}')
-          next_section = re.search(r'(?m)^## ', changelog[match.end():])
-          end = match.end() + next_section.start() if next_section else len(changelog)
-          notes = changelog[match.end():end].strip()
-          if not notes:
-              raise SystemExit(f'CHANGELOG.md section for {version} is empty')
-          Path(os.environ['RUNNER_TEMP'], 'release-notes.md').write_text(notes + '\n', encoding='utf-8')
-          PY
+        run: node tools/check-release-tag.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/release-notes.md"
       - name: Build release ZIP and SHA-256 file
         run: python3 tools/make-release.py --output-dir dist
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "dist/great-tab-killer-${GITHUB_REF_NAME}.zip" dist/SHA256SUMS.txt --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/release-notes.md"
+        run: gh release create "$GITHUB_REF_NAME" "dist/great-tab-killer-${GITHUB_REF_NAME}.zip" dist/SHA256SUMS.txt --verify-tag --title "$GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/release-notes.md"

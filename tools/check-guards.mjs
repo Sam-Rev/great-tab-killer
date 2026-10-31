@@ -5,19 +5,23 @@ import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { createHash } from 'node:crypto';
 
-// Exclusions from shipped-source scanning:
-// - dev/, docs/, tools/, assets/, vendor/, security/: development, documentation,
-//   source assets, or policy inputs rather than executable extension files.
-// - html2canvas.min.js and dom-to-image.js: vendored screenshot libraries;
-//   known third-party XMLHttpRequest behavior is needed for image capture.
-// - db.js: vendored IndexedDB shim; vendor provenance/checksum work is task 3.6.
+// Exclude non-shipped/development paths and the exact hash-pinned vendor files below.
 const EXCLUDED_DIRS = new Set(['dev', 'docs', 'tools', 'assets', 'vendor', 'security', '.git']);
-const EXCLUDED_FILES = new Set([
-  'js/helpers/html2canvas.min.js',
-  'js/helpers/dom-to-image.js',
-  'js/helpers/db.js',
+const EXCLUDED_FILES = new Map([
+  ['js/helpers/html2canvas.min.js', {
+    consoleOutputExempt: true,
+    reason: 'Hash-pinned; html2canvas logs only its version and renderer geometry.',
+  }],
+  ['js/helpers/dom-to-image.js', {
+    consoleOutputExempt: true,
+    reason: 'Hash-pinned; dom-to-image logs a stylesheet href and CSS access exception when cross-origin rules block CSS access.',
+  }],
+  ['js/helpers/db.js', {
+    consoleOutputExempt: false,
+    reason: 'Hash-pinned db.js vendor source; raw console output remains forbidden.',
+  }],
 ]);
-const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES);
+const PINNED_VENDOR_FILES = new Set(EXCLUDED_FILES.keys());
 const FORBIDDEN = [
   ['eval(', /\beval\s*\(/i],
   ['new Function', /\bnew\s+Function\b/i],
@@ -444,6 +448,10 @@ export async function checkRoot(root) {
       if (pattern.test(source)) errors.push(`${relative}: forbidden pattern ${label}`);
     }
     if (relative.endsWith('.js')) {
+      const uncommented = maskCommentsAndStrings(source);
+      if (/\b(?:window\s*\.\s*)?console\s*\.\s*(?:log|debug|info)\s*\(/.test(uncommented)) {
+        errors.push(`${relative}: raw console.log/debug/info is forbidden`);
+      }
       for (const { expression, index } of extractFetchExpressions(source)) {
         if (!isSafeFetch(expression, source, index)) {
           errors.push(`${relative}: fetch() must use chrome.runtime.getURL() or a local relative path (found ${expression})`);
@@ -454,6 +462,15 @@ export async function checkRoot(root) {
       }
     } else {
       errors.push(...htmlRemoteSourceErrors(source, relative));
+    }
+  }
+  for (const [relative, exclusion] of EXCLUDED_FILES) {
+    if (exclusion.consoleOutputExempt) continue;
+    let source;
+    try { source = await readFile(path.join(root, relative), 'utf8'); }
+    catch { continue; } // verifyVendorChecksums reports the missing pinned source above.
+    if (/\b(?:window\s*\.\s*)?console\s*\.\s*(?:log|debug|info)\s*\(/.test(maskCommentsAndStrings(source))) {
+      errors.push(`${relative}: raw console.log/debug/info is forbidden`);
     }
   }
   return errors;

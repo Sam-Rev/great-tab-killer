@@ -53,7 +53,7 @@ export var gsUtils = {
         .filter((o) => !ignores.find((p) => o.indexOf(p) >= 0))
         .join("\n");
       args.push(`\n${errorLine}`);
-      console.log(
+      console.warn(
         "WARNING:",
         id,
         (new Date() + "").split(" ")[4],
@@ -86,7 +86,7 @@ export var gsUtils = {
         ? errorObj
         : JSON.stringify(errorObj, null, 2);
       errorObj = errorObj || {};
-      console.log(id, (new Date() + "").split(" ")[4], "Error:");
+      console.error(id, (new Date() + "").split(" ")[4], "Error:");
       console.error(
         gsUtils.getPrintableError(errorMessage, stackTrace, ...args)
       );

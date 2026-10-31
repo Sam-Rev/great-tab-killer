@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.0] - 2026-10-30
+## [0.1.0] - 2026-10-31
 
 ### Added
 - Evidence-backed privacy and security policies; the extension description is now neutral across locales.
@@ -31,3 +31,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - The third-party uninstall survey URL and upstream fundraising links.
+
+### Permissions and known limits
+- Manifest permissions: `tabs`, `storage`, `unlimitedStorage`, `contextMenus`, `alarms`, `favicon`, `scripting`, and `offscreen`; optional permissions: `system.cpu` and `system.memory`; host access: `http://*/*`, `https://*/*`, and `file://*/*`.
+- Full page URLs, session titles, and optional previews are stored locally with count caps but no general expiry; there is no single action to wipe all extension data yet (planned for v0.2.0). Backup files in Downloads are user-managed. The ZIP is unsigned and the extension has no automatic updates.
