@@ -82,3 +82,9 @@ For each row, the pre-removal revision was searched in `js/`, `html/`, and `mani
 | Removed or replaced | Evidence | Action | Commit |
 |---|---|---|---|
 | Two bundled WOFF assets and the shared icon-font stylesheet; the stylesheet was referenced by Options, History, and Monitor, and its CSS selectors were used by the help marks, session toggles, checkbox marks, and select chevrons. | Replaced consumers with CSS-drawn shapes and removed the three asset paths from the literal release allowlist. `dev/tests/no-web-fonts.test.mjs` checks the shipped file list and CSS declarations. | Removed font assets and stylesheet; retained only the historical attribution note in `NOTICE`. | `3186a76` |
+
+## Phase 7 logging cleanup
+
+| Removed or replaced | Evidence | Action | Source commit |
+|---|---|---|---|
+| Raw console output in favicon metadata generation and content-script connection failure; suspended-page unknown-action debug output; logger wrapper output using `console.log`; three commented-out preview debug statements. | The favicon object contains the page favicon URL and base64 image data; the content-script failure is retried by the surrounding readiness flow; the suspended action name remains a warning diagnostic; generic warnings/errors now use their matching console levels. | Removed sensitive/debug output, preserved the non-sensitive action warning, and removed stale commented logging lines. | `8e7d216`, `c608085` |
