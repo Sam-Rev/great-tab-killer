@@ -27,6 +27,12 @@ The Great Tab Killer is distributed from the [GitHub Releases page](https://gith
 
    Compare the displayed hash to the `great-tab-killer-v0.1.0.zip` entry in `SHA256SUMS.txt`. The release ZIP and checksum are not cryptographically signed. A checksum downloaded beside the ZIP can detect accidental corruption, but cannot detect a compromised GitHub release page or account.
 
+The builder normalizes the file list, paths, sizes, timestamps, CRC32 values,
+permissions, and ZIP metadata. DEFLATE output can vary with the zlib version,
+so separate machines can produce different ZIP hashes from the same source.
+Use the SHA-256 published with the release artifact; the CI release job's
+published archive and checksum are authoritative.
+
 ## Load the extension
 
 1. Create a new, empty folder (for example, `great-tab-killer`) and extract the ZIP into it. The ZIP contains `manifest.json` at its root, so the extracted folder itself is the folder to load.

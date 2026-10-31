@@ -18,6 +18,10 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Check security and manifest guards
         run: node tools/check-guards.mjs
+      - name: Print runtime versions
+        run: |
+          node --version
+          python3 --version
       - name: Run Node test suite
         run: node --test dev/tests/*.test.mjs
       - name: Run Python release-package tests

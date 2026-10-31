@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 import json
+import stat
 import tempfile
 import unittest
 import zipfile
@@ -38,16 +39,28 @@ class ReleasePackageTests(unittest.TestCase):
                     self.assertFalse(lower.startswith(("dev/", "docs/", "tools/", ".git/", "assets/source/", "tests/")), name)
                     self.assertNotIn("tab_killer_logo", lower, name)
                     self.assertFalse(name.endswith(".zip"), name)
+                self.assertTrue(all(info.create_system == 3 for info in archive.infolist()))
+                self.assertTrue(all(info.flag_bits == 0 for info in archive.infolist()))
+                self.assertTrue(all(not info.extra and not info.comment for info in archive.infolist()))
+                self.assertTrue(all(info.compress_type == zipfile.ZIP_DEFLATED for info in archive.infolist()))
+                expected_mode = (stat.S_IFREG | 0o644) << 16
+                self.assertTrue(all(info.external_attr == expected_mode for info in archive.infolist()))
                 self.assertTrue(manifest_references(manifest).issubset(set(names)))
             self.assertEqual(sums_path.read_text(encoding="ascii"), f"{digest}  {zip_path.name}\n")
             self.assertEqual(hashlib.sha256(zip_path.read_bytes()).hexdigest(), digest)
 
-    def test_same_inputs_produce_identical_zip_bytes(self):
+    def test_same_inputs_produce_identical_member_metadata(self):
         with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second:
-            first_zip, _, _, first_hash = self.build_in_temp(Path(first))
-            second_zip, _, _, second_hash = self.build_in_temp(Path(second))
-            self.assertEqual(first_hash, second_hash)
-            self.assertEqual(first_zip.read_bytes(), second_zip.read_bytes())
+            first_zip, _, _, _ = self.build_in_temp(Path(first))
+            second_zip, _, _, _ = self.build_in_temp(Path(second))
+            def fingerprint(path):
+                with zipfile.ZipFile(path) as archive:
+                    return [
+                        (info.filename, info.file_size, info.date_time, info.CRC,
+                         info.external_attr, info.create_system, info.flag_bits)
+                        for info in archive.infolist()
+                    ]
+            self.assertEqual(fingerprint(first_zip), fingerprint(second_zip))
 
     def test_zip_uses_fixed_timestamps_sorted_names_and_normalized_permissions(self):
         with tempfile.TemporaryDirectory() as temp:

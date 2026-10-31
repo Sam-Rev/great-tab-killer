@@ -11,6 +11,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 - Keep Git history as-is: no rewrite, squash, or filter. Docs may reference commit hashes. Future owner commits use `SAM REV` with a GitHub noreply address; the owner configures Git. Push only `main` and tag `v0.1.0`; never push `local-0.1.0` or `phase-*` branches, and never use `--tags` or `--all`.
 - Release automation uses no third-party GitHub Actions except `actions/checkout` pinned to a full commit SHA verified against its upstream tag. Release ZIP contents come from an explicit allowlist, never an exclude-all-except pattern.
 - No AI-tool attribution anywhere, including `Co-Authored-By` or “Generated with” lines.
+- Repository tools and tests must run on Python 3.9 or newer and use no third-party Python packages. CI reports the runner's Python version and relies on its default; do not add `setup-python` unless its action is pinned to a verified full commit SHA.
 
 ## Permissions and compatibility
 

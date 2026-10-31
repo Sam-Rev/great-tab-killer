@@ -46,6 +46,8 @@ python3 -m unittest discover -s dev/tests -p 'test_*.py'
 node tools/check-release-ready.mjs
 ```
 
+The release builder and Python tests support Python 3.9 or newer and use only the standard library. The separate developer-only icon generator requires Pillow.
+
 The Chrome smoke test requires an already-installed Google Chrome:
 
 ```sh
