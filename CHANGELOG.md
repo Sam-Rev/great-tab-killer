@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - README, unpacked-install guide, and GitHub CI/release workflow definitions.
 
 ### Changed
+- Missing storage keys now use defaults quietly; corrupted JSON warns by key only and is reset without logging stored values.
 - Added the shared logo header to session history and keyboard shortcuts.
 - Replaced icon-font glyphs with original CSS-drawn shapes and removed the font files.
 - Backup diagnostics no longer log step details or exception text that may contain URLs or titles.

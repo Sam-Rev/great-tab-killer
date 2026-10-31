@@ -18,7 +18,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
             getTabStatus(retriesRemaining - 1, callback);
           }, 300);
         } else {
-          gsUtils.error("Error while getting active tab status", chrome.runtime.lastError);
+          gsUtils.error("popup", "Could not get active tab status after retries");
           callback(gsUtils.STATUS_UNKNOWN);
         }
       } else {
@@ -235,7 +235,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
         globalActionElListener = function (e) {
           chrome.runtime.sendMessage({function: tgsHanderFunc}, function (newTabStatus) {
             if (chrome.runtime.lastError) {
-              gsUtils.error("Error while calling function ", tgsHanderFunc, chrome.runtime.lastError);
+              gsUtils.error("popup", "Background action failed", tgsHanderFunc);
             } else {
               setStatus(newTabStatus);
             }
@@ -262,7 +262,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'unsuspendHighlightedTab'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to unsuspend hilighted tab", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not unsuspend highlighted tab");
           }
           window.close();
         });
@@ -272,7 +272,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'suspendHighlightedTab'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to suspend hilighted tab", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not suspend highlighted tab");
           }
           window.close();
         });
@@ -282,7 +282,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'suspendAllTabs'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to suspend all tabs", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not suspend all tabs");
           }
           window.close();
         });
@@ -292,7 +292,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'unsuspendAllTabs'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to unsuspend all tabs", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not unsuspend all tabs");
           }
           window.close();
         });
@@ -302,7 +302,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'suspendSelectedTabs'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to suspend selected tabs", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not suspend selected tabs");
           }
           window.close();
         });
@@ -312,7 +312,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'unsuspendSelectedTabs'}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to unsuspend selected tabs", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not unsuspend selected tabs");
           }
           window.close();
         });
@@ -322,7 +322,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'whitelistHighlightedTab', page: false}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to whitelist highlighted tab for domain", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not whitelist highlighted tab domain");
           }
           setStatus(gsUtils.STATUS_WHITELISTED);
         });
@@ -332,7 +332,7 @@ import {gsUtils} from "./helpers/gsUtils.js";
       .addEventListener("click", function (e) {
         chrome.runtime.sendMessage({function: 'whitelistHighlightedTab', page: true}, function () {
           if (chrome.runtime.lastError) {
-            gsUtils.error("Error while trying to whitelist highlighted tab for page", chrome.runtime.lastError);
+            gsUtils.error("popup", "Could not whitelist highlighted tab page");
           }
           setStatus(gsUtils.STATUS_WHITELISTED);
         });

@@ -48,8 +48,10 @@ The extension opens its welcome page and a local backup setup page on first run.
 
 Download the next release ZIP and verify its checksum. Choose either update method:
 
-- **Keep the existing installation data:** delete the old folder's contents, extract the new ZIP into that same folder, then select **Reload** on the browser's extensions page. Keeping the same folder and reloading keeps the extension's stored settings and saved sessions.
-- **Use a new folder:** extract the new ZIP into a new folder, remove the old extension entry on the browser's extensions page, then select **Load unpacked** and choose the new folder. Removing the old extension deletes its `chrome.storage.local` settings and makes its saved sessions unavailable. Chrome documents that local settings are cleared on removal; cleanup of saved-session IndexedDB records has not been verified, as noted in [PRIVACY.md](../PRIVACY.md). Backup `.txt` files in Downloads and suspended entries in browser history are separate and are not removed with the extension.
+- **Keep the existing installation data:** delete the old folder's contents, extract the new ZIP into that same folder, then select **Reload** on the browser's extensions page. Reload keeps extension data.
+- **Use a new folder:** extract the new ZIP into a new folder, remove the old extension entry on the browser's extensions page, then select **Load unpacked** and choose the new folder. The extension ID is fixed by the manifest key in either method.
+
+Storage cleanup after **Remove** is browser-managed; do not rely on it to clear data. In one manual test (Chrome 156 on Linux, unpacked extension), settings and flags survived **Remove** followed by **Load unpacked** with the same extension ID, so the welcome page did not reopen. A one-click wipe is planned for v0.2.0 (accepted risks A-10 and A-13–A-15). Backup `.txt` files in Downloads and suspended entries in browser history are separate data locations.
 
 The extension ID is fixed by the public manifest key in either method. For the storage and deletion limits, see [PRIVACY.md](../PRIVACY.md).
 
@@ -60,3 +62,5 @@ Unsuspend all tabs in the old suspender first, then disable or remove it before 
 ## Uninstall
 
 Open the browser's extensions page, select **Remove** for The Great Tab Killer, and confirm. Backup `.txt` files already written to Downloads are outside extension storage and must be deleted there separately. Suspended entries already written to browser history may remain as long as the browser retains them.
+
+Removing the extension does not promise to delete its settings, flags, IndexedDB records, or other browser-managed data. See [PRIVACY.md](../PRIVACY.md) for the observed Chrome 156 result and current deletion limits.

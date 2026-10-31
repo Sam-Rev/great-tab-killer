@@ -12,6 +12,10 @@ import { gsMemorySampler } from "./helpers/gsMemorySampler.js"
 
 const STARTUP_CHECKS_SESSION_KEY = "gsStartupChecksCompletedVersion";
 
+function shouldSkipStartupChecks(currentVersion, completedVersion, storedVersion) {
+  return completedVersion === currentVersion && storedVersion === currentVersion;
+}
+
 let startupChecksPromise;
 let startupChecksCompletedVersionInWorker = null;
 
@@ -32,8 +36,7 @@ async function getCompletedStartupChecksVersion() {
   } catch (error) {
     gsUtils.warning(
       "background",
-      "Failed to read startup checks session state:",
-      error
+      "Failed to read startup checks session state"
     );
     return null;
   }
@@ -51,8 +54,7 @@ async function markStartupChecksCompletedForVersion(version) {
   } catch (error) {
     gsUtils.warning(
       "background",
-      "Failed to save startup checks session state:",
-      error
+      "Failed to save startup checks session state"
     );
   }
 }
@@ -65,8 +67,9 @@ function ensureStartupChecks() {
   startupChecksPromise = (async () => {
     const currentVersion = chrome.runtime.getManifest().version;
     const completedVersion = await getCompletedStartupChecksVersion();
+    const storedVersion = await gsStorage.fetchLastVersion();
 
-    if (completedVersion === currentVersion) {
+    if (shouldSkipStartupChecks(currentVersion, completedVersion, storedVersion)) {
       gsUtils.log(
         "background",
         "Startup checks already completed for version",
@@ -101,15 +104,15 @@ const backgroundInitialisationPromise = Promise.resolve()
     ]);
   })
   .catch((error) => {
-    gsUtils.error("background init error: ", error);
+    gsUtils.error("background", "Background initialization failed");
   })
   .then(ensureStartupChecks) // performs install/update/recovery and tab responsiveness checks once per version/session
   .catch((error) => {
-    gsUtils.error("background startup checks error: ", error);
+    gsUtils.error("background", "Startup checks failed");
   })
   .then(tgs.initAsPromised) // adds handle(Un)SuspendedTabChanged listeners!
   .catch((error) => {
-    gsUtils.error("background init error: ", error);
+    gsUtils.error("background", "Background listener initialization failed");
   })
   .finally(() => {
     tgs.startTimers();
@@ -119,7 +122,7 @@ chrome.runtime.onStartup.addListener(function () {
   backgroundInitialisationPromise
     .then(ensureStartupChecks)
     .catch((error) => {
-      gsUtils.error("background startup event error: ", error);
+      gsUtils.error("background", "Browser-startup checks failed");
     });
 });
 
@@ -157,7 +160,7 @@ async function migrateForeignSuspendedTabs() {
       await gsChrome.tabsUpdate(tab.id, { url: localSuspendedUrl });
     }
   } catch (e) {
-    gsUtils.error("migration", e);
+    gsUtils.error("migration", "Foreign suspended-tab conversion failed");
   }
 }
 

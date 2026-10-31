@@ -53,7 +53,7 @@ export var gsFavicon = (function () {
           } else {
             gsUtils.warning(
               "gsFavicon",
-              `Failed to build faviconMeta for url: ${iconUrl}`
+              "Failed to build default favicon metadata"
             );
           }
           // Set the first url as the default favicon
@@ -83,7 +83,7 @@ export var gsFavicon = (function () {
         0
       );
     } catch (e) {
-      gsUtils.warning("gsFavicon", e);
+      gsUtils.warning("gsFavicon", "Failed to build default favicon metadata");
     }
     addFaviconMetaToDefaultFingerprints(faviconMeta, url);
     return faviconMeta;
@@ -155,7 +155,7 @@ export var gsFavicon = (function () {
         return faviconMeta;
       }
     } catch (e) {
-      gsUtils.warning("gsUtils", e);
+      gsUtils.warning("gsFavicon", "Failed to read browser favicon cache");
     }
     return null;
   }

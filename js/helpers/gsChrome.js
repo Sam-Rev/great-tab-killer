@@ -18,7 +18,7 @@ export var gsChrome = {
       details = typeof details === 'string' ? { url: details } : details;
       chrome.tabs.create(details, tab => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+          gsUtils.warning('chromeTabs', 'Could not create tab');
           tab = null;
         }
         resolve(tab);
@@ -35,7 +35,7 @@ export var gsChrome = {
       chrome.tabs.reload(tabId, () => {
         if (chrome.runtime.lastError) {
           if (!chrome.runtime.lastError.message || chrome.runtime.lastError.message.indexOf('No tab with id') !== 0) {
-            gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+            gsUtils.warning('chromeTabs', 'Could not reload tab', tabId);
           }
           resolve(false);
           return;
@@ -57,7 +57,7 @@ export var gsChrome = {
       chrome.tabs.update(tabId, updateProperties, tab => {
         if (chrome.runtime.lastError) {
           if (!chrome.runtime.lastError.message || chrome.runtime.lastError.message.indexOf('No tab with id') !== 0) {
-            gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+            gsUtils.warning('chromeTabs', 'Could not update tab', tabId);
           }
           tab = null;
         }
@@ -75,7 +75,7 @@ export var gsChrome = {
       chrome.tabs.get(tabId, tab => {
         if (chrome.runtime.lastError) {
           if (!chrome.runtime.lastError.message || chrome.runtime.lastError.message.indexOf('No tab with id') !== 0) {
-            gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+            gsUtils.warning('chromeTabs', 'Could not read tab', tabId);
           }
           tab = null;
         }
@@ -88,7 +88,7 @@ export var gsChrome = {
     return new Promise(resolve => {
       chrome.tabs.query(queryInfo, tabs => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+          gsUtils.warning('chromeTabs', 'Could not query tabs');
           tabs = [];
         }
         resolve(tabs);
@@ -105,7 +105,7 @@ export var gsChrome = {
       chrome.tabs.remove(tabId, () => {
         if (chrome.runtime.lastError) {
           if (!chrome.runtime.lastError.message || chrome.runtime.lastError.message.indexOf('No tab with id') !== 0) {
-            gsUtils.warning('chromeTabs', chrome.runtime.lastError);
+            gsUtils.warning('chromeTabs', 'Could not remove tab', tabId);
           }
         }
         resolve();
@@ -117,7 +117,7 @@ export var gsChrome = {
     return new Promise(resolve => {
       chrome.windows.getLastFocused({}, window => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeWindows', chrome.runtime.lastError);
+          gsUtils.warning('chromeWindows', 'Could not read focused window');
           window = null;
         }
         resolve(window);
@@ -133,7 +133,7 @@ export var gsChrome = {
       }
       chrome.windows.get(windowId, { populate: true }, window => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeWindows', chrome.runtime.lastError);
+          gsUtils.warning('chromeWindows', 'Could not read window', windowId);
           window = null;
         }
         resolve(window);
@@ -144,7 +144,7 @@ export var gsChrome = {
     return new Promise(resolve => {
       chrome.windows.getAll({ populate: true }, windows => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeWindows', chrome.runtime.lastError);
+          gsUtils.warning('chromeWindows', 'Could not query windows');
           windows = [];
         }
         resolve(windows);
@@ -156,7 +156,7 @@ export var gsChrome = {
     return new Promise(resolve => {
       chrome.windows.create(createData, window => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeWindows', chrome.runtime.lastError);
+          gsUtils.warning('chromeWindows', 'Could not create window');
           window = null;
         }
         resolve(window);
@@ -172,7 +172,7 @@ export var gsChrome = {
       }
       chrome.windows.update(windowId, updateInfo, window => {
         if (chrome.runtime.lastError) {
-          gsUtils.warning('chromeWindows', chrome.runtime.lastError);
+          gsUtils.warning('chromeWindows', 'Could not update window', windowId);
           window = null;
         }
         resolve(window);

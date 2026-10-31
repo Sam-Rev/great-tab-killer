@@ -329,8 +329,7 @@ export var tgs = (function () {
         if (error) {
           gsUtils.warning(
             tab.id,
-            "Failed to sendTemporaryWhitelistToContentScript",
-            error
+            "Failed to sendTemporaryWhitelistToContentScript"
           );
         }
         var contentScriptStatus =
@@ -356,8 +355,7 @@ export var tgs = (function () {
         if (error) {
           gsUtils.warning(
             tab.id,
-            "Failed to sendUndoTemporaryWhitelistToContentScript",
-            error
+            "Failed to sendUndoTemporaryWhitelistToContentScript"
           );
         }
         var contentScriptStatus =
@@ -858,7 +856,7 @@ export var tgs = (function () {
         gsSuspendedTab
           .initTab(tab, { quickInit })
           .catch((error) => {
-            gsUtils.warning(tab.id, error);
+            gsUtils.warning(tab.id, "Tab initialization did not complete");
           })
           .then(() => {
             gsTabCheckManager.queueTabCheck(tab, { refetchTab: true }, 3000);
@@ -1109,7 +1107,7 @@ export var tgs = (function () {
     } else if (focusedTab.url === chrome.runtime.getURL("html/options.html")) {
       chrome.tabs.sendMessage(focusedTab.id, {action: "initSettings"}, function() {
         if (chrome.runtime.lastError) {
-          gsUtils.error("Error while init settings of options");
+          gsUtils.warning("tgs", "Options page closed before settings initialization", focusedTab.id);
         }
       });
     }
@@ -1183,7 +1181,7 @@ export var tgs = (function () {
           tabId,
           function (error, tabInfo) {
             if (error) {
-              gsUtils.warning(tabId, "Failed to getContentScriptStatus", error);
+              gsUtils.warning(tabId, "Failed to get content-script status");
             }
             if (tabInfo) {
               resolve(tabInfo.status);
@@ -1324,8 +1322,7 @@ export var tgs = (function () {
       if (chrome.runtime.lastError) {
         gsUtils.warning(
           tabId,
-          chrome.runtime.lastError,
-          `Failed to set icon for tab. Tab may have been closed.`
+          'Failed to set icon for tab. Tab may have been closed.'
         );
       }
     });

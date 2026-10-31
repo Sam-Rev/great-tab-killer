@@ -261,6 +261,19 @@ async function main() {
     }
     throw lastError || new Error('No stable extension page was available');
   };
+  const evalServiceWorker = async (expression) => {
+    const worker = (await targets()).targetInfos.find((target) => target.type === 'service_worker' && target.url.startsWith(extensionOrigin));
+    assert(worker, 'Extension service worker target is missing');
+    const { sessionId } = await cdp.send('Target.attachToTarget', { targetId: worker.targetId, flatten: true });
+    await cdp.send('Runtime.enable', {}, sessionId);
+    try {
+      const result = await cdp.send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, sessionId);
+      if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
+      return { value: result.result?.value, targetId: worker.targetId };
+    } finally {
+      try { await cdp.send('Target.detachFromTarget', { sessionId }); } catch {}
+    }
+  };
   const screenshotDir = process.env.SMOKE_SCREENSHOT_DIR;
   if (screenshotDir) await mkdir(screenshotDir, { recursive: true });
   const saveScreenshot = async (sessionId, filename) => {
@@ -457,13 +470,43 @@ async function main() {
     const tabs = await evalExtension(`(async()=>await chrome.tabs.query({}))()`);
     return urls.every((url) => tabs.some((tab) => tab.url === url));
   }, 'five restored tabs');
+
+  const backupSetupUrl = `${extensionOrigin}html/backup-setup.html`;
+  const closePagesAt = async (url) => {
+    const pages = (await targets()).targetInfos.filter((target) => target.type === 'page' && target.url === url);
+    for (const page of pages) await cdp.send('Target.closeTarget', { targetId: page.targetId });
+  };
+  await closePagesAt(welcomeUrl);
+  await closePagesAt(backupSetupUrl);
+  const restartBaseline = errors.length;
+  const originalWorker = (await targets()).targetInfos.find((target) => target.type === 'service_worker' && target.url.startsWith(extensionOrigin));
+  assert(originalWorker, 'Service worker missing before storage-clear probe');
+  await evalServiceWorker('chrome.storage.local.clear()');
+  await cdp.send('Target.closeTarget', { targetId: originalWorker.targetId });
+  await waitFor(async () => !(await targets()).targetInfos.some((target) => target.targetId === originalWorker.targetId), 'service worker stop');
+  await cdp.send('Target.createTarget', { url: 'about:blank' });
+  await waitFor(async () => (await targets()).targetInfos.some((target) => target.type === 'service_worker' && target.url.startsWith(extensionOrigin)), 'service worker wake after storage clear');
+  await waitFor(async () => {
+    const infos = (await targets()).targetInfos;
+    return infos.filter((target) => target.type === 'page' && target.url === welcomeUrl).length === 1 &&
+      infos.filter((target) => target.type === 'page' && target.url === backupSetupUrl).length === 1;
+  }, 'exactly one welcome and backup setup page after cleared storage and worker wake');
+  await delay(1500);
+  const postRestartTargets = (await targets()).targetInfos;
+  const resetOnboarding = {
+    welcomeTabs: postRestartTargets.filter((target) => target.type === 'page' && target.url === welcomeUrl).length,
+    backupSetupTabs: postRestartTargets.filter((target) => target.type === 'page' && target.url === backupSetupUrl).length,
+    extensionErrors: errors.length - restartBaseline,
+  };
+  assert(resetOnboarding.welcomeTabs === 1 && resetOnboarding.backupSetupTabs === 1, `Unexpected onboarding page count after storage clear: ${JSON.stringify(resetOnboarding)}`);
+  assert(resetOnboarding.extensionErrors === 0, `Storage-clear worker restart emitted errors: ${JSON.stringify(errors.slice(restartBaseline))}`);
   await delay(1500);
   const priorErrors = {
     missingSuspendedUrl: errors.some((entry) => entry.includes('tabProperties.url not set')),
     failedFetch: errors.some((entry) => entry.includes('Failed to fetch')),
     recoveryParse: errors.some((entry) => entry.includes('Failed to parse gsExtensionRecovery')),
   };
-  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, brandedPages: brandedPageResults, faviconResults, welcomeTabs: 1, backupSetupTabs: 1, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ chrome: version.Browser, extensionId, brandedPages: brandedPageResults, faviconResults, welcomeTabs: resetOnboarding.welcomeTabs, backupSetupTabs: resetOnboarding.backupSetupTabs, storageReset: {serviceWorkerStoppedAndWoken: true, ...resetOnboarding}, hostileFragmentProbe: hostileResult, webAccessibleResourceProbe: {attempts: completedWarProbe, framedDocumentUrls: warFrames, extensionResourceResponses: warResponses}, suspendedFavicon: 'fallback data URL for local pages without a favicon', faviconHrefPrefix: suspendedFavicon?.slice(0, 22), backupState: initialState, closedNoticeState, localPages: 5, suspendedAndRestored: true, priorErrors, extensionErrors: errors }, null, 2)}\n`);
   assert(errors.length === 0, `Collected ${errors.length} extension console error(s)`);
 }
 

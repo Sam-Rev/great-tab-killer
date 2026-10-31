@@ -92,7 +92,7 @@ export var gsIndexedDb = {
         .only(tabUrl)
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       return results[0];
@@ -114,14 +114,14 @@ export var gsIndexedDb = {
       }
       await gsDb.add(gsIndexedDb.DB_PREVIEWS, { url: tabUrl, img: previewUrl });
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
   addSuspendedTabInfo: async function(tabProperties) {
     try {
       if (!tabProperties.url) {
-        gsUtils.error('gsIndexedDb', 'tabProperties.url not set.');
+        gsUtils.warning('gsIndexedDb', 'Skipping suspended-tab metadata without a URL', tabProperties.id);
         return;
       }
       const gsDb = await gsIndexedDb.getDb();
@@ -136,7 +136,7 @@ export var gsIndexedDb = {
       }
       await gsDb.add(gsIndexedDb.DB_SUSPENDED_TABINFO, tabProperties);
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
@@ -151,7 +151,7 @@ export var gsIndexedDb = {
         .desc()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       const tabInfo = results[0];
@@ -170,7 +170,7 @@ export var gsIndexedDb = {
   addFaviconMeta: async function(url, faviconMeta) {
     try {
       if (!url) {
-        gsUtils.error('gsIndexedDb', 'url not set.');
+        gsUtils.warning('gsIndexedDb', 'Skipping favicon metadata without a URL');
         return;
       }
       const faviconMetaWithUrl = Object.assign(faviconMeta, { url });
@@ -186,7 +186,7 @@ export var gsIndexedDb = {
       }
       await gsDb.add(gsIndexedDb.DB_FAVICON_META, faviconMetaWithUrl);
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
@@ -201,7 +201,7 @@ export var gsIndexedDb = {
         .desc()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       const faviconMeta = results[0];
@@ -240,7 +240,7 @@ export var gsIndexedDb = {
         await gsDb.add(tableName, session);
       }
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
@@ -254,7 +254,7 @@ export var gsIndexedDb = {
         .desc()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     return results;
   },
@@ -287,7 +287,7 @@ export var gsIndexedDb = {
         }
       }
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       return results[0];
@@ -331,7 +331,7 @@ export var gsIndexedDb = {
         .distinct()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       return results[0];
@@ -350,7 +350,7 @@ export var gsIndexedDb = {
         .desc()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     if (results && results.length > 0) {
       //don't want to match on current session
@@ -370,7 +370,7 @@ export var gsIndexedDb = {
         .all()
         .execute();
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
     return results;
   },
@@ -393,7 +393,7 @@ export var gsIndexedDb = {
       await gsDb.clear(gsIndexedDb.DB_CURRENT_SESSIONS);
       await gsDb.clear(gsIndexedDb.DB_SAVED_SESSIONS);
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
@@ -445,7 +445,7 @@ export var gsIndexedDb = {
         await gsDb.remove(tableName, session.id);
       }
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 
@@ -518,7 +518,7 @@ export var gsIndexedDb = {
         }
       }
     } catch (e) {
-      gsUtils.error('gsIndexedDb', e);
+      gsUtils.error('gsIndexedDb', 'Database operation failed');
     }
   },
 

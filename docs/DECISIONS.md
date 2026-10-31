@@ -60,6 +60,7 @@ All items below are FINAL owner decisions. Do not reopen or reinterpret them unl
 ## Testing and communication
 
 - The automated Chrome 156 clean-profile smoke test is documented in `docs/TESTING.md`.
+- The smoke test does not automate a full extension reload through browser UI. It clears `chrome.storage.local`, stops and wakes the service worker through CDP, and verifies no extension errors plus exactly one welcome page and backup setup page. Full **Remove → Load unpacked** and **Reload** storage checks remain manual and documented in `docs/TESTING.md`.
 - Brave and Chrome's internal Errors page are owner-manual checks; report anything not independently verified.
 - Every claim in `PRIVACY.md` must have an evidence row in `docs/audit/PRIVACY_CLAIMS.md`.
 - Use English and concise reports, at most 15 lines. Do not reread large files already summarized; prefer `git diff --stat` and targeted searches.
