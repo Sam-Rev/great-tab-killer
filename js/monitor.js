@@ -163,7 +163,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
         gsUtils.getMessage("js_monitor_free") + ": " +
         formatBytes(info.availableCapacity) + " · " + pct + "%";
     } catch (e) {
-      gsUtils.warning("monitor", "system.memory unavailable", e);
+      gsUtils.warning("monitor", "system.memory unavailable");
     }
     // overall cpu load: two snapshots of the per-core cumulative counters
     // 600ms apart; usage = delta(user+kernel) / delta(total) over all cores
@@ -189,7 +189,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
           sampleB.numOfProcessors;
       }
     } catch (e) {
-      gsUtils.warning("monitor", "system.cpu unavailable", e);
+      gsUtils.warning("monitor", "system.cpu unavailable");
     }
   }
 
@@ -633,7 +633,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
     } catch (error) {
       _tabActions.set(tab.id, { action, error: error.message || String(error) });
       document.getElementById("monitorActionFeedback").textContent = gsUtils.getMessage("js_monitor_action_failed") + ": " + (error.message || error);
-      gsUtils.warning("monitor", "tab action failed", error);
+      gsUtils.warning("monitor", "tab action failed", tab.id, action);
     } finally {
       _actionRevision++;
       renderRowInPlace(tab.id);
@@ -648,7 +648,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
     try {
       await chrome.tabs.remove(tab.id);
     } catch (e) {
-      gsUtils.warning("monitor", "failed to close tab", e);
+      gsUtils.warning("monitor", "failed to close tab", tab.id);
     }
     _rows = _rows.filter((row) => row.tab.id !== tab.id);
     renderTable();
@@ -913,7 +913,7 @@ import {gsMemorySampler} from "./helpers/gsMemorySampler.js";
       renderTabStats();
       renderLastUpdated();
     } catch (e) {
-      gsUtils.error("monitor", e);
+      gsUtils.error("monitor", "Monitor refresh failed");
     } finally {
       _measuring = false;
       document.getElementById("refreshBtn").classList.remove("refreshing");

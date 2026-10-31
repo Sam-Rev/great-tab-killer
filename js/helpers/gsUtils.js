@@ -589,7 +589,7 @@ export var gsUtils = {
     chrome.tabs.query({}, function (tabs) {
       tabs.forEach(async function (tab) {
         if (chrome.runtime.lastError) {
-          gsUtils.error("Error while trying to know is tab is currently focused", tab, chrome.runtime.lastError);
+          gsUtils.warning("gsUtils", "Could not query focus state for tab", tab.id);
         }
         if (gsUtils.isSpecialTab(tab)) {
           return;
@@ -607,7 +607,7 @@ export var gsUtils = {
           ) {
             chrome.runtime.sendMessage({function: 'unsuspendTab', tab: tab}, function () {
               if (chrome.runtime.lastError) {
-                gsUtils.error("Error while trying to unsuspend tab for tab", tab, chrome.runtime.lastError);
+                gsUtils.warning("gsUtils", "Tab closed before unsuspend message completed", tab.id);
               }
             });
             return;

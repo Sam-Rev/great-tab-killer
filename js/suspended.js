@@ -219,14 +219,14 @@ chrome.runtime && chrome.runtime.onMessage && chrome.runtime.onMessage.addListen
           gsUtils.log(request.tab.id, "BeforeUnload triggered: " + request.tab.url);
           chrome.runtime.sendMessage({function: 'setTabStateUnloadedUrlForTabId', tabId: request.tab.id, value: request.tab.url}, function () {
             if (chrome.runtime.lastError) {
-              gsUtils.error("Error while trying to get tab unloaded url for tab", request.tab, chrome.runtime.lastError);
+              gsUtils.warning("suspended", "Unload-state message failed", request.tab.id);
             }
 
             const scrollPosition = gsUtils.getSuspendedScrollPosition(request.tab.url);
 
             chrome.runtime.sendMessage({function: 'setTabStateScrollPosForTabId', tabId: request.tab.id, value: scrollPosition}, function () {
               if (chrome.runtime.lastError) {
-                gsUtils.error("Error while trying to set scroll position for tab", request.tab, chrome.runtime.lastError);
+                gsUtils.warning("suspended", "Scroll-position message failed", request.tab.id);
               }
             });
           });

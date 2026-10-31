@@ -68,7 +68,7 @@ export var gsSession = (function () {
     try {
       await gsBackup.performBackup('pre-update');
     } catch (e) {
-      gsUtils.warning("gsSession", "Pre-update backup failed:", e);
+      gsUtils.warning("gsSession", "Pre-update backup failed");
     }
 
     let sessionRestorePoint;
@@ -221,7 +221,7 @@ export var gsSession = (function () {
           chrome.tabs.reload(tab.id);
           reloadCount++;
         } catch (e) {
-          gsUtils.warning(tab.id, 'Failed to reload unresponsive tab:', e);
+          gsUtils.warning(tab.id, 'Failed to reload unresponsive extension tab');
         }
       }
     }
@@ -780,7 +780,7 @@ export var gsSession = (function () {
         if (tab.url.indexOf(chrome.runtime.getURL("html/recovery.html")) === 0) {
           chrome.tabs.sendMessage(tab.id, { action: "removeTabFromList" }, function () {
             if (chrome.runtime.lastError) {
-              gsUtils.error("Error while removing recovery tab from list");
+              gsUtils.warning("gsSession", "Recovery tab closed before list update", tab.id);
             }
           });
         }

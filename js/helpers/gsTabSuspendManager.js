@@ -288,8 +288,7 @@ export var gsTabSuspendManager = (function () {
       gsUtils.warning(
         tab.id,
         QUEUE_ID,
-        "savePreviewData reported an error: ",
-        errorMsg
+        "Preview capture failed"
       );
     } else if (isRegularTab(tab)) {
       await gsIndexedDb.addPreviewImage(tab.url, previewUrl);
@@ -462,8 +461,7 @@ export var gsTabSuspendManager = (function () {
           gsUtils.warning(
             tab.id,
             QUEUE_ID,
-            "Failed to get content script info",
-            error
+            "Failed to get content script info"
           );
           // continue here but will lose information about scroll position,
           // temp whitelist, and form input
@@ -489,8 +487,7 @@ export var gsTabSuspendManager = (function () {
             gsUtils.warning(
               tab.id,
               QUEUE_ID,
-              "Failed to fetch YouTube timestamp",
-              error
+              "Failed to fetch YouTube timestamp"
             );
           }
           if (!response || response.length < 1) {

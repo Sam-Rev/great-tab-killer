@@ -167,7 +167,7 @@ import {isAllowedNavigationUrl} from "./helpers/safeNavigationUrl.js";
     for (const suspendedTab of currentSuspendedTabs) {
       gsMessages.sendPingToTab(suspendedTab.id, function (error) {
         if (error) {
-          gsUtils.warning(suspendedTab.id, "Failed to sendPingToTab", error);
+          gsUtils.warning(suspendedTab.id, "Failed to contact suspended tab");
         } else {
           removeTabFromList(suspendedTab);
         }

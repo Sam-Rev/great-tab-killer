@@ -66,7 +66,7 @@ export var gsSuspendedTab = (function () {
     // Set command
     const suspensionToggleHotkey = await tgs.getSuspensionToggleHotkey();
     if (chrome.runtime.lastError) {
-      gsUtils.error("Error while trying to get suspension toggle hot key", chrome.runtime.lastError);
+      gsUtils.error("gsSuspendedTab", "Could not read the suspension toggle hotkey");
     }
 
     // Set command
@@ -104,7 +104,7 @@ export var gsSuspendedTab = (function () {
   function showNoConnectivityMessage(tab) {
     chrome.tabs.sendMessage(tab.id, {action: "showNoConnectivityMessage"}, function() {
       if (chrome.runtime.lastError) {
-        gsUtils.error("Error showing no connectivity message");
+        gsUtils.warning("gsSuspendedTab", "No content script for connectivity message", tab.id);
       }
     });
   }

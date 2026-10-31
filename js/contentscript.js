@@ -144,7 +144,7 @@
   waitForRuntimeReady()
     .then(init)
     .catch(e => {
-      console.error(e);
+      console.error('[content script] initialization failed');
       setTimeout(() => {
         init();
       }, 200);
