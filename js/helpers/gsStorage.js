@@ -3,6 +3,24 @@
 import {gsUtils} from "./gsUtils.js"
 import {gsSession} from "./gsSession.js"
 
+function parseStoredJson(key, rawValue, fallback, isValid = () => true) {
+  if (rawValue === undefined || rawValue === null) {
+    return { value: fallback, missing: true, invalid: false };
+  }
+  try {
+    const value = JSON.parse(rawValue);
+    if (!isValid(value)) throw new Error('Unexpected stored value type');
+    return { value, missing: false, invalid: false };
+  } catch (_error) {
+    gsUtils.warning('gsStorage', 'Invalid stored JSON for ' + key + '; resetting to default');
+    return { value: fallback, missing: false, invalid: true };
+  }
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
 export var gsStorage = {
   SCREEN_CAPTURE: 'screenCapture',
   SCREEN_CAPTURE_FORCE: 'screenCaptureForce',
@@ -97,30 +115,20 @@ export var gsStorage = {
       var defaultSettings = gsStorage.getSettingsDefaults();
       var defaultKeys = Object.keys(defaultSettings);
       chrome.storage.local.get(['gsSettings'], function(localData) {
-        let syncEnabledLocally = false;
-        try {
-          const localSettings = JSON.parse(localData['gsSettings'] || false) || {};
-          syncEnabledLocally = localSettings[gsStorage.SYNC_SETTINGS] === true;
-        } catch (e) {}
+        const storedSettings = parseStoredJson(
+          'gsSettings',
+          localData['gsSettings'],
+          {},
+          isPlainObject
+        );
+        const rawLocalSettings = storedSettings.value;
+        const syncEnabledLocally = rawLocalSettings[gsStorage.SYNC_SETTINGS] === true;
         const initialiseWithSyncSettings = function(syncedSettings) {
         syncedSettings = syncedSettings || {};
-        gsUtils.log('gsStorage', 'syncedSettings on init: ', syncedSettings);
+        gsUtils.log('gsStorage', 'Synced settings loaded');
         gsSession.setSynchedSettingsOnInit(syncedSettings);
 
-        var rawLocalSettings;
-        try {
-          rawLocalSettings = JSON.parse(localData['gsSettings'] || false);
-        } catch (e) {
-          gsUtils.error(
-            'gsStorage',
-            'Failed to parse gsSettings: ',
-            localData['gsSettings']
-          );
-        }
-        if (!rawLocalSettings) {
-          rawLocalSettings = {};
-        }
-        gsUtils.log('gsStorage', 'localSettings on init: ', rawLocalSettings);
+        gsUtils.log('gsStorage', 'Local settings loaded');
         var shouldSyncSettings = rawLocalSettings[gsStorage.SYNC_SETTINGS];
 
         var mergedSettings = {};
@@ -152,15 +160,11 @@ export var gsStorage = {
             typeof mergedSettings[key] === 'undefined' ||
             mergedSettings[key] === null
           ) {
-            gsUtils.errorIfInitialised(
-              'gsStorage',
-              'Missing key: ' + key + '! Will init with default.'
-            );
             mergedSettings[key] = defaultSettings[key];
           }
         }
         gsStorage.saveSettings(mergedSettings);
-        gsUtils.log('gsStorage', 'mergedSettings: ', mergedSettings);
+        gsUtils.log('gsStorage', 'Merged settings saved');
 
         // if any of the new settings are different to those in sync, then trigger a resync
         var triggerResync = false;
@@ -209,12 +213,7 @@ export var gsStorage = {
           var remoteSetting = remoteSettings[key];
 
           if (localSettings[key] !== remoteSetting.newValue) {
-            gsUtils.log(
-              'gsStorage',
-              'Changed value from sync',
-              key,
-              remoteSetting.newValue
-            );
+            gsUtils.log('gsStorage', 'Setting changed from sync', key);
             changedSettingKeys.push(key);
             oldValueBySettingKey[key] = localSettings[key];
             newValueBySettingKey[key] = remoteSetting.newValue;
@@ -262,34 +261,26 @@ export var gsStorage = {
   },
 
   getSettings: async function() {
-    var settings;
+    let storedSettings;
     try {
-      settings = JSON.parse((await chrome.storage.local.get('gsSettings'))['gsSettings'])|| false;
-    } catch (e) {
-      chrome.storage.local.get('gsSettings', (d) => {
-        gsUtils.error(
-            'gsStorage',
-            'Failed to parse gsSettings: ',
-            settings
-        );
-      });
+      const data = await chrome.storage.local.get('gsSettings');
+      storedSettings = parseStoredJson('gsSettings', data['gsSettings'], {}, isPlainObject);
+    } catch (_error) {
+      gsUtils.error('gsStorage', 'Failed to read gsSettings');
+      storedSettings = { value: gsStorage.getSettingsDefaults(), missing: false, invalid: false };
     }
-    if (!settings) {
-      settings = gsStorage.getSettingsDefaults();
-      gsStorage.saveSettings(settings);
+    if (storedSettings.missing || storedSettings.invalid || !isPlainObject(storedSettings.value)) {
+      storedSettings.value = gsStorage.getSettingsDefaults();
+      gsStorage.saveSettings(storedSettings.value);
     }
-    return settings;
+    return storedSettings.value;
   },
 
   saveSettings: function(settings) {
     try {
       chrome.storage.local.set({'gsSettings': JSON.stringify(settings)});
     } catch (e) {
-      gsUtils.error(
-        'gsStorage',
-        'failed to save gsSettings to local storage',
-        e
-      );
+      gsUtils.error('gsStorage', 'Failed to save gsSettings to local storage');
     }
   },
 
@@ -302,15 +293,13 @@ export var gsStorage = {
       gsUtils.log(
         'gsStorage',
         'gsStorage',
-        'Pushing local settings to sync',
-        settings
+        'Pushing local settings to sync'
       );
       chrome.storage.sync.set(settings, () => {
         if (chrome.runtime.lastError) {
           gsUtils.error(
             'gsStorage',
-            'failed to save to chrome.storage.sync: ',
-            chrome.runtime.lastError
+            'Failed to save settings to chrome.storage.sync'
           );
         }
       });
@@ -319,23 +308,18 @@ export var gsStorage = {
 
   fetchLastVersion: function() {
     return new Promise(resolve => {
-      chrome.storage.local.get(gsStorage.APP_VERSION, (d) => {
-        try {
-          var version = d[gsStorage.APP_VERSION];
-          if (version) {
-            version = JSON.parse(version);
-          }
-        } catch (e) {
-          chrome.storage.local.get(gsStorage.APP_VERSION, (d) => {
-            gsUtils.error(
-                'gsStorage',
-                'Failed to parse ' + gsStorage.APP_VERSION + ': ',
-                d[gsStorage.APP_VERSION]
-            );
-          });
+      chrome.storage.local.get(gsStorage.APP_VERSION, async (data) => {
+        const fallback = '0.0.0';
+        const parsed = parseStoredJson(
+          gsStorage.APP_VERSION,
+          data[gsStorage.APP_VERSION],
+          fallback,
+          (value) => typeof value === 'string' && value.length > 0
+        );
+        if (parsed.invalid) {
+          gsStorage.setLastVersion(fallback);
         }
-        version = version || '0.0.0';
-        resolve(version + '');
+        resolve(parsed.value);
       });
     });
   },
@@ -345,11 +329,7 @@ export var gsStorage = {
       obj[gsStorage.APP_VERSION] = JSON.stringify(newVersion);
       chrome.storage.local.set(obj);
     } catch (e) {
-      gsUtils.error(
-        'gsStorage',
-        'failed to save ' + gsStorage.APP_VERSION + ' to local storage',
-        e
-      );
+      gsUtils.error('gsStorage', 'Failed to save ' + gsStorage.APP_VERSION + ' to local storage');
     }
   },
 
@@ -357,14 +337,17 @@ export var gsStorage = {
     try {
       const result = await chrome.storage.local.get([gsStorage.LAST_EXTENSION_RECOVERY]);
       const storedValue = result[gsStorage.LAST_EXTENSION_RECOVERY];
-      if (storedValue === undefined || storedValue === null || storedValue === '') return undefined;
-      try {
-        const timestamp = JSON.parse(storedValue);
-        return Number.isFinite(timestamp) ? timestamp : undefined;
-      } catch (e) {
-        gsUtils.warning('gsStorage', 'Ignoring invalid ' + gsStorage.LAST_EXTENSION_RECOVERY + ' state');
-        return undefined;
+      if (storedValue === undefined || storedValue === null) return undefined;
+      const parsed = parseStoredJson(
+        gsStorage.LAST_EXTENSION_RECOVERY,
+        storedValue,
+        undefined,
+        Number.isFinite
+      );
+      if (parsed.invalid) {
+        await chrome.storage.local.remove(gsStorage.LAST_EXTENSION_RECOVERY);
       }
+      return parsed.value;
     } catch (e) {
       gsUtils.error('gsStorage', 'Failed to read ' + gsStorage.LAST_EXTENSION_RECOVERY);
       return undefined;
@@ -376,36 +359,26 @@ export var gsStorage = {
       obj[gsStorage.LAST_EXTENSION_RECOVERY] = JSON.stringify(extensionRecoveryTimestamp);
       chrome.storage.local.set(obj);
     } catch (e) {
-      gsUtils.error(
-        'gsStorage',
-        'failed to save ' +
-          gsStorage.LAST_EXTENSION_RECOVERY +
-          ' to local storage',
-        e
-      );
+      gsUtils.error('gsStorage', 'Failed to save ' + gsStorage.LAST_EXTENSION_RECOVERY + ' to local storage');
     }
   },
 
-  fetchSessionMetrics: function() {
-    return new Promise(resolve => {
-      chrome.storage.local.get([gsStorage.SM_SESSION_METRICS]).then((result) => {
-        var sessionMetrics = {};
-
-        try {
-          sessionMetrics = JSON.parse(
-            result[gsStorage.SM_SESSION_METRICS]
-          );
-        } catch (e) {
-          gsUtils.error(
-            'gsStorage',
-            'Failed to parse ' + gsStorage.SM_SESSION_METRICS + ': ',
-            result[gsStorage.SM_SESSION_METRICS]
-          );
-        }
-
-        resolve(sessionMetrics);
-      });
-    });
+  fetchSessionMetrics: async function() {
+    let result;
+    try {
+      result = await chrome.storage.local.get([gsStorage.SM_SESSION_METRICS]);
+    } catch (_error) {
+      gsUtils.error('gsStorage', 'Failed to read ' + gsStorage.SM_SESSION_METRICS);
+      return {};
+    }
+    const parsed = parseStoredJson(
+      gsStorage.SM_SESSION_METRICS,
+      result[gsStorage.SM_SESSION_METRICS],
+      {},
+      isPlainObject
+    );
+    if (parsed.invalid) gsStorage.setSessionMetrics(parsed.value);
+    return parsed.value;
   },
   setSessionMetrics: function(sessionMetrics) {
     try {
@@ -415,11 +388,7 @@ export var gsStorage = {
       chrome.storage.local.set(obj);
 
     } catch (e) {
-      gsUtils.error(
-        'gsStorage',
-        'failed to save ' + gsStorage.SM_SESSION_METRICS + ' to local storage',
-        e
-      );
+      gsUtils.error('gsStorage', 'Failed to save ' + gsStorage.SM_SESSION_METRICS + ' to local storage');
     }
   },
 };
